@@ -1,0 +1,26 @@
+{
+  "name": "portaldenecesidades",
+  "version": "0.0.1",
+  "description": "Portal de Nececidades creado para Hack a boss",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zeuspailoff/Portal-de-necesidades-HAB.git"
+  },
+  "author": "Grupo A de Hack a Boss",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zeuspailoff/Portal-de-necesidades-HAB/issues"
+  },
+  "homepage": "https://github.com/zeuspailoff/Portal-de-necesidades-HAB#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mysql2": "^3.6.5"
+  }
+}
