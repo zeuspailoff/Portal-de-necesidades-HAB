@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "portaldenecesidades",
   "version": "0.0.1",
   "description": "Portal de Nececidades creado para Hack a boss",
@@ -22,6 +23,7 @@
     "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "mysql2": "^3.6.5"
+    "mysql2": "^3.6.5",
+    "uuid": "^9.0.1"
   }
 }
