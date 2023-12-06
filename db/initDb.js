@@ -1,4 +1,4 @@
-import getPool from 'getPool.js';
+import getPool from './getPool.js';
 
 const createDatabaseQuery = 'CREATE DATABASE IF NOT EXISTS ineedup';
 const useDatabaseQuery = 'USE ineedup';
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS proposals (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (demand_id) REFERENCES demands(id)
 );
 `;
@@ -79,8 +79,9 @@ const initDb = async () => {
 
     pool.end();
   } catch (error) {
-    console.error('Error al inicializar la base de datos:', error.message);
+    console.error('☠️Error al inicializar la base de datos:', error.message);
   }
+  console.log('Base de datos inicializada.😁');
 }
 
 initDb();
