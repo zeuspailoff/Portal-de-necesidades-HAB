@@ -1,8 +1,9 @@
 import express from 'express';
+import { newProposal } from '../../middleware/index.middleware.js';
 
 
 const router = express.Router();
 
-router.get('/propusal/publish',);
+router.post('/propusal/public', newProposal);
 
 export default router;
