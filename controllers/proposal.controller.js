@@ -27,6 +27,6 @@ export const getProposal = async (id) => {
 };
 
 export const getProposalByDemandId = async (demand_id) => {
-    const proposal = await getProposalByDemandId(demand_id);
+    const proposal = await getProposalById(demand_id);
     return proposal;
 };
