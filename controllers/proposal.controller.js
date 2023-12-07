@@ -1,6 +1,6 @@
 
 
-import { newProposal, deleteProposal } from '../services/proposals.services.js';
+import { newProposal, deleteProposal, editProposal, getProposalById } from '../services/proposals.services.js';
 
 
 export const createProposal = async (body) => {
@@ -13,5 +13,20 @@ export const createProposal = async (body) => {
 
 export const deleteProposalById = async (id) => {
     const proposal = await deleteProposal(id);
+    return proposal;
+};
+
+export const editProposalById = async (id, description) => {
+    const proposal = await editProposal(id, description);
+    return proposal;
+};
+
+export const getProposal = async (id) => {
+    const proposal = await getProposalById(id);
+    return proposal;
+};
+
+export const getProposalByDemandId = async (demand_id) => {
+    const proposal = await getProposalById(demand_id);
     return proposal;
 };
