@@ -44,6 +44,20 @@ const getAllDemands = async (userId) => {
     return response;
 }
 
+const getAllDemandsByUserId = async (userId) => {
+    const pool = await getPool();
+    const [response] = await pool.query(
+        'SELECT * FROM demands WHERE user_id =? AND deleted_at IS NULL',
+        [userId]
+    );
+
+    if (response.length == 0) {
+        errors.entityNotFound('Demand');
+    }
+
+    return response;
+}
+
 const updateDemandStatus = async (demandId, status) => {
     const pool = await getPool();
     const [response] = await pool.query(
@@ -123,5 +137,6 @@ export default {
     deleteDemand,
     insertFile,
     getAllDemands,
-    deleteFile
+    deleteFile,
+    getAllDemandsByUserId
 }
