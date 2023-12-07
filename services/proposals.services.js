@@ -1,14 +1,17 @@
 import getPool from "../db/getPool.js";
 
-const newProposal = async (description, user_id, demand_id) => {
+const newProposal = async (user_id, demand_id, description) => {
 
     const pool = await getPool();
 
-    const query = `INSERT INTO proposals (description, user_id, demand_id) VALUES (?, ?, ?) `;
-    const values = [description, user_id, demand_id];
-
-    const result = await pool.query(query, values);
-    return result.rows[0];
+    const [response] = await pool.query(
+        'INSERT INTO proposals (user_id, demand_id, description) VALUES (?,?,?)',
+        [user_id, demand_id, description]
+    );
+    if (response.affectedRows !== 1) {
+        console.log('se fue a la puta ')
+    }
+    return response;
 };
 
 export default newProposal;
