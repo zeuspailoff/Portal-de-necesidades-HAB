@@ -13,5 +13,23 @@ const newProposal = async (user_id, demand_id, description) => {
     }
     return response;
 };
+//borramos el propousal
 
-export default newProposal;
+const deleteProposal = async (id) => {
+
+    const pool = await getPool();
+
+    const [response] = await pool.query(
+        'DELETE FROM proposals WHERE id =?',
+        [id]
+    );
+    if (response.affectedRows !== 1) {
+        console.log('fallo al borrar ')
+    }
+    return response;
+};
+
+export {
+    newProposal,
+    deleteProposal
+};
