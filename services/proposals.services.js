@@ -9,7 +9,7 @@ const newProposal = async (user_id, demand_id, description) => {
         [user_id, demand_id, description]
     );
     if (response.affectedRows !== 1) {
-        console.log('se fue a la puta ')
+        console.log('fallo al insertar ')
     }
     return response;
 };
