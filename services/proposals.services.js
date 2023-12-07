@@ -29,7 +29,24 @@ const deleteProposal = async (id) => {
     return response;
 };
 
+//editar el propousal
+
+const editProposal = async (id, description) => {
+
+    const pool = await getPool();
+
+    const [response] = await pool.query(
+        'UPDATE proposals SET description =? WHERE id =?',
+        [description, id]
+    );
+    if (response.affectedRows !== 1) {
+        console.log('fallo al editar ')
+    }
+    return response;
+};
+
 export {
     newProposal,
-    deleteProposal
+    deleteProposal,
+    editProposal
 };
