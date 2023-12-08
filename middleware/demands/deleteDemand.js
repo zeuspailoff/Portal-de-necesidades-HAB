@@ -1,4 +1,4 @@
-import deleteDemand from '../../controllers/demands.controller.js';
+import { deleteDemand } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
     try {

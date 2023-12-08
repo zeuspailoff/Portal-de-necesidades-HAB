@@ -1,6 +1,6 @@
 
 
-import { newProposal, deleteProposal, editProposal, getProposalById } from '../services/proposals.services.js';
+import { newProposal, deleteProposal, editProposal, getProposalById, getProposalByDemandId } from '../services/proposals.services.js';
 
 
 export const createProposal = async (body) => {
@@ -26,7 +26,7 @@ export const getProposal = async (id) => {
     return proposal;
 };
 
-export const getProposalByDemandId = async (demand_id) => {
-    const proposal = await getProposalById(demand_id);
-    return proposal;
+export const getProposalByDemand = async (demand_id) => {
+    const proposals = await getProposalByDemandId(demand_id);
+    return proposals;
 };

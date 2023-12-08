@@ -12,5 +12,6 @@ router.put('demands/edit', editDemand);
 // insert file ??
 // delete file ??
 
+export default router;
 
 

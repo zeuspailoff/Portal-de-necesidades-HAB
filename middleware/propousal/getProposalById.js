@@ -1,17 +1,17 @@
-import { getProposalByDemandId } from "../../controllers/proposal.controller.js";
+import { getProposal } from "../../controllers/proposal.controller.js";
 
 const main = async (req, res, next) => {
 
     try {
 
 
-        const proposal = await getProposalByDemandId(req.params.id);
+        const proposals = await getProposal(req.params.id);
 
         res.send({
             status: 200,
             message: 'Propousal successfully😁',
             data: {
-                proposal
+                proposals
             }
         });
     } catch (error) {

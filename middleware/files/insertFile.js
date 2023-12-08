@@ -1,4 +1,4 @@
-import insertFile from '../../controllers/demands.controller.js';
+import { insertFile } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
     try {
