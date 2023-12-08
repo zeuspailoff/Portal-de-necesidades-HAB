@@ -9,6 +9,6 @@ router.post('/propusal/public', newProposal);
 router.put('/propusal/delete/:id', deleteProposal);
 router.put('/propusal/edit/:id', editProposalById);
 router.get('/propusal/get/:id', getProposalById);
-router.get('/propusal/bydemand/:id', getProposalByDemandId);
+router.get('/propusal/bydemand/:demand_id', getProposalByDemandId);
 
 export default router;

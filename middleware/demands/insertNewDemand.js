@@ -1,4 +1,4 @@
-import insertNewDemand from '../../controllers/demands.controller.js';
+import { insertNewDemand } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
     try {
