@@ -58,16 +58,19 @@ const getProposalById = async (id) => {
     return response;
 };
 
-//encontramos una proposal por in demand_id
+//encontramos una proposal por un demand_id
 
 const getProposalByDemandId = async (demand_id) => {
 
     const pool = await getPool();
 
     const [response] = await pool.query(
-        'SELECT * FROM proposals WHERE demand_id =?',
+        'SELECT * FROM proposals WHERE demand_id = ?',
         [demand_id]
     );
+    if (response.length < 1) {
+        console.error('no hay proposales en la base de datos');
+    };
     return response;
 };
 
