@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const {
+    MYSQL_PORT,
     MYSQL_HOST,
     MYSQL_USER,
     MYSQL_PASS,
@@ -18,6 +19,7 @@ const getPool = async () => {
 
             //Crear pool temporal para dar de alta la Base si es que no existe
             const poolTemp = mysql.createPool({
+                port: MYSQL_PORT,
                 host: MYSQL_HOST, //envio el host para la conexión
                 user: MYSQL_USER, //envio el user 
                 password: MYSQL_PASS, //envio el password
@@ -26,6 +28,7 @@ const getPool = async () => {
             await poolTemp.query(`CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}`);
 
             pool = mysql.createPool({ //Comienzo a crear el pool mediante MYSQL y le envío un objeto
+                port: MYSQL_PORT,
                 host: MYSQL_HOST, //envio el host para la conexión
                 user: MYSQL_USER, //envio el user 
                 password: MYSQL_PASS, //envio el password
