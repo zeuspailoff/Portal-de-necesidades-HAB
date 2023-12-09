@@ -5,7 +5,7 @@ const main = async (req, res, next) => {
         await deleteDemand(req.body.demand_id);
         res.send({
             status: 200,
-            message: `Demand ${req.body.demand_id} deleted successfully`
+            message: `Demand with ID: ${req.body.demand_id} deleted successfully`
         })
     } catch (error) {
         next(error);
