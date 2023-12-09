@@ -4,13 +4,15 @@ import errors from '../helpers/errors.helpers.js'
 
 const entity_type = 'demands'
 
-export const insertNewDemand = async (user_id, title, description,files) => {
+export const insertNewDemand = async (user_id, title, description, files) => {
     //guardo la demanda me devuelve el registro
     const response = await demandsServices.insertNewDemand(
         user_id, 
         title, 
         description
     )
+
+    if(files){
     //array para guardar los archivos
     const filesSrc = [] 
     //obtengo el id autoincremental de la demanda recien insertada
@@ -26,6 +28,7 @@ export const insertNewDemand = async (user_id, title, description,files) => {
     });
     //agrego en el response un atributo files que contiene un array de objetos de la tabla files
     response.files = filesSrc;
+    }
 
     return response
 }
@@ -40,6 +43,11 @@ export const getDemandById = async (demandId) => {
     return response;
 }
 
+export const getAllDemandsByUserId = async (userId) => {
+    const response = await demandsServices.getAllDemandsByUserId(userId);
+    return response;
+}
+
 export const deleteDemand = async (demandId) => {
     const response = await demandsServices.deleteDemand(demandId);
     return response;
@@ -50,23 +58,22 @@ export const updateDemandStatus = async (demandId, status) => {
     return response;
 }
 
-export const editDemand = async (demandId, title, description, file) => {
+export const editDemand = async (demandId, title, description, files) => {
     const response = await demandsServices.editDemand(demandId, title, description);
 
-    if(file){
-        const filesSrc = [] 
-        const entity_id = demandId
+    if(files){
+        const filesSrc = []; 
+        const entity_id = demandId;
         
         files.forEach(async file => {
-        const fileSrc = await insertFile(file)
-        const fileInDb = await demandsServices.insertFile(entity_id, entity_type, fileSrc)
-        
-        filesSrc.push({'id': fileInDb.insertId, 'src' : fileSrc})
+            const fileSrc = await insertFile(file)
+            const fileInDb = await demandsServices.insertFile(entity_id, entity_type, fileSrc)
+            
+            filesSrc.push({'id': fileInDb.insertId, 'src' : fileSrc})
         });
 
         response.files = filesSrc;
-    }
-        
+    }     
 
     return response;
 }
