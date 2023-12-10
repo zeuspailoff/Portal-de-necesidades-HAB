@@ -6,14 +6,17 @@ const main = async (req, res, next) => {
 
     try {
 
-        await insertNewDemand(user_id, title, description);
+        const response = await insertNewDemand(user_id, title, description);
 
         res.send({
             status: 200,
             message: 'demanda insertada correctamente😁',
-            data: user_id,
-            data: title,
-            data: description
+            data: {
+                "id:":response.insertId,
+                "user_id":user_id,
+                "title":title,
+                "description":description
+            }
         })
 
     } catch (error) {
