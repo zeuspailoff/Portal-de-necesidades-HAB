@@ -2,14 +2,18 @@ import { insertNewDemand } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
 
+    const { user_id, title, description } = req.body;
+
     try {
 
-        await insertNewDemand(req.body.user_id, req.body.title, req.body.description);
+        await insertNewDemand(user_id, title, description);
 
         res.send({
             status: 200,
             message: 'demanda insertada correctamente😁',
-            data: req.body.description
+            data: user_id,
+            data: title,
+            data: description
         })
 
     } catch (error) {
