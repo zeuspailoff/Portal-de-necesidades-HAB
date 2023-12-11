@@ -1,3 +1,5 @@
+import validateSchema from '../../helpers/validationSchema.helper.js'
+import newDemandSchema from '../../schema/demands/newDemand.schema.js';
 import { insertNewDemand } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
@@ -5,6 +7,8 @@ const main = async (req, res, next) => {
     const { user_id, title, description } = req.body;
 
     try {
+
+        await validateSchema(newDemandSchema, req.body)
 
         const response = await insertNewDemand(user_id, title, description);
 

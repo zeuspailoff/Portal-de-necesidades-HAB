@@ -6,7 +6,7 @@ import { deleteProposal, newProposal, editProposalById, getProposalById, getProp
 const router = express.Router();
 
 router.post('/propusal/public', newProposal);
-router.put('/propusal/delete/:id', deleteProposal);
+router.delete('/propusal/delete/:id', deleteProposal);
 router.put('/propusal/edit/:id', editProposalById);
 router.get('/propusal/get/:id', getProposalById);
 router.get('/propusal/bydemand/:demand_id', getProposalByDemandId);

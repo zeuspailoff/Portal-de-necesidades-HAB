@@ -1,4 +1,4 @@
-import insertNewDemand from "../middleware/demands/insertNewDemand.js";
+import insertNewDemand from "./demands/insertNewDemand.middleware.js";
 import getAllDemands from "../middleware/demands/getAllDemands.js";
 import getDemandById from "../middleware/demands/getDemandById.js";
 import getAllDemandsByUserId from "../middleware/demands/getAllDemandsByUserId.js";
@@ -7,7 +7,7 @@ import updateDemandStatus from "../middleware/demands/updateDemandStatus.js";
 import editDemand from "../middleware/demands/editDemand.js";
 import insertFile from "../middleware/files/insertFile.js";
 import deleteFile from "../middleware/files/deleteFile.js";
-import newProposal from "../middleware/propousal/propousals.middleware.js";
+import newProposal from "../middleware/propousal/insertNewProposal.js";
 import deleteProposal from "../middleware/propousal/deleteProposal.js";
 import editProposalById from "../middleware/propousal/editProposal.js";
 import getProposalById from "../middleware/propousal/getProposalById.js";

@@ -1,4 +1,6 @@
 import express from 'express';
+import newDemandSchema from '../../schema/demands/newDemand.schema.js';
+
 import { 
     insertNewDemand,
      getAllDemands,
@@ -7,7 +9,7 @@ import {
      deleteDemand,
      updateDemandStatus,
      editDemand 
-} from "../middleware/index.middleware.js";
+} from "../../middleware/index.middleware.js";
 
 const router = express.Router();
 

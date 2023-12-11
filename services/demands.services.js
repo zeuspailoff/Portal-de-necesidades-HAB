@@ -30,11 +30,10 @@ const getDemandById = async (demandId) => {
     return response[0];
 }
 
-const getAllDemands = async (userId) => {
+const getAllDemands = async () => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'SELECT * FROM demands WHERE user_id = ? AND deleted_at IS NULL',
-        [userId]
+        'SELECT * FROM demands WHERE deleted_at IS NULL'
     );
     if (response.length == 0) {
         errors.entityNotFound('Demand');

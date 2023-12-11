@@ -1,6 +1,6 @@
 import express from 'express';
-import propousalRoutes from '../routes/proposal.routes.js/proposal.routes.js';
-import demandsRoutes from './demandsRoutes.js'
+import propousalRoutes from './proposal/proposal.routes.js';
+import demandsRoutes from './demands/demands.routes.js'
 
 const router = express.Router();
 
