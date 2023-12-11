@@ -1,24 +1,23 @@
 const main = async (req, res, next) => {
     try {
-        const user = req.user;
+        const user= req.user
 
         delete user.password;
-        delete user.modifiedAt;
         delete user.email;
         delete user.active;
         delete user.role;
         delete user.registrationCode;
-        delete user.recoverPassCode;
+        delete user.recoveryCode;
 
         res.send({
-            status: "OK",
-            message: "Usuario encontrado correctamente",
+            status: 'OK',
+            message: 'Usuario encontrado',
             data: {
                 user
             }
         })
-    } catch (err) {
-        next(err);
+    } catch (error) {
+            next(error);        
     }
 }
 

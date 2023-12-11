@@ -1,22 +1,22 @@
 import randomstring from 'randomstring';
-import validateSchema from "../../helpers/validationSchema.helper.js";
-import newUserSchema from "../../schemas/users/newUser.schema.js";
-import { newUserRegister } from "../../controllers/users.controller.js";
+//import validateSchema from '../../schema/'
+import newUserSchema from '../../schema/users/newUser.schema.js';
+import { registerNewUser } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
     try {
-        await validateSchema(newUserSchema, req.body);
+
+        //await validateSchema(newUserSchema, req.body)
 
         const registrationCode = randomstring.generate(30);
-        await newUserRegister(req.body, registrationCode);
+        await registerNewUser(req.body, registrationCode);
 
         res.send({
-            status: "OK",
-            message: "Usuario creado correctamente"
+            status: 'OK',
+            message: 'Usuario creado correctamente'
         })
-
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        next(error)
     }
 }
 

@@ -1,9 +1,9 @@
-import bcrypt from 'bcrypt'
-import randomstring from 'randomstring'
+//import bcrypt from 'bcrypt';
+import randomstring from "randomstring";
 import getPool from '../db/getPool.js'
-import errors from '../helpers/errors.helper.js'
+import errors from '../helpers/errors.helpers.js'
 
-const newUserRegister = async (username, password, email, bio, birthdate, phone, name, lastname, profile_picture, registrationCode) => {
+const registerNewUser = async (username, email, password, birthdate, phone, name, lastname, registrationCode) => {
   const pool = await getPool()
 
   let [users] = await pool.query(
@@ -11,31 +11,42 @@ const newUserRegister = async (username, password, email, bio, birthdate, phone,
     [username, email]
   )
 
-  if (users.length > 0) {
+  if (users.length > 0){
     errors.userAlreadyExists()
   }
-
+  
   try {
-    const sqlQuery =
-      'INSERT INTO users (username, password, email, bio, birthdate, phone, name, lastname, profile_picture, registrationCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
 
-    const hashPassword = await bcrypt.hash(password, 5)
+    const sqlQuery = 'INSERT INTO users (username, email, password, birthdate, phone, name, lastname, registrationCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
 
-    const values = [username, hashPassword, email, registrationCode]
+    //Falta el hash de password
     const [response] = await pool.query(sqlQuery, values)
     return response
-  } catch (err) {
-    errors.conflictError(
-      'Error al intentar registrar el usuario',
-      'USER_REGISTER_ERROR'
-    )
+  } catch (error) {
+      errors.conflictError(
+        'Error al registrar usuario', 'USER_REGISTER_ERROR'
+      )
   }
 }
 
-const validateUser = async (registrationCode) => {
+const deleteUser = async (id) => {
+
+  const pool = await getPool();
+
+  const [response] = await pool.query(
+      'DELETE FROM users WHERE id =?',
+      [id]
+  );
+  if (response.affectedRows !== 1) {
+      console.log('No se ha podido eliminar usuario ')
+  }
+  return response;
+}
+
+const validateUser = async(registrationCode) => {
   const pool = await getPool()
   const [users] = await pool.query(
-    'SELECT * FROM users WHERE registrationCode = ?',
+    'SELECT * FROM users WHERE registrationCode = ?'
     [registrationCode]
   )
 
@@ -44,37 +55,38 @@ const validateUser = async (registrationCode) => {
   }
 
   try {
-    const sqlQuery =
-      'UPDATE users SET active = TRUE, registrationCode = null WHERE id = ? '
+    const sqlQuery = 'UPDATE users SET active = TRUE, registrationCode = null WHERE id = ?'
+
     const values = [users[0].id]
 
     const [response] = await pool.query(sqlQuery, values)
-
     return response
-  } catch (err) {
+
+  } catch (error) {
     errors.conflictError(
-      'Error al intentar activar el usuario',
+      'Error al validar el usuario',
       'USER_ACTIVATED_ERROR'
     )
   }
 }
 
 const getUserByEmailOrUsername = async (email) => {
+  
   const pool = await getPool()
 
   const [users] = await pool.query(
-    'SELECT * FROM users WHERE email = ? OR username = ? ',
+    'SELECT * FROM users WHERE email = ? OR username = ? '
     [email, email]
   )
 
-  if (users.length == 0) {
+  if (users.length == 0){
     errors.entityNotFound('Usuario')
   }
-
-  return users[0]
+  return users [0]
 }
 
 const getUsers = async () => {
+  
   const pool = await getPool()
 
   const [users] = await pool.query('SELECT * FROM users')
@@ -83,69 +95,25 @@ const getUsers = async () => {
 }
 
 const getUserById = async (userId) => {
-  const pool = await getPool()
+   
+  const pool = getPool()
 
-  const [users] = await pool.query('SELECT * FROM users WHERE id = ?', [userId])
+  const [users] = await pool.query ('SELECT * FROM users WHERE id = ?', [userId])
 
   if (users.length < 1) {
     errors.entityNotFound('Usuario')
   }
-
-  return users[0]
+  return users [0]
 }
 
-const updatePhoto = async (userId, Photo) => {
-  const pool = await getPool()
+//Faltan las funciones de Avatar, updatePasswordRecovery, updatePassword y exportarlas
 
-  await pool.query('UPDATE users SET Photo = ? WHERE id = ? ', [
-    Photo,
-    userId
-  ])
-}
-
-const updatePasswordRecover = async (user) => {
-  const recoverPassCode = randomstring.generate(10)
-
-  const pool = await getPool()
-
-  const [response] = await pool.query(
-    'UPDATE users SET recoverPassCode = ? WHERE id = ? ',
-    [recoverPassCode, user.id]
-  )
-
-  if (response.affectedRows !== 1) {
-    errors.conflictError(
-      'Error al generar recoverPassCode.',
-      'RECOVER_PASS_ERROR'
-    )
-  }
-
-  return recoverPassCode
-}
-
-const updateUserPassword = async (user, newPass) => {
-  const pool = await getPool()
-  const newPassEncrypted = await bcrypt.hash(newPass, 5);
-  const [response] = await pool.query(
-    'UPDATE users SET password = ?, recoverPassCode = NULL WHERE id = ?',
-    [newPassEncrypted, user.id]
-  )
-
-  if (response.affectedRows !== 1) {
-    errors.conflictError(
-      'Error al actualizar la contraseña.',
-      'PASSWORD_UPDATE_ERROR'
-    )
-  }
-}
 
 export default {
-  newUserRegister,
+  registerNewUser,
+  deleteUser,
   validateUser,
   getUserByEmailOrUsername,
   getUsers,
-  getUserById,
-  updatePhoto,
-  updatePasswordRecover,
-  updateUserPassword
+  getUserById
 }
