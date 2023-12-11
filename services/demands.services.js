@@ -19,7 +19,7 @@ const insertNewDemand = async (user_id, title, description) => {
 const getDemandById = async (demandId) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'SELECT * FROM demands WHERE id =? AND deleted_at IS NULL',
+        'SELECT * FROM demands WHERE id = ? AND deleted_at IS NULL',
         [demandId]
     );
 
@@ -33,21 +33,19 @@ const getDemandById = async (demandId) => {
 const getAllDemands = async (userId) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'SELECT * FROM demands WHERE user_id =? AND deleted_at IS NULL',
+        'SELECT * FROM demands WHERE user_id = ? AND deleted_at IS NULL',
         [userId]
     );
-
     if (response.length == 0) {
         errors.entityNotFound('Demand');
     }
-
     return response;
 }
 
 const getAllDemandsByUserId = async (userId) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'SELECT * FROM demands WHERE user_id =? AND deleted_at IS NULL',
+        'SELECT * FROM demands WHERE user_id = ? AND deleted_at IS NULL',
         [userId]
     );
 
@@ -61,7 +59,7 @@ const getAllDemandsByUserId = async (userId) => {
 const updateDemandStatus = async (demandId, status) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'UPDATE demands SET status =? WHERE id =?',
+        'UPDATE demands SET status = ? WHERE id = ?',
         [status, demandId]
     );
 
@@ -75,7 +73,7 @@ const updateDemandStatus = async (demandId, status) => {
 const editDemand = async (demandId, title, description) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'UPDATE demands SET title =?, description =? WHERE id =?',
+        'UPDATE demands SET title = ?, description = ? WHERE id = ?',
         [title, description, demandId]
     );
 
@@ -89,11 +87,11 @@ const editDemand = async (demandId, title, description) => {
 const deleteDemand = async (demandId) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'UPDATE demands SET  deleted_at = NOW() WHERE id =?',
+        'UPDATE demands SET deleted_at = NOW() WHERE id = ?',
         [demandId]
     );
 
-    if (response.affectedRows!== 1) {
+    if (response.affectedRows !== 1) {
         errors.conflictError('Error al borrar la demanda', 'DEMAND_DELETE_ERROR');
     }
 
@@ -118,11 +116,11 @@ const insertFile = async (entity_id, entity_type, src) => {
 const deleteFile = async (entity_id, entity_type) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'UPDATE files SET deleted_at = NOW() WHERE entity_id =? AND entity_type =?',
+        'UPDATE files SET deleted_at = NOW() WHERE entity_id = ? AND entity_type = ?',
         [entity_id, entity_type]
     );
 
-    if (response.affectedRows!== 1) {
+    if (response.affectedRows !== 1) {
         errors.conflictError('Error al borrar el archivo', 'FILE_DELETE_ERROR');
     }
 

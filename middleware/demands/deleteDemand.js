@@ -1,11 +1,14 @@
 import { deleteDemand } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
+
+    const { demand_id } = req.body;
+
     try {
-        await deleteDemand(req.body.demand_id);
+        await deleteDemand(demand_id);
         res.send({
             status: 200,
-            message: `Demand ${req.body.demand_id} deleted successfully`
+            message: `Demand with ID: ${demand_id} deleted successfully`
         })
     } catch (error) {
         next(error);
