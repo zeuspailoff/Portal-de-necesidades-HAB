@@ -40,7 +40,7 @@ const editProposal = async (id, description) => {
         [description, id]
     );
     if (response.affectedRows !== 1) {
-        console.log('fallo al editar ')
+        errors.conflictError('Error al editar la proposal', 'PROPOSAL_EDIT_ERROR');
     }
     return response;
 };
@@ -55,7 +55,12 @@ const getProposalById = async (id) => {
         'SELECT * FROM proposals WHERE id =? and deleted_at IS NULL',
         [id]
     );
-    return response;
+
+    if (response.length < 1) {
+        errors.entityNotFound('Proposal');
+    }
+
+    return response[0];
 };
 
 //encontramos una proposal por un demand_id
