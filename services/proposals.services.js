@@ -24,7 +24,7 @@ const deleteProposal = async (id) => {
         [id]
     );
     if (response.affectedRows !== 1) {
-        console.log('fallo al borrar ')
+        errors.conflictError('Error al borrar la porposal', 'PROPOSAL_DELETE_ERROR');
     }
     return response;
 };
