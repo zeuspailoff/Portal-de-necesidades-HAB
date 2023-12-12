@@ -13,7 +13,7 @@ export const createProposal = async (user_id, demand_id, description, files) => 
         filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
     }
 
-    return response;
+    return filesSrc;
 };
 
 
