@@ -5,4 +5,4 @@ const getProposalByDemandIdSchema = joi.object({
     demand_id: joi.number().integer().required().messages(joiMsg)
 });
 
-export default getProposalByDemandSchema;
+export default getProposalByDemandIdSchema;

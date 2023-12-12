@@ -1,6 +1,10 @@
+import validateSchema from '../../helpers/validationSchema.helper.js';
+import editDemandSchema from '../../schema/demands/editDemand.schema.js';
 import { editDemand } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
+
+    await validateSchema(editDemandSchema, req.body);
 
     const { demand_id, title, description, files } = req.body;
     try {
