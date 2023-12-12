@@ -9,7 +9,7 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const saveFile = async (file) =>{
+const saveFile = async (file, entity_type) =>{
 
     const fileExtension = path.extname(file.originalname).toLowerCase();
         
@@ -26,7 +26,7 @@ const saveFile = async (file) =>{
         charset: 'alphanumeric'
     }) + fileExtension;
 
-    const filePath = path.join(__dirname, '..', 'public', 'uploads', fileName);
+    const filePath = path.join(__dirname, '..', 'public', 'uploads',entity_type, fileName);
 
     await fs.writeFile(filePath, file.buffer);
 
