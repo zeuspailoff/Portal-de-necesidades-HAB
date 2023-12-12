@@ -11,6 +11,8 @@ const __dirname = dirname(__filename);
 
 const saveFile = async (file, entity_type) =>{
 
+    setUpFolders();
+
     const fileExtension = path.extname(file.originalname).toLowerCase();
         
     if(!['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.png', '.jpg', '.jpeg'].includes(fileExtension.toLowerCase())){
@@ -45,6 +47,24 @@ export const insertFile = async (entity_id, entity_type, src) => {
     }
 
     return response;
+}
+
+const setUpFolders = ()=> {
+    const publicFolderPath = path.join(__dirname, 'public');
+    const uploadsFolderPath = path.join(publicFolderPath, 'uploads');
+    const demandsFolderPath = path.join(uploadsFolderPath, 'demands');
+    const proposalsFolderPath = path.join(uploadsFolderPath, 'proposals');
+
+    const verificarYCrearCarpeta = (carpeta) => {
+        if (!fs.existsSync(carpeta)) {
+            fs.mkdirSync(carpeta, { recursive: true });
+        } 
+    }
+
+    verificarYCrearCarpeta(publicFolderPath);
+    verificarYCrearCarpeta(uploadsFolderPath);
+    verificarYCrearCarpeta(demandsFolderPath);
+    verificarYCrearCarpeta(proposalsFolderPath);
 }
 
 
