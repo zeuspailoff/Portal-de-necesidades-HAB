@@ -16,7 +16,8 @@ const main = async (req, res, next) => {
             id: response.insertId,
             user: user_id,
             demand: demand_id,
-            description: description
+            description: description,
+            files: response.files
         });
 
     } catch (error) {
