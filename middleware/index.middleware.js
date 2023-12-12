@@ -12,7 +12,7 @@ import deleteProposal from "./proposals/deleteProposal.js";
 import editProposalById from "./proposals/editProposal.js";
 import getProposalById from "./proposals/getProposalById.js";
 import getProposalByDemandId from "./proposals/getProposalByDemand.js";
-import newUser from "./users/insertNewUser.js";
+import newUser from "./users/insertNewUser.middleware.js";
 
 export {
     insertNewDemand,
