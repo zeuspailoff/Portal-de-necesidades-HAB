@@ -1,6 +1,6 @@
 import validateSchema from '../../helpers/validationSchema.helper.js';
 import editDemandSchema from '../../schema/demands/editDemand.schema.js';
-import { editDemand } from '../../controllers/demands.controller.js';
+import { editDemandById } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
 
@@ -8,7 +8,7 @@ const main = async (req, res, next) => {
 
     const { demand_id, title, description, files } = req.body;
     try {
-        const response = await editDemand(demand_id, title, description, files);
+        const response = await editDemandById(demand_id, title, description, files);
         res.send({
             status: 200,
             message: `Demand with ID: ${demand_id} edited successfully.`,

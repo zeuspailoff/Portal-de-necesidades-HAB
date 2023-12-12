@@ -6,13 +6,13 @@ const main = async (req, res, next) => {
     validateSchema(insertNewProposalSchema, req.body);
 
     const { user_id, demand_id, description } = req.body;
+    const files = req.files;
 
     try {
-        console.log(req.body);
-        response = await createProposal(req.body);
+        response = await createProposal(user_id, demand_id, description, files);
 
         res.status(200).json({
-            message: 'Propousal is created successfully😁',
+            message: 'Proposal was created successfully😁',
             id: response.insertId,
             user: user_id,
             demand: demand_id,

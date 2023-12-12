@@ -1,7 +1,7 @@
 import getPool from '../db/getPool.js';
 import errors from '../helpers/errors.helpers.js';
 
-const insertNewDemand = async (user_id, title, description) => {
+export const insertNewDemand = async (user_id, title, description) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
@@ -16,7 +16,7 @@ const insertNewDemand = async (user_id, title, description) => {
     return response;
 }
 
-const getDemandById = async (demandId) => {
+export const selectDemandById = async (demandId) => {
     const pool = await getPool();
     const [response] = await pool.query(
         'SELECT * FROM demands WHERE id = ? AND deleted_at IS NULL',
@@ -30,7 +30,7 @@ const getDemandById = async (demandId) => {
     return response[0];
 }
 
-const getAllDemands = async () => {
+export const selectAllDemands = async () => {
     const pool = await getPool();
     const [response] = await pool.query(
         'SELECT * FROM demands WHERE deleted_at IS NULL'
@@ -41,7 +41,7 @@ const getAllDemands = async () => {
     return response;
 }
 
-const getAllDemandsByUserId = async (userId) => {
+export const selectAllDemandsByUserId = async (userId) => {
     const pool = await getPool();
     const [response] = await pool.query(
         'SELECT * FROM demands WHERE user_id = ? AND deleted_at IS NULL',
@@ -55,7 +55,7 @@ const getAllDemandsByUserId = async (userId) => {
     return response;
 }
 
-const updateDemandStatus = async (demandId, status) => {
+export const updateDemandStatus = async (demandId, status) => {
     const pool = await getPool();
     const [response] = await pool.query(
         'UPDATE demands SET status = ? WHERE id = ?',
@@ -69,7 +69,7 @@ const updateDemandStatus = async (demandId, status) => {
     return response;
 }
 
-const editDemand = async (demandId, title, description) => {
+export const editDemand = async (demandId, title, description) => {
     const pool = await getPool();
     const [response] = await pool.query(
         'UPDATE demands SET title = ?, description = ? WHERE id = ?',
@@ -83,7 +83,7 @@ const editDemand = async (demandId, title, description) => {
     return response;
 }
 
-const deleteDemand = async (demandId) => {
+export const deleteDemand = async (demandId) => {
     const pool = await getPool();
     const [response] = await pool.query(
         'UPDATE demands SET deleted_at = NOW() WHERE id = ?',
@@ -98,7 +98,7 @@ const deleteDemand = async (demandId) => {
 }
 
 
-const insertFile = async (entity_id, entity_type, src) => {
+export const insertFile = async (entity_id, entity_type, src) => {
     const pool = await getPool();
     const [response] = await pool.query(
         'INSERT INTO files (entity_type, src, entity_id) VALUES (?,?,?)',
@@ -112,7 +112,7 @@ const insertFile = async (entity_id, entity_type, src) => {
     return response;
 }
 
-const deleteFile = async (entity_id, entity_type) => {
+export const deleteFile = async (entity_id, entity_type) => {
     const pool = await getPool();
     const [response] = await pool.query(
         'UPDATE files SET deleted_at = NOW() WHERE entity_id = ? AND entity_type = ?',
@@ -126,14 +126,14 @@ const deleteFile = async (entity_id, entity_type) => {
     return response;
 }
 
-export default {
-    insertNewDemand,
-    getDemandById,
-    updateDemandStatus,
-    editDemand,
-    deleteDemand,
-    insertFile,
-    getAllDemands,
-    deleteFile,
-    getAllDemandsByUserId
-}
+// export default {
+//     insertNewDemand,
+//     selectDemandById,
+//     updateDemandStatus,
+//     editDemand,
+//     deleteDemand,
+//     insertFile,
+//     selectAllDemands,
+//     deleteFile,
+//     selectAllDemandsByUserId
+// }

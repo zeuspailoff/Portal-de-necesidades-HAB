@@ -1,87 +1,76 @@
-import filesServices from '../services/files.services.js'
-import demandsServices from '../services/demands.services.js'
+import {
+    insertNewDemand,
+    selectDemandById,
+    updateDemandStatus,
+    editDemand,
+    deleteDemand,
+    insertFile,
+    selectAllDemands,
+    deleteFile,
+    selectAllDemandsByUserId
+} from '../services/demands.services.js'
+import insertManyFiles from '../helpers/insertFilesInEntity.helpers.js'
 
 const entity_type = 'demands'
 
 export const insertNewDemand = async (user_id, title, description, files) => {
-    //guardo la demanda y me devuelve el registro
     const response = await demandsServices.insertNewDemand(
         user_id,
         title,
         description
     )
-    const filesSrc = { insertId: response.insertId, files: [] }
+    
+    const filesSrc = { insertId: response.insertId, files:[] }
 
-    if (files) {
-        const arrayFiles = await Promise.all(files.map(async file => {
-            const entity_id = response.insertId;
-            const fileSrc = await insertFile(file);
-            const fileInDb = await demandsServices.insertFile(entity_id, entity_type, fileSrc);
-            return { 'id': fileInDb.insertId, 'path': fileSrc };
-        }));
-
-        filesSrc.files = arrayFiles;
-        console.log('ESTO ES EL CONSOLE LOG DEL ARRAY PUSHEADO', arrayFiles);
+    if(files){  
+        const entity_id = response.insertId;
+        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type, insertFile));
     }
 
-    console.log(filesSrc);
-
-    return filesSrc;
-};
+    return filesSrc
+}
 
 export const getAllDemands = async (userId) => {
-    const response = await demandsServices.getAllDemands(userId);
+    const response = await selectAllDemands(userId);
     return response;
 }
 
 export const getDemandById = async (demandId) => {
-    const response = await demandsServices.getDemandById(demandId);
+    const response = await selectDemandById(demandId);
     return response;
 }
 
 export const getAllDemandsByUserId = async (userId) => {
-    const response = await demandsServices.getAllDemandsByUserId(userId);
+    const response = await selectAllDemandsByUserId(userId);
     return response;
 }
 
-export const deleteDemand = async (demandId) => {
-    const response = await demandsServices.deleteDemand(demandId);
+export const deleteDemandById = async (demandId) => {
+    const response = await deleteDemand(demandId);
     return response;
 }
 
-export const updateDemandStatus = async (demandId, status) => {
-    const response = await demandsServices.updateDemandStatus(demandId, status);
+export const updateDemandStatusById = async (demandId, status) => {
+    const response = await updateDemandStatus(demandId, status);
     return response;
 }
 
-export const editDemand = async (demandId, title, description, files) => {
-    const response = await demandsServices.editDemand(demandId, title, description);
+export const editDemandById = async (demandId, title, description, files) => {
+    const response = await editDemand(demandId, title, description);
 
-    if (files) {
-        const filesSrc = [];
-        const entity_id = demandId;
+    const filesSrc = { insertId: response.insertId, files:[] }
 
-        files.forEach(async file => {
-            const fileSrc = await insertFile(file)
-            const fileInDb = await demandsServices.insertFile(entity_id, entity_type, fileSrc)
-
-            filesSrc.push({ 'id': fileInDb.insertId, 'src': fileSrc })
-        });
-
-        response.files = filesSrc;
+    if(files){  
+        const entity_id = response.insertId;
+        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type, insertFile));
     }
 
+    return filesSrc
+}
+
+export const deleteFileById = async (entity_id, entity_type) => {
+    const response = await deleteFile(entity_id, entity_type);
     return response;
 }
 
-export const insertFile = async (file) => {
-    const src = await filesServices.saveFile(file);
-
-    return src;
-}
-
-export const deleteFile = async (entity_id, entity_type) => {
-    const response = await demandsServices.deleteFile(entity_id, entity_type);
-    return response;
-}
 
