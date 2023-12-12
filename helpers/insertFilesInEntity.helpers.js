@@ -4,7 +4,7 @@ const insertManyFiles = async (entity_id, files, entity_type) => {
     
     const arrayFiles = await Promise.all(files.map(async file => {
         const fileSrc = await insertFile(file);
-        const fileInDb = await filesServices(entity_id, entity_type, fileSrc);
+        const fileInDb = await filesServices.insertFile(entity_id, entity_type, fileSrc);
         return { 'id': fileInDb.insertId, 'path': fileSrc };
     }));
 
