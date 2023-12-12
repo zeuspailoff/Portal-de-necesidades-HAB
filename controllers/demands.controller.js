@@ -13,8 +13,8 @@ import insertManyFiles from '../helpers/insertFilesInEntity.helpers.js'
 
 const entity_type = 'demands'
 
-export const insertNewDemand = async (user_id, title, description, files) => {
-    const response = await demandsServices.insertNewDemand(
+export const createDemand = async (user_id, title, description, files) => {
+    const response = await insertNewDemand(
         user_id,
         title,
         description
