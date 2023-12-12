@@ -20,7 +20,7 @@ const deleteProposal = async (id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
-        'DELETE FROM proposals WHERE id =?',
+        'UPDATE demands SET deleted_at = NOW() WHERE id = ?',
         [id]
     );
     if (response.affectedRows !== 1) {
@@ -52,7 +52,7 @@ const getProposalById = async (id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
-        'SELECT * FROM proposals WHERE id =?',
+        'SELECT * FROM proposals WHERE id =? and deleted_at IS NULL',
         [id]
     );
     return response;
@@ -65,7 +65,7 @@ const getProposalByDemandId = async (demand_id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
-        'SELECT * FROM proposals WHERE demand_id = ?',
+        'SELECT * FROM proposals WHERE demand_id = ? and deleted_at IS NULL',
         [demand_id]
     );
     if (response.length < 1) {
