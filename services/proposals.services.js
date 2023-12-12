@@ -1,4 +1,6 @@
 import getPool from "../db/getPool.js";
+import errors from '../helpers/errors.helpers.js';
+
 
 const newProposal = async (user_id, demand_id, description) => {
 
@@ -8,12 +10,11 @@ const newProposal = async (user_id, demand_id, description) => {
         'INSERT INTO proposals (user_id, demand_id, description) VALUES (?,?,?)',
         [user_id, demand_id, description]
     );
-    if (response.affectedRows !== 1) {
-        console.log('fallo al insertar ')
+    if (response.affectedRows!== 1) {
+        errors.conflictError('Error al insertar la proposal', 'PROPOSAL_INSERT_ERROR');
     }
     return response;
 };
-//borramos el propousal
 
 const deleteProposal = async (id) => {
 
@@ -29,8 +30,6 @@ const deleteProposal = async (id) => {
     return response;
 };
 
-//editar el propousal
-
 const editProposal = async (id, description) => {
 
     const pool = await getPool();
@@ -44,8 +43,6 @@ const editProposal = async (id, description) => {
     }
     return response;
 };
-
-//encontramos una proposal por su id
 
 const getProposalById = async (id) => {
 
@@ -63,8 +60,6 @@ const getProposalById = async (id) => {
     return response[0];
 };
 
-//encontramos una proposal por un demand_id
-
 const getProposalByDemandId = async (demand_id) => {
 
     const pool = await getPool();
@@ -74,8 +69,8 @@ const getProposalByDemandId = async (demand_id) => {
         [demand_id]
     );
     if (response.length < 1) {
-        console.error('no hay proposales en la base de datos');
-    };
+        errors.entityNotFound('Proposal');
+    }
     return response;
 };
 
