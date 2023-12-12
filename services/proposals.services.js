@@ -20,7 +20,7 @@ const deleteProposal = async (id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
-        'UPDATE demands SET deleted_at = NOW() WHERE id = ?',
+        'UPDATE proposals SET deleted_at = NOW() WHERE id = ?',
         [id]
     );
     if (response.affectedRows !== 1) {
