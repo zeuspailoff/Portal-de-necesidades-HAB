@@ -4,7 +4,8 @@ import { insertNewDemand } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
 
-    const { user_id, title, description, files } = req.body;
+    const { user_id, title, description } = req.body;
+    const files = req.files;
 
     try {
 
