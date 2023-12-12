@@ -97,21 +97,6 @@ export const deleteDemand = async (demandId) => {
     return response;
 }
 
-
-export const insertFile = async (entity_id, entity_type, src) => {
-    const pool = await getPool();
-    const [response] = await pool.query(
-        'INSERT INTO files (entity_type, src, entity_id) VALUES (?,?,?)',
-        [entity_type, src, entity_id]
-    );
-
-    if (response.affectedRows!== 1) {
-        errors.conflictError('Error al insertar el archivo', 'FILE_INSERT_ERROR');
-    }
-
-    return response;
-}
-
 export const deleteFile = async (entity_id, entity_type) => {
     const pool = await getPool();
     const [response] = await pool.query(
@@ -126,14 +111,4 @@ export const deleteFile = async (entity_id, entity_type) => {
     return response;
 }
 
-// export default {
-//     insertNewDemand,
-//     selectDemandById,
-//     updateDemandStatus,
-//     editDemand,
-//     deleteDemand,
-//     insertFile,
-//     selectAllDemands,
-//     deleteFile,
-//     selectAllDemandsByUserId
-// }
+

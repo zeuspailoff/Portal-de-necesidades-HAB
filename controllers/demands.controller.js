@@ -4,7 +4,6 @@ import {
     updateDemandStatus,
     editDemand,
     deleteDemand,
-    insertFile,
     selectAllDemands,
     deleteFile,
     selectAllDemandsByUserId
@@ -24,7 +23,7 @@ export const createDemand = async (user_id, title, description, files) => {
 
     if(files){  
         const entity_id = response.insertId;
-        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type, insertFile));
+        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
     }
 
     return filesSrc

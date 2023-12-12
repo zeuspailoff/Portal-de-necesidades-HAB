@@ -10,7 +10,7 @@ export const createProposal = async (user_id, demand_id, description, files) => 
 
     if(files){  
         const entity_id = response.insertId;
-        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type, createProposal));
+        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
     }
 
     return response;
@@ -27,7 +27,7 @@ export const editProposalById = async (id, description) => {
 
     if(files){  
         const entity_id = response.insertId;
-        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type, editProposal));
+        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
     }
     return response;
 };

@@ -32,7 +32,22 @@ const saveFile = async (file) =>{
     return filePath;
 }
 
+export const insertFile = async (entity_id, entity_type, src) => {
+    const pool = await getPool();
+    const [response] = await pool.query(
+        'INSERT INTO files (entity_type, src, entity_id) VALUES (?,?,?)',
+        [entity_type, src, entity_id]
+    );
+
+    if (response.affectedRows!== 1) {
+        errors.conflictError('Error al insertar el archivo', 'FILE_INSERT_ERROR');
+    }
+
+    return response;
+}
+
 
 export default {
-    saveFile
+    saveFile,
+    insertFile
 }
