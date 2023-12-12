@@ -13,7 +13,11 @@ const main = async (req, res, next) => {
 
         res.send({
             status: 200,
-            message: 'Propousal is edited successfully😁'
+            message: 'Propousal was edited successfully😁',
+            data:{
+                id: id,
+                description: description
+            }
         });
     } catch (error) {
         next(error);

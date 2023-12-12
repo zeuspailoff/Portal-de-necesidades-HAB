@@ -16,11 +16,11 @@ export const insertNewDemand = async (user_id, title, description) => {
     return response;
 }
 
-export const selectDemandById = async (demandId) => {
+export const selectDemandById = async (id) => {
     const pool = await getPool();
     const [response] = await pool.query(
         'SELECT * FROM demands WHERE id = ? AND deleted_at IS NULL',
-        [demandId]
+        [id]
     );
 
     if (response.length < 1) {
@@ -83,30 +83,15 @@ export const editDemand = async (demandId, title, description) => {
     return response;
 }
 
-export const deleteDemand = async (demandId) => {
+export const deleteDemand = async (id) => {
     const pool = await getPool();
     const [response] = await pool.query(
         'UPDATE demands SET deleted_at = NOW() WHERE id = ?',
-        [demandId]
+        [id]
     );
 
     if (response.affectedRows !== 1) {
         errors.conflictError('Error al borrar la demanda', 'DEMAND_DELETE_ERROR');
-    }
-
-    return response;
-}
-
-
-export const insertFile = async (entity_id, entity_type, src) => {
-    const pool = await getPool();
-    const [response] = await pool.query(
-        'INSERT INTO files (entity_type, src, entity_id) VALUES (?,?,?)',
-        [entity_type, src, entity_id]
-    );
-
-    if (response.affectedRows!== 1) {
-        errors.conflictError('Error al insertar el archivo', 'FILE_INSERT_ERROR');
     }
 
     return response;
@@ -126,14 +111,4 @@ export const deleteFile = async (entity_id, entity_type) => {
     return response;
 }
 
-// export default {
-//     insertNewDemand,
-//     selectDemandById,
-//     updateDemandStatus,
-//     editDemand,
-//     deleteDemand,
-//     insertFile,
-//     selectAllDemands,
-//     deleteFile,
-//     selectAllDemandsByUserId
-// }
+
