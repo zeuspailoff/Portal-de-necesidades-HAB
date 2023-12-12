@@ -9,7 +9,7 @@ const main = async (req, res, next) => {
     const files = req.files;
 
     try {
-        response = await createProposal(user_id, demand_id, description, files);
+        const response = await createProposal(user_id, demand_id, description, files);
 
         res.status(200).json({
             message: 'Proposal was created successfully😁',
