@@ -3,7 +3,7 @@ import insertManyFiles from '../helpers/insertFilesInEntity.helpers.js';
 
 const entity_type = 'proposals'
 
-export const createProposal = async (user_id, demand_id, description, files) => {
+export const createProposal = async (user_id, demand_id, description, files = null) => {
     const response = await newProposal(user_id, demand_id, description);
 
     const filesSrc = { insertId: response.insertId, files:[] }
@@ -22,7 +22,7 @@ export const deleteProposalById = async (id) => {
     return response;
 };
 
-export const editProposalById = async (id, description) => {
+export const editProposalById = async (id, description, files = null) => {
     const response = await editProposal(id, description);
 
     if(files){  
