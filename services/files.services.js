@@ -56,9 +56,13 @@ const setUpFolders = ()=> {
     const proposalsFolderPath = path.join(uploadsFolderPath, 'proposals');
 
     const verifyAndCreate = (carpeta) => {
-        if (!fs.existsSync(carpeta)) {
-            fs.mkdirSync(carpeta, { recursive: true });
-        } 
+        try {
+            if (!fs.existsSync(carpeta)) {
+                fs.mkdirSync(carpeta, { recursive: true });
+            } 
+        } catch (error) {
+            
+        }
     }
 
     verifyAndCreate(publicFolderPath);
