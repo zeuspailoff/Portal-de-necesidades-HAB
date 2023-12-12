@@ -1,5 +1,11 @@
 import express from 'express';
-import { deleteProposal, newProposal, editProposalById, getProposalById, getProposalByDemandId } from '../../middleware/index.middleware.js';
+import { 
+    deleteProposal,
+    newProposal,
+    editProposalById,
+    getProposalById,
+    getProposalByDemandId 
+} from '../../middleware/index.middleware.js';
 
 
 

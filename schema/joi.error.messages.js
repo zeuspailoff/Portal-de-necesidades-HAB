@@ -2,6 +2,7 @@ const errorMsg = {
     'any.required': 'El campo "{#key}" es requerido',
     'string.base': 'El valor de "{#key}" debe ser una cadena',
     'string.empty': 'El campo "{#key}" no debe estar vacío',
+    'date.base': 'El valor de "{#key}" debe ser un tipo date YYYY-MM-DD',
     'number.base': 'El valor de "{#key}" debe ser un número',
     'number.max': 'El archivo no debe exceder los 5 MB',
     'object.base': 'El valor de "{#key}" debe ser un objeto',

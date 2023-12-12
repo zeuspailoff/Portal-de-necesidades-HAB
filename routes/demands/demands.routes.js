@@ -1,5 +1,4 @@
 import express from 'express';
-import newDemandSchema from '../../schema/demands/newDemand.schema.js';
 
 import { 
     insertNewDemand,

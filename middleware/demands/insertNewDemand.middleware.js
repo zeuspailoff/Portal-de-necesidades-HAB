@@ -4,13 +4,13 @@ import { insertNewDemand } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
 
-    const { user_id, title, description } = req.body;
+    const { user_id, title, description, files } = req.body;
 
     try {
 
         await validateSchema(newDemandSchema, req.body)
 
-        const response = await insertNewDemand(user_id, title, description);
+        const response = await insertNewDemand(user_id, title, description, files);
 
         res.send({
             status: 200,
@@ -20,7 +20,8 @@ const main = async (req, res, next) => {
                 "user_id":user_id,
                 "title":title,
                 "description":description
-            }
+            },
+            files: response.files
         })
 
     } catch (error) {

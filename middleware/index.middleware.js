@@ -7,11 +7,12 @@ import updateDemandStatus from "../middleware/demands/updateDemandStatus.js";
 import editDemand from "../middleware/demands/editDemand.js";
 import insertFile from "../middleware/files/insertFile.js";
 import deleteFile from "../middleware/files/deleteFile.js";
-import newProposal from "../middleware/propousal/insertNewProposal.js";
-import deleteProposal from "../middleware/propousal/deleteProposal.js";
-import editProposalById from "../middleware/propousal/editProposal.js";
-import getProposalById from "../middleware/propousal/getProposalById.js";
-import getProposalByDemandId from "../middleware/propousal/getProposalByDemand.js";
+import newProposal from "./proposals/insertNewProposal.js";
+import deleteProposal from "./proposals/deleteProposal.js";
+import editProposalById from "./proposals/editProposal.js";
+import getProposalById from "./proposals/getProposalById.js";
+import getProposalByDemandId from "./proposals/getProposalByDemand.js";
+import newUser from "./users/insertNewUser.js";
 
 export {
     insertNewDemand,
@@ -28,5 +29,5 @@ export {
     editProposalById,
     getProposalById,
     getProposalByDemandId,
-
+    newUser
 }

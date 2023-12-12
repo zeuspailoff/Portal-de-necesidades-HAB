@@ -1,18 +1,17 @@
 import filesServices from '../services/files.services.js'
 import demandsServices from '../services/demands.services.js'
-import errors from '../helpers/errors.helpers.js'
 
 const entity_type = 'demands'
 
 export const insertNewDemand = async (user_id, title, description, files) => {
-    //guardo la demanda me devuelve el registro
+    //guardo la demanda y me devuelve el registro
     const response = await demandsServices.insertNewDemand(
         user_id, 
         title, 
         description
     )
 
-    if(files){
+    if(files){  //si recibo files los guardo
     //array para guardar los archivos
     const filesSrc = [] 
     //obtengo el id autoincremental de la demanda recien insertada
