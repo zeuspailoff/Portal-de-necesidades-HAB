@@ -6,13 +6,13 @@ const main = async (req, res, next) => {
 
     await validateSchema(getDemandByIdSchema, req.body);
 
-    const { demand_id } = req.body;
+    const { id } = req.body;
 
     try {
-        const response = await getDemandById(demand_id);
+        const response = await getDemandById(id);
         res.send({
             status: 200,
-            message: `Demand ${demand_id} fetched successfully`,
+            message: `Demand ${id} fetched successfully`,
             data: response
         })
     } catch (error) {

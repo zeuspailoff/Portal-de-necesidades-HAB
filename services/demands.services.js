@@ -16,11 +16,11 @@ export const insertNewDemand = async (user_id, title, description) => {
     return response;
 }
 
-export const selectDemandById = async (demandId) => {
+export const selectDemandById = async (id) => {
     const pool = await getPool();
     const [response] = await pool.query(
         'SELECT * FROM demands WHERE id = ? AND deleted_at IS NULL',
-        [demandId]
+        [id]
     );
 
     if (response.length < 1) {
@@ -83,11 +83,11 @@ export const editDemand = async (demandId, title, description) => {
     return response;
 }
 
-export const deleteDemand = async (demandId) => {
+export const deleteDemand = async (id) => {
     const pool = await getPool();
     const [response] = await pool.query(
         'UPDATE demands SET deleted_at = NOW() WHERE id = ?',
-        [demandId]
+        [id]
     );
 
     if (response.affectedRows !== 1) {

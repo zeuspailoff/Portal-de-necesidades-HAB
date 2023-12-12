@@ -6,13 +6,13 @@ const main = async (req, res, next) => {
 
     await validateSchema(deleteDemandSchema, req.body);
 
-    const { demand_id } = req.body;
+    const { id } = req.body;
 
     try {
-        await deleteDemandById(demand_id);
+        await deleteDemandById(id);
         res.send({
             status: 200,
-            message: `Demand with ID: ${demand_id} deleted successfully`
+            message: `Demand with ID: ${id} deleted successfully`
         })
     } catch (error) {
         next(error);
