@@ -20,7 +20,7 @@ const deleteProposal = async (id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
-        'DELETE FROM proposals WHERE id =?',
+        'DELETE FROM proposals WHERE id =? AND deleted_at IS NULL',
         [id]
     );
     if (response.affectedRows !== 1) {
