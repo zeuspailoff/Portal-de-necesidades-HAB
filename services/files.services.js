@@ -55,16 +55,16 @@ const setUpFolders = ()=> {
     const demandsFolderPath = path.join(uploadsFolderPath, 'demands');
     const proposalsFolderPath = path.join(uploadsFolderPath, 'proposals');
 
-    const verificarYCrearCarpeta = (carpeta) => {
+    const verifyAndCreate = (carpeta) => {
         if (!fs.existsSync(carpeta)) {
             fs.mkdirSync(carpeta, { recursive: true });
         } 
     }
 
-    verificarYCrearCarpeta(publicFolderPath);
-    verificarYCrearCarpeta(uploadsFolderPath);
-    verificarYCrearCarpeta(demandsFolderPath);
-    verificarYCrearCarpeta(proposalsFolderPath);
+    verifyAndCreate(publicFolderPath);
+    verifyAndCreate(uploadsFolderPath);
+    verifyAndCreate(demandsFolderPath);
+    verifyAndCreate(proposalsFolderPath);
 }
 
 
