@@ -12,27 +12,28 @@ const insertNewUser = async (
   lastname,
   profile_picture
 ) => {
-    const pool = await getPool();
+  const pool = await getPool();
 
-    const [response] = await pool.query(
-        'INSERT INTO users ( username, email, password, biography, birthdate, phone, name, lastname, profile_picture ) VALUES (?,?,?,?,?,?,?,?,?)',
-        [username,
-          email,
-          password,
-          biography,
-          birthdate,
-          phone,
-          name,
-          lastname,
-          profile_picture]
-    );
+  const [response] = await pool.query(
+    'INSERT INTO users ( username, email, password, biography, birthdate, phone, name, lastname, profile_picture ) VALUES (?,?,?,?,?,?,?,?,?)',
+    [username,
+      email,
+      password,
+      biography,
+      birthdate,
+      phone,
+      name,
+      lastname,
+      profile_picture]
+  );
 
-    if (response.affectedRows!== 1) {
-        errors.conflictError('Error al insertar el usuario', 'DEMAND_INSERT_ERROR');
-    }
+  if (response.affectedRows !== 1) {
+    errors.conflictError('Error al insertar el usuario', 'DEMAND_INSERT_ERROR');
+  }
 
-    return response;
+  return response;
 }
+
 export default {
   insertNewUser,
 }

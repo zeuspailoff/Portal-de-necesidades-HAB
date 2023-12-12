@@ -17,12 +17,13 @@ const main = async (req, res, next) => {
             status: 200,
             message: 'demanda insertada correctamente😁',
             data: {
-                "id:":response.insertId,
-                "user_id":user_id,
-                "title":title,
-                "description":description
+                "id:": response.insertId,
+                "user_id": user_id,
+                "title": title,
+                "description": description,
+                "files": response.files
             },
-            files: response.files
+
         })
 
     } catch (error) {

@@ -6,31 +6,28 @@ const entity_type = 'demands'
 export const insertNewDemand = async (user_id, title, description, files) => {
     //guardo la demanda y me devuelve el registro
     const response = await demandsServices.insertNewDemand(
-        user_id, 
-        title, 
+        user_id,
+        title,
         description
     )
+    const filesSrc = { insertId: response.insertId, files: [] }
 
-    if(files){  //si recibo files los guardo
-    //array para guardar los archivos
-    const filesSrc = [] 
-    //obtengo el id autoincremental de la demanda recien insertada
-    const entity_id = response.insertId
-    //recorro el array de archivos que recivo y los guardo uno por uno, creando un array de objetos con los datos del registro en la DB de cad archivo
-    files.forEach(async file => {
-        //guardo el archivo fisico, y almaceno el string de su ruta completa
-        const fileSrc = await insertFile(file)
-        //creo el regsitro en la DB de cada archivo, con su ruta conmpleta, el tipo de entidad y el id de la entidad
-        const fileInDb = await demandsServices.insertFile(entity_id, entity_type, fileSrc)
-        //pusheo un objeto con el id del archivo en la DB y tu path completo
-        filesSrc.push({'id': fileInDb.insertId, 'src' : fileSrc})
-    });
-    //agrego en el response un atributo files que contiene un array de objetos de la tabla files
-    response.files = filesSrc;
+    if (files) {
+        const arrayFiles = await Promise.all(files.map(async file => {
+            const entity_id = response.insertId;
+            const fileSrc = await insertFile(file);
+            const fileInDb = await demandsServices.insertFile(entity_id, entity_type, fileSrc);
+            return { 'id': fileInDb.insertId, 'path': fileSrc };
+        }));
+
+        filesSrc.files = arrayFiles;
+        console.log('ESTO ES EL CONSOLE LOG DEL ARRAY PUSHEADO', arrayFiles);
     }
 
-    return response
-}
+    console.log(filesSrc);
+
+    return filesSrc;
+};
 
 export const getAllDemands = async (userId) => {
     const response = await demandsServices.getAllDemands(userId);
@@ -60,19 +57,19 @@ export const updateDemandStatus = async (demandId, status) => {
 export const editDemand = async (demandId, title, description, files) => {
     const response = await demandsServices.editDemand(demandId, title, description);
 
-    if(files){
-        const filesSrc = []; 
+    if (files) {
+        const filesSrc = [];
         const entity_id = demandId;
-        
+
         files.forEach(async file => {
             const fileSrc = await insertFile(file)
             const fileInDb = await demandsServices.insertFile(entity_id, entity_type, fileSrc)
-            
-            filesSrc.push({'id': fileInDb.insertId, 'src' : fileSrc})
+
+            filesSrc.push({ 'id': fileInDb.insertId, 'src': fileSrc })
         });
 
         response.files = filesSrc;
-    }     
+    }
 
     return response;
 }
