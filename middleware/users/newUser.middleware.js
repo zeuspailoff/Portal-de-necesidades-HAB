@@ -6,10 +6,9 @@ import { registerNewUser } from '../../controllers/users.controller.js';
 const main = async (req, res, next) => {
     try {
 
-        //await validateSchema(newUserSchema, req.body)
+        await newUserSchema(newUserSchema, req.body)
 
-        const registrationCode = randomstring.generate(30);
-        await registerNewUser(req.body, registrationCode);
+        await registerNewUser(req.body);
 
         res.send({
             status: 'OK',
