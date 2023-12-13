@@ -7,10 +7,9 @@ const main = async (req, res, next) => {
     const { user_id, title, description } = req.body;
     const files = req.files;
     
-
     try {
 
-        await validateSchema(newDemandSchema, req.body)
+        await validateSchema(newDemandSchema, req.body);
 
         const response = await createDemand(user_id, title, description, files);
 
