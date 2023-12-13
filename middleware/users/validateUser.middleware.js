@@ -1,22 +1,22 @@
-import { validateUser } from '../../controllers/users.controller.js';
-//import validateSchema from '../../helpers/'
-import validateUserSchema from '../../schema/users/validateUser.schema.js';
+import validateSchema from '../../helpers/validationSchema.helper.js'
+import validateUserSchema from '../../schema/users/validateUser.schema.js'
+import validateUser from '../../controllers/users.controller.js'
 
 const main = async (req, res, next) => {
+
+    await validateSchema(validateUserSchema, req.body);
+
+    const { id } = req.body;
+
     try {
-        const { registrationCode } = req.params
-
-      //  await validateSchema (validateUserSchema, {registrationCode})
-
-        await validateUser(registrationCode)
-
+        await validateUser(id);
         res.send({
-            status: 'OK',
-            message: 'Usuario validado correctamente'
+            status: 200,
+            message: `User with ID: ${id} validated successfully`
         })
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
 
 export default main;

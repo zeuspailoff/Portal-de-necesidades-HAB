@@ -1,24 +1,19 @@
+import getUserAccount from '../../controllers/users.controller';
+
 const main = async (req, res, next) => {
+    
+    const { user_id, username } = req.body;
+    
     try {
-        const user= req.user
-
-        delete user.password;
-        delete user.email;
-        delete user.active;
-        delete user.role;
-        delete user.registrationCode;
-        delete user.recoveryCode;
-
+        const [...response] = await getUserAccount(user_id);
         res.send({
-            status: 'OK',
-            message: 'Usuario encontrado',
-            data: {
-                user
-            }
+            status: 200,
+            message: 'User found successfully',
+            data: response
         })
     } catch (error) {
-            next(error);        
+        next(error);
     }
-}
+};
 
 export default main;

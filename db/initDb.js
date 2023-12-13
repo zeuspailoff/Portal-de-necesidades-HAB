@@ -20,7 +20,6 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(255),
     password_recovered VARCHAR(255) default NULL,
     lastname VARCHAR(255),
-    profile_picture VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP default NULL
