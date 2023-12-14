@@ -6,10 +6,10 @@ const main = async (req, res, next) => {
 
     const { username, email, password, biography, birthdate, phone, name, lastname } = req.body;
 
+    await validateSchema(insertNewUserSchema, req.body);
 
     try {
 
-        await validateSchema(insertNewUserSchema, req.body);
 
         const response = await createNewUser(username, email, password, biography, birthdate, phone, name, lastname);
 

@@ -2,8 +2,8 @@ import bcrypt from 'bcrypt'
 import getPool from '../db/getPool.js';
 import errors from '../helpers/errors.helpers.js';
 
-export const insertNewUser = async (username,email,password,biography,birthdate,phone,name,lastname) => {
-  
+export const insertNewUser = async (username, email, password, biography, birthdate, phone, name, lastname) => {
+
   const pool = await getPool();
 
   try {
@@ -13,13 +13,16 @@ export const insertNewUser = async (username,email,password,biography,birthdate,
     )
 
     if (users.length > 0) {
+      console.log(users);
+      console.log('Error al intentar registrar el usuario');
+      console.error('Error al intentar registrar el usuario');
       errors.userAlreadyExists()
     }
     const sqlQuery = 'INSERT INTO users ( username = ?, email = ?, password = ?, biography = ?, birthdate = ?, phone = ?, name = ?, lastname =?)';
 
     const passwordHashed = await bcrypt.hash(password, 5)
 
-    const values = [username,email,passwordHashed,biography,birthdate,phone,name,lastname]
+    const values = [username, email, passwordHashed, biography, birthdate, phone, name, lastname]
 
     const [response] = await pool.query(sqlQuery, values);
 
