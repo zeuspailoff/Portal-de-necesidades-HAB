@@ -26,7 +26,6 @@ const main = async (req, res, next) => {
                 "phone": phone,
                 "name": name,
                 "lastname": lastname,
-
             },
 
         })

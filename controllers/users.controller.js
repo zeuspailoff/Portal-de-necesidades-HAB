@@ -1,33 +1,8 @@
-import {
-    insertNewUser,
-    getUserById,
-    updateUserPassword,
-    deleteUser,
-    updateUser,
-    getOwnUser,
-    validateUser
-} from '../services/users.services.js';
+import {insertNewUser,getUserById,updateUserPassword,deleteUser,updateUser,getOwnUser,validateUser} from '../services/users.services.js';
 
-export const createNewUser = async (
-    username,
-    email,
-    password,
-    biography,
-    birthdate,
-    phone,
-    name,
-    lastname
-) => {
-    const response = await insertNewUser(
-        username,
-        email,
-        password,
-        biography,
-        birthdate,
-        phone,
-        name,
-        lastname
-    );
+export const createNewUser = async (username,email,password,biography,birthdate,phone,name,lastname) => {
+
+    const response = await insertNewUser(username,email,password,biography,birthdate,phone,name,lastname);
 
     return response;
 }

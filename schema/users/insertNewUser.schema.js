@@ -15,11 +15,10 @@ const insertNewUserSchema = joi.object({
         .pattern(/^(?=.\d)(?=.[a-z])(?=.[A-Z])(?=.[¡!$%^&()+|~=`{}:";'<>¿?,.])[a-zA-Z0-9¡!$%^&*()+|~=`{}:";'<>¿?,.]{8,}$/)
         .required()
         .messages({ ...joiMsg.errorMsg, ...joiMsg.errorMsgPassword }),
-    email: joi.string().email().required().messages(joiMsg.errorMsg),
+    email: joi.string().email().required().messages(joiMsg),
     biography: joi.string().min(5).max(1000).required().messages(joiMsg),
     birthdate: joi.date().iso().required().messages(joiMsg),
     phone: joi.string().min(5).max(15).required().messages(joiMsg),
-    profile_picture: joi.string().min(5).max(20).required().messages(joiMsg)
 });
 
 export default insertNewUserSchema;

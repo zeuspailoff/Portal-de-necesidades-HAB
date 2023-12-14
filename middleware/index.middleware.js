@@ -17,7 +17,6 @@ import getUserById from "../middleware/users/getUserById.middleware.js";
 import deleteUserById from "../middleware/users/deleteUser.middleware.js";
 import validateUser from "../middleware/users/validateUser.middleware.js";
 import getUserList from "../middleware/users/getUserList.middleware.js";
-import insertNewUser from "../middleware/users/insertNewUser.middleware.js";
 import userExists from "../middleware/users/userExists.middleware.js";
 //import getUserAcount from "../middleware/users/getUserAccount.middleware.js";
 import updateUser from "../middleware/users/updateUser.middleware.js";
@@ -42,7 +41,6 @@ export {
     getUserById,
     deleteUserById,
     getUserList,
-    insertNewUser,
     userExists,
     //getUserAcount,
     updateUser
