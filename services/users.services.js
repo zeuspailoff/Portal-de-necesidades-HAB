@@ -14,18 +14,19 @@ export const insertNewUser = async (
 ) => {
   const pool = await getPool();
 
-  let [users] = await pool.query(
-    'SELECT * FROM users WHERE username = ? OR email = ?',
-    [username, email]
-  )
 
-  if (users.length > 0) {
-    errors.userAlreadyExists()
-  }
 
   try {
-    const sqlQuery = 'INSERT INTO users ( username, email, password, biography, birthdate, phone, name, lastname ) VALUES (?,?,?,?,?,?,?,? )';
-    
+    let [users] = await pool.query(
+      'SELECT * FROM users WHERE username = ? OR email = ?',
+      [username, email]
+    )
+
+    if (users.length > 0) {
+      errors.userAlreadyExists()
+    }
+    const sqlQuery = 'INSERT INTO users ( username, email, password, biography, birthdate, phone, name, lastname ) VALUES (?,?,?,?,?,?,?,?)';
+
 
     const passwordHashed = await bcrypt.hash(password, 5)
 
@@ -38,10 +39,10 @@ export const insertNewUser = async (
       phone,
       name,
       lastname
-    ] 
+    ]
 
-      const [response] = await pool.query(sqlQuery,values);
-  
+    const [response] = await pool.query(sqlQuery, values);
+
     return response;
 
   } catch (error) {
@@ -135,12 +136,12 @@ export const updatePasswordRecover = async (user) => {
 
 export const getUserById = async (id) => {
   const pool = await getPool();
-  
+
   const [response] = await pool.query(
     'SELECT * FROM users WHERE id =? and deleted_at IS NULL',
     [id]
   );
-  
+
   if (response.length === 0) {
     errors.notFoundError('User not found', 'USER_NOT_FOUND');
   }
@@ -148,19 +149,19 @@ export const getUserById = async (id) => {
 
 export const updateUserPassword = async (userId, password) => {
   const pool = await getPool();
-  
+
   const sqlQuery = 'UPDATE users SET password =? WHERE id =?';
-    
+
   const passwordHashed = await bcrypt.hash(password, 5)
 
   const values = [
     passwordHashed,
     userId
-  ] 
+  ]
 
-  const [response] = await pool.query(sqlQuery,values);
-  
-  if (response.affectedRows!== 1) {
+  const [response] = await pool.query(sqlQuery, values);
+
+  if (response.affectedRows !== 1) {
     errors.conflictError('Error al actualizar el usuario', 'PASSWORD_UPDATE_ERROR');
   }
 
@@ -169,24 +170,24 @@ export const updateUserPassword = async (userId, password) => {
 
 export const deleteUser = async (userId) => {
   const pool = await getPool();
-  
+
   const [response] = await pool.query(
     'UPDATE users SET deleted_at = NOW() WHERE id =?',
     [userId]
   );
-  
-  if (response.affectedRows!== 1) {
+
+  if (response.affectedRows !== 1) {
     errors.conflictError('Error al actualizar el usuario', 'DELETE_USER_ERROR');
   }
-  
+
   return response;
-  
+
 }
 
 
 export const updateUser = async (id, username, email, password, biography, birthdate, phone, name, lastname) => {
   const pool = await getPool();
-  
+
   const [response] = await pool.query(
     'UPDATE users SET username =?, email =?, password =?, biography =?, birthdate =?, phone =?, name =?, lastname =? WHERE id =?',
     [username,
@@ -199,13 +200,13 @@ export const updateUser = async (id, username, email, password, biography, birth
       lastname,
       id]
   );
-  
-  if (response.affectedRows!== 1) {
+
+  if (response.affectedRows !== 1) {
     errors.conflictError('Error al actualizar el usuario', 'USER_UPDATE_ERROR');
   }
-  
+
   return response;
-  
+
 }
 
 export const getOwnUser = async (userId) => {
@@ -215,11 +216,11 @@ export const getOwnUser = async (userId) => {
     'SELECT * FROM users WHERE id =? and deleted_at IS NULL',
     [userId]
   );
-  
+
   if (response.length === 0) {
     errors.notFoundError('User not found', 'USER_NOT_FOUND');
   }
-  
+
   return response;
-  
+
 }

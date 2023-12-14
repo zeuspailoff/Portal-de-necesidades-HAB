@@ -1,6 +1,6 @@
 import validateSchema from '../../helpers/validationSchema.helper.js'
 import validateUserSchema from '../../schema/users/validateUser.schema.js'
-import validateUser from '../../controllers/users.controller.js'
+import { validateUserById } from '../../controllers/users.controller.js'
 
 const main = async (req, res, next) => {
 
@@ -9,7 +9,7 @@ const main = async (req, res, next) => {
     const { id } = req.body;
 
     try {
-        await validateUser(id);
+        await validateUserById(id);
         res.send({
             status: 200,
             message: `User with ID: ${id} validated successfully`

@@ -1,4 +1,4 @@
-import getUserAccount from '../../controllers/users.controller';
+/* import getUserAccount from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
     
@@ -16,4 +16,4 @@ const main = async (req, res, next) => {
     }
 };
 
-export default main;
+export default main; */

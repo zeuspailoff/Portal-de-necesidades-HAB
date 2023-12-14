@@ -1,6 +1,6 @@
 import validateSchema from '../../helpers/validationSchema.helper.js';
 import getUserByIdSchema from '../../schema/users/getUserById.schema.js';
-import { getUserById } from '../../controllers/users.controller.js';
+import { findOrFailUserById } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
 
@@ -9,7 +9,7 @@ const main = async (req, res, next) => {
     const { id } = req.body;
 
     try {
-        const response = await getUserById(id);
+        const response = await findOrFailUserById(id);
         res.send({
             status: 200,
             message: `User ${id} fetched successfully`,

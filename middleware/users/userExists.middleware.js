@@ -1,10 +1,12 @@
-import getUserById from '../../controllers/users.controller.js';
+import { findOrFailUserById } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
-    try {
-        const userId = req.body
 
-        const user = await getUserById(userId)
+    const { id } = req.body
+
+    try {
+
+        const user = await findOrFailUserById(id)
 
         req.user = user;
 

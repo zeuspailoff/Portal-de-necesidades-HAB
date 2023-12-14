@@ -1,14 +1,16 @@
-import { getUsers} from '../../controllers/users.controller.js';
+import { findOrFailUserById } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
+
+    const { id } = req.body;
     try {
-        const users = await getUsers()
+        const user = await findOrFailUserById(id);
 
         res.send({
             status: 'OK',
             message: 'Listado de usuarios',
-            data:{
-                users
+            data: {
+                user
             }
         })
     } catch (error) {
