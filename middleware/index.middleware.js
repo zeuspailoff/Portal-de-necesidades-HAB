@@ -11,6 +11,16 @@ import editProposalById from "./proposals/editProposal.middleware.js";
 import getProposalById from "./proposals/getProposalById.middleware.js";
 import getProposalByDemandId from "./proposals/getProposalByDemand.middleware.js";
 import newUser from "./users/insertNewUser.middleware.js";
+import deleteUser from "./users/deleteUser.middleware.js";
+import updateUserStatus from "../middleware/users/updateUser.middleware.js"
+import getUserById from "../middleware/users/getUserById.js";
+import deleteUserById from "../middleware/users/deleteUserById.js";
+import validateUser from "../middleware/users/validateUser.middleware.js";
+import getUserList from "../middleware/users/getUserList.js";
+import insertNewUser from "../middleware/users/insertNewUser.middleware.js";
+import userExists from "../middleware/users/userExists.middleware.js";
+import getUserAcount from "../middleware/users/getUserAccount.middleware.js";
+import updateUser from "../middleware/users/updateUser.middleware.js";
 
 export {
     insertNewDemand,
@@ -25,5 +35,15 @@ export {
     editProposalById,
     getProposalById,
     getProposalByDemandId,
-    newUser
+    newUser,
+    deleteUser,
+    validateUser,
+    updateUserStatus,
+    getUserById,
+    deleteUserById,
+    getUserList,
+    insertNewUser,
+    userExists,
+    getUserAcount,
+    updateUser
 }
