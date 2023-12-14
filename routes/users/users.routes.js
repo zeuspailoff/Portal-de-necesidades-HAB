@@ -12,7 +12,7 @@ import {
   authUser,
   userExists,
   passwordUpdate,
-  //getOwnUser,
+  getOwnUser,
   //getUserAccount,
   //editUserPhoto,
   //passwordRecovery,
@@ -29,7 +29,8 @@ router.put('/users/passwordupdate',authUser, findOrFailUser, passwordUpdate)
 router.put('/users/update',authUser, findOrFailUser, updateUser)
 router.get('/users/validate/:registrationCode', validateUser)
 router.post('/users/login', loginUser)
-//router.get('/users', authUser, userExists, getOwnUser)
+//TODO: Revisar a partir de aca.
+router.get('/users', authUser, userExists, getOwnUser)
 // router.put('/users/photo', userExists,)
 //router.put('/users/photo', authUser, userExists, editUserPhoto)
 
