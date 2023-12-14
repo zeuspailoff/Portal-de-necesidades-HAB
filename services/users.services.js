@@ -8,7 +8,7 @@ export const insertNewUser = async (username, email, password, biography, birthd
 
   try {
     let [users] = await pool.query(
-      'SELECT * FROM users WHERE username = ? OR email = ?',
+      'SELECT * FROM users WHERE username = ? OR email = ? and deleted_at IS NULL',
       [username, email]
     )
 
@@ -37,7 +37,7 @@ export const insertNewUser = async (username, email, password, biography, birthd
 export const validateUser = async (registrationCode) => {//https://glovo.com/registrationUser?validateCode=320948239jdfsdjkfskdjf893jdfnbdi
   const pool = await getPool()
   const [users] = await pool.query(
-    'SELECT * FROM users WHERE registrationCode = ?',
+    'SELECT * FROM users WHERE registrationCode = ? ',
     [registrationCode]
   )
 
@@ -65,7 +65,7 @@ export const getUserByEmailOrUsername = async (email) => {
   const pool = await getPool()
 
   const [users] = await pool.query(
-    'SELECT * FROM users WHERE email = ? OR username = ? ',
+    'SELECT * FROM users WHERE email = ? OR username = ? and deleted_at IS NULL ',
     [email, email]
   )
 
@@ -89,7 +89,7 @@ export const getUserByEmailOrUsername = async (email) => {
 export const getUsers = async () => {
   const pool = await getPool()
 
-  const [users] = await pool.query('SELECT * FROM users')
+  const [users] = await pool.query('SELECT * FROM users WHERE deleted_at IS NULL');
 
   return users
 }
@@ -126,9 +126,10 @@ export const getUserById = async (id) => {
   if (response.length === 0) {
     errors.notFoundError('User not found', 'USER_NOT_FOUND');
   }
+  return response[0];
 }
 
-export const updateUserPassword = async (userId, password) => {
+export const updateUserPassword = async (id, password) => {
   const pool = await getPool();
 
   const sqlQuery = 'UPDATE users SET password =? WHERE id =?';
@@ -137,7 +138,7 @@ export const updateUserPassword = async (userId, password) => {
 
   const values = [
     passwordHashed,
-    userId
+    id
   ]
 
   const [response] = await pool.query(sqlQuery, values);
@@ -149,12 +150,12 @@ export const updateUserPassword = async (userId, password) => {
   return response;
 }
 
-export const deleteUser = async (userId) => {
+export const deleteUser = async (id) => {
   const pool = await getPool();
 
   const [response] = await pool.query(
     'UPDATE users SET deleted_at = NOW() WHERE id =?',
-    [userId]
+    [id]
   );
 
   if (response.affectedRows !== 1) {
@@ -169,17 +170,11 @@ export const deleteUser = async (userId) => {
 export const updateUser = async (id, username, email, password, biography, birthdate, phone, name, lastname) => {
   const pool = await getPool();
 
+  const passwordHashed = await bcrypt.hash(password, 5)
+
   const [response] = await pool.query(
-    'UPDATE users SET username =?, email =?, password =?, biography =?, birthdate =?, phone =?, name =?, lastname =? WHERE id =?',
-    [username,
-      email,
-      password,
-      biography,
-      birthdate,
-      phone,
-      name,
-      lastname,
-      id]
+    'UPDATE users SET username=?, email=?, password=?, biography=?, birthdate=?, phone=?, name=?, lastname=? WHERE id=?',
+    [username,email,passwordHashed,biography,birthdate,phone,name,lastname,id]
   );
 
   if (response.affectedRows !== 1) {
@@ -190,12 +185,12 @@ export const updateUser = async (id, username, email, password, biography, birth
 
 }
 
-export const getOwnUser = async (userId) => {
+export const getOwnUser = async (id) => {
   const pool = await getPool();
   //TODO:AVERIGUAR SI LO MEJOR ES FILTRAR LOS DATOS DEL USER EN SERVICIOS O EN CONTROLLERS.
   const [response] = await pool.query(
     'SELECT * FROM users WHERE id =? and deleted_at IS NULL',
-    [userId]
+    [id]
   );
 
   if (response.length === 0) {

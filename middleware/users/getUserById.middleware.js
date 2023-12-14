@@ -4,9 +4,9 @@ import { findOrFailUserById } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
 
-    await validateSchema(getUserByIdSchema, req.body);
+    await validateSchema(getUserByIdSchema, req.params);
 
-    const { id } = req.body;
+    const { id } = req.params;
 
     try {
         const response = await findOrFailUserById(id);
