@@ -1,5 +1,5 @@
 import getPool from '../db/getPool.js';
-import errors from '../helpers/errors.helpers.js';
+import errors from '../helpers/errors.helper.js';
 
 export const insertNewDemand = async (user_id, title, description) => {
     const pool = await getPool();

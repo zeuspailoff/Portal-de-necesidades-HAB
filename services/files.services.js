@@ -2,7 +2,7 @@ import getPool from '../db/getPool.js';
 import path from 'path';
 import fs from 'fs/promises';
 import randomstring from 'randomstring';
-import errors from '../helpers/errors.helpers.js'
+import errors from '../helpers/errors.helper.js'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 

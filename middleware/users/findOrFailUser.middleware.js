@@ -1,10 +1,10 @@
 import { findOrFailUserById } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
-    console.log(req.body);
+    
+    console.log('esto es el body',req.body);
 
     const { id } = req.body
-    console.log('midlewareereeeerereerere');
 
     try {
 

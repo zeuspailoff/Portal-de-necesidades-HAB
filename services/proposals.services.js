@@ -1,5 +1,5 @@
 import getPool from "../db/getPool.js";
-import errors from '../helpers/errors.helpers.js';
+import errors from '../helpers/errors.helper.js';
 
 
 const newProposal = async (user_id, demand_id, description) => {

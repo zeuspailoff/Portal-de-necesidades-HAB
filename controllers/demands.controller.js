@@ -8,7 +8,7 @@ import {
     deleteFile,
     selectAllDemandsByUserId
 } from '../services/demands.services.js'
-import insertManyFiles from '../helpers/insertFilesInEntity.helpers.js'
+import insertManyFiles from '../helpers/insertFilesInEntity.helper.js'
 
 const entity_type = 'demands'
 

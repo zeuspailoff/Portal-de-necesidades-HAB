@@ -1,6 +1,5 @@
 import express from 'express';
 
-
 import {
   newUser,
   validateUser,
@@ -9,8 +8,8 @@ import {
   deleteUserById,
   updateUser,
   findOrFailUser,
-  // loginUser,
-  //authUser,
+  loginUser,
+  authUser,
   userExists,
   passwordUpdate,
   //getOwnUser,
@@ -23,13 +22,13 @@ import {
 const router = express.Router()
 
 router.post('/users/register', newUser)
-router.get('/users/getById/:id',getUserById)
-router.get('/users',getAllUsers)
-router.delete('/users/delete/:id',userExists,deleteUserById)
-router.put('/users/passwordupdate',passwordUpdate )
-router.put('/users/update', findOrFailUser ,updateUser);
-// router.get('/users/validate/:registrationCode', validateUser)
-//router.post('/users/login', loginUser)
+router.get('/users/getById/:id',authUser, getUserById)
+router.get('/users',authUser, getAllUsers)
+router.delete('/users/delete/:id', authUser,userExists, deleteUserById)
+router.put('/users/passwordupdate',authUser, findOrFailUser, passwordUpdate)
+router.put('/users/update',authUser, findOrFailUser, updateUser)
+router.get('/users/validate/:registrationCode', validateUser)
+router.post('/users/login', loginUser)
 //router.get('/users', authUser, userExists, getOwnUser)
 // router.put('/users/photo', userExists,)
 //router.put('/users/photo', authUser, userExists, editUserPhoto)

@@ -22,6 +22,8 @@ import updateUser from "../middleware/users/updateUser.middleware.js";
 import getAllUsers from "../middleware/users/getAllUsers.middleware.js";
 import findOrFailUser from "../middleware/users/findOrFailUser.middleware.js";
 import passwordUpdate from "../middleware/users/passwordUpdateUser.middleware.js";
+import loginUser from "../middleware/users/loginUser.middleware.js";
+import authUser from "../middleware/security/authUser.middleware.js";
 
 export {
     insertNewDemand,
@@ -47,5 +49,7 @@ export {
     updateUser,
     getAllUsers,
     findOrFailUser,
-    passwordUpdate
+    passwordUpdate,
+    loginUser,
+    authUser
 }

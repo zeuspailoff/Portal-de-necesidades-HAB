@@ -1,16 +1,23 @@
-import validateUserSchema from '../../schema/users/validateUser.schema.js'
+import validateSchema from '../../helpers/validationSchema.helper.js';
 import loginUserSchema from '../../schema/users/loginUser.schema.js';
-import loginUser  from '../../controllers/users.controller';
+import {loginUser}  from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
-    try {
-        await validateUserSchema(loginUserSchema, req.body)
 
-        const token = await loginUser(req.body.email, req.body.password)
+    await validateSchema(loginUserSchema, req.body)
+    
+    const { email, password } = req.body;
+
+    try {
+
+        const token = await loginUser(email, password)
 
         res.send({
             status: 'OK',
             message: 'Autenticación del usuario correcta',
+            data:{
+                token
+            }
         })
     } catch (error) {
         next(error)

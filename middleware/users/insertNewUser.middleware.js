@@ -1,3 +1,4 @@
+import randomstring from 'randomstring';
 import validateSchema from '../../helpers/validationSchema.helper.js'
 import insertNewUserSchema from '../../schema/users/insertNewUser.schema.js';
 import { createNewUser } from '../../controllers/users.controller.js';
@@ -10,8 +11,8 @@ const main = async (req, res, next) => {
 
     try {
 
-
-        const response = await createNewUser(username, email, password, biography, birthdate, phone, name, lastname);
+        const registrationCode = randomstring.generate(30);
+        const response = await createNewUser(username, email, password, biography, birthdate, phone, name, lastname, registrationCode);
 
         res.send({
             status: 200,

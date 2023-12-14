@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt'
 import getPool from '../db/getPool.js';
-import errors from '../helpers/errors.helpers.js';
+import errors from '../helpers/errors.helper.js';
 
-export const insertNewUser = async (username, email, password, biography, birthdate, phone, name, lastname) => {
+export const insertNewUser = async (username, email, password, biography, birthdate, phone, name, lastname, registrationCode) => {
+
 
   const pool = await getPool();
 
@@ -12,32 +13,33 @@ export const insertNewUser = async (username, email, password, biography, birthd
       [username, email]
     )
 
+
     if (users.length > 0) {
       console.log(users);
+      console.error('Este usuario ya existe😥')
       errors.userAlreadyExists()
     }
-    const sqlQuery = 'INSERT INTO users ( username, email, password, biography, birthdate, phone, name, lastname) VALUES (?,?,?,?,?,?,?,?)';
+
+    const sqlQuery = 'INSERT INTO users ( username, email, password, biography, birthdate, phone, name, lastname, registration_code) VALUES (?,?,?,?,?,?,?,?,?)';
 
     const passwordHashed = await bcrypt.hash(password, 5)
 
-    const values = [username, email, passwordHashed, biography, birthdate, phone, name, lastname]
+    const values = [username, email, passwordHashed, biography, birthdate, phone, name, lastname, registrationCode]
 
     const [response] = await pool.query(sqlQuery, values);
 
     return response;
 
   } catch (error) {
-    errors.conflictError(
-      'Error al intentar registrar el usuario',
-      'USER_REGISTER_ERROR'
-    );
+    errors.insertUserError();
   }
 }
 
 export const validateUser = async (registrationCode) => {//https://glovo.com/registrationUser?validateCode=320948239jdfsdjkfskdjf893jdfnbdi
   const pool = await getPool()
+  
   const [users] = await pool.query(
-    'SELECT * FROM users WHERE registrationCode = ? ',
+    'SELECT * FROM users WHERE registration_code = ? ',
     [registrationCode]
   )
 
@@ -47,12 +49,12 @@ export const validateUser = async (registrationCode) => {//https://glovo.com/reg
 
   try {
     const sqlQuery =
-      'UPDATE users SET active = TRUE, registrationCode = null WHERE id = ? '
+      'UPDATE users SET is_active = TRUE WHERE id = ? '
     const values = [users[0].id]
 
     const [response] = await pool.query(sqlQuery, values)
 
-    return response
+    return users[0]
   } catch (err) {
     errors.conflictError(
       'Error al intentar activar el usuario',
@@ -200,3 +202,4 @@ export const getOwnUser = async (id) => {
   return response;
 
 }
+

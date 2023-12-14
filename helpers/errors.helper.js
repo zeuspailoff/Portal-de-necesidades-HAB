@@ -50,6 +50,10 @@ const userAlreadyExists = (msg = 'El usuario ya existe') =>{
     conflictError(msg,'USER_ALREADY_EXISTS')
 }
 
+const insertUserError = (msg = 'Error al registrar el usuario') =>{
+    internalServerError(msg,'INSERT_USER_ERROR')
+}
+
 const unauthorizedUser = (msg = 'El usuario no está autorizado') =>{
     notAuthorizedError(msg)
 }
@@ -62,8 +66,6 @@ const notAthenticatedError = (msg = 'Debe enviar un token en el header') =>{
     notAuthorizedError(msg, 'NOT_AUTHENTICATED')
 }
 
-
-
 export default {
     userAlreadyExists,
     unauthorizedUser,
@@ -74,5 +76,6 @@ export default {
     forbiddenError,
     userPendingActivation,
     notAthenticatedError,
-    sendEmailError
+    sendEmailError,
+    insertUserError
 }

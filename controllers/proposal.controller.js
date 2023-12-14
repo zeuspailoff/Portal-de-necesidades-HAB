@@ -1,5 +1,5 @@
 import { newProposal, deleteProposal, editProposal, getProposalById, getProposalByDemandId } from '../services/proposals.services.js';
-import insertManyFiles from '../helpers/insertFilesInEntity.helpers.js';
+import insertManyFiles from '../helpers/insertFilesInEntity.helper.js';
 
 const entity_type = 'proposals'
 

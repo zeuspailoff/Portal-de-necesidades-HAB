@@ -11,12 +11,13 @@ import {
      getAllDemandsByUserId,
      deleteDemand,
      updateDemandStatus,
-     editDemand 
+     editDemand,
+     authUser
 } from "../../middleware/index.middleware.js";
 
 const router = express.Router();
 
-router.post('/demands/new', upload.array('files', 5), insertNewDemand);
+router.post('/demands/new', upload.array('files', 5),authUser, insertNewDemand);
 router.get('/demands/getAll', getAllDemands);
 router.get('/demands/getDemand', getDemandById);
 router.get('/demands/getAllDemandsByUser', getAllDemandsByUserId);

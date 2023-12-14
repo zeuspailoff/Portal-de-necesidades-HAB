@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255),
     biography TEXT,
     password VARCHAR(255),
+    registration_code VARCHAR(30),
+    is_active TINYINT(1) default 0,
     birthdate DATE,
     phone VARCHAR(20),
     name VARCHAR(255),
