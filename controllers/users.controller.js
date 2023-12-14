@@ -6,8 +6,8 @@ import sendMail from '../helpers/sendMail.helper.js';
 
 export const createNewUser = async (username, email, password, biography, birthdate, phone, name, lastname, registrationCode) => {
 
-    const { username, email, password } = body;
     const response = await insertNewUser(username, email, password, biography, birthdate, phone, name, lastname, registrationCode);
+
 
     const emailBody = `
     <h1>Bienvenido ${username}</h1>
