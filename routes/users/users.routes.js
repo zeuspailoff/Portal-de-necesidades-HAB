@@ -17,16 +17,16 @@ import {
   //editUserPhoto,
   //passwordRecovery,
   //editPassword
-} from '../../middleware/index.middleware.js'
+} from '../../middlewares/index.middleware.js'
 
 const router = express.Router()
 
 router.post('/users/register', newUser)
-router.get('/users/getById/:id',authUser, getUserById)
-router.get('/users',authUser, getAllUsers)
-router.delete('/users/delete/:id', authUser,userExists, deleteUserById)
-router.put('/users/passwordupdate',authUser, findOrFailUser, passwordUpdate)
-router.put('/users/update',authUser, findOrFailUser, updateUser)
+router.get('/users/getById/:id', authUser, getUserById)
+router.get('/users', authUser, getAllUsers)
+router.delete('/users/delete/:id', authUser, userExists, deleteUserById)
+router.put('/users/passwordupdate', authUser, findOrFailUser, passwordUpdate)
+router.put('/users/update', authUser, findOrFailUser, updateUser)
 router.get('/users/validate/:registrationCode', validateUser)
 router.post('/users/login', loginUser)
 //router.get('/users', authUser, userExists, getOwnUser)

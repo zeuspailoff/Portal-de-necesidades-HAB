@@ -1,11 +1,11 @@
 import express from 'express';
-import { 
+import {
     deleteProposal,
     newProposal,
     editProposalById,
     getProposalById,
-    getProposalByDemandId 
-} from '../../middleware/index.middleware.js';
+    getProposalByDemandId
+} from '../../middlewares/index.middleware.js';
 import multer from 'multer';
 
 const storage = multer.memoryStorage();

@@ -16,7 +16,7 @@ export const createNewUser = async (username, email, password, biography, birthd
     <a href="http://localhost:8080/users/validate/${registrationCode}">Activar tu cuenta de PORTAL DE NECESIDADES</a>
  `
 
-    await sendMail(email, `Activa tu cuenta`, emailBody)
+    await sendMail(email, `Activa tu cuenta`, emailBody);
 
     return response;
 }
