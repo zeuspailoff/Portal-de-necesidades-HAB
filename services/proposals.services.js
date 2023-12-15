@@ -75,11 +75,45 @@ const getProposalByDemandId = async (demand_id) => {
     }
     return response;
 };
+const insertVote = async (demand_id, proposal_id, value) => {
+    const pool = await getPool();
+
+    const [actualVotes] = await pool.query(
+        `SELECT * FROM proposals_votes WHERE user_id = ? AND proposal_id = ?`,
+        [user_id, proposal_id]
+    )
+    if (actualVotes.length > 0) {
+        errors.unauthorizedUser(
+            'Solo un voto por persona😤'
+        )
+    }
+
+    const [response] = await pool.query(
+        'INSERT INTO proposals_votes (proposal_id, user_id, value) VALUES (?, ?, ?)',
+        [proposal_id, user_id, value]
+    )
+
+    if (response.affectedRows !== 1) {
+        errors.conflictError('Error al insertar el voto', 'VOTE_INSERT_ERROR')
+    }
+
+    const [votes] = await pool.query(
+        'SELECT AVG(value) as voteAvg FROM proposals_votes WHERE demand_id = ?',
+        [demand_id]
+    )
+
+    if (votes.length < 1) {
+        errors.entityNotFound('La demanda no existe🔍')
+    }
+
+    return votes[0].voteAvg;
+};
 
 export {
     newProposal,
     deleteProposal,
     editProposal,
     getProposalById,
-    getProposalByDemandId
+    getProposalByDemandId,
+    insertVote
 };

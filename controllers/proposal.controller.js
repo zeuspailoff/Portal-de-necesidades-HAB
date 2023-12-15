@@ -1,14 +1,15 @@
-import { newProposal, deleteProposal, editProposal, getProposalById, getProposalByDemandId } from '../services/proposals.services.js';
+import { newProposal, deleteProposal, editProposal, getProposalById, getProposalByDemandId, insertVote } from '../services/proposals.services.js';
 import insertManyFiles from '../helpers/insertFilesInEntity.helper.js';
+import errors from '../helpers/errors.helper.js';
 
 const entity_type = 'proposals'
 
 export const createProposal = async (user_id, demand_id, description, files = null) => {
     const response = await newProposal(user_id, demand_id, description);
 
-    const filesSrc = { insertId: response.insertId, files:[] }
+    const filesSrc = { insertId: response.insertId, files: [] }
 
-    if(files){  
+    if (files) {
         const entity_id = response.insertId;
         filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
     }
@@ -25,7 +26,7 @@ export const deleteProposalById = async (id) => {
 export const editProposalById = async (id, description, files = null) => {
     const response = await editProposal(id, description);
 
-    if(files){  
+    if (files) {
         const entity_id = response.insertId;
         filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
     }
@@ -41,3 +42,12 @@ export const getProposalByDemand = async (demand_id) => {
     const responses = await getProposalByDemandId(demand_id);
     return responses;
 };
+
+export const voteProposal = async (value, proposal_id, user_id) => {
+    if (user_id == proposal.user_id)
+        errors.unauthorizedUser('el propietrario no puede votar ☠️')
+
+    const voteAvg = await insertVote(value, proposal_id, user_id);
+
+    return voteAvg;
+}
