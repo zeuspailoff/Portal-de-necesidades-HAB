@@ -1,22 +1,8 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import { insertNewUser, getUserById, updateUserPassword, deleteUser, updateUser, getOwnUser, validateUser, getUsers, getUserByEmailOrUsername } from '../services/users.services.js';
-import errorsHelpers from '../helpers/errors.helper.js';
-import sendMail from '../helpers/sendMail.helper.js';
+import {insertNewUser,getUserById,updateUserPassword,deleteUser,updateUser,getOwnUser,validateUser} from '../services/users.services.js';
 
-export const createNewUser = async (username, email, password, biography, birthdate, phone, name, lastname, registrationCode) => {
+export const createNewUser = async (username,email,password,biography,birthdate,phone,name,lastname) => {
 
-    const response = await insertNewUser(username, email, password, biography, birthdate, phone, name, lastname, registrationCode);
-
-
-    const emailBody = `
-    <h1>Bienvenido ${username}</h1>
-    Gracias por registrarte en Portal de necesidades. Para activar tu cuenta, haz clic en el siguiente enlace:
-
-    <a href="http://localhost:8080/users/validate/${registrationCode}">Activar tu cuenta de PORTAL DE NECESIDADES</a>
- `
-
-    await sendMail(email, `Activa tu cuenta`, emailBody)
+    const response = await insertNewUser(username,email,password,biography,birthdate,phone,name,lastname);
 
     return response;
 }
@@ -46,36 +32,7 @@ export const getOwnUserById = async (id) => {
     return response;
 }
 
-export const validateUserByRegistrationCode = async (registrationCode) => {
+export const validateUserById = async (registrationCode) => {
     const response = await validateUser(registrationCode);
     return response;
-
-};
-
-export const getAllUsers = async () => {
-    const response = await getUsers();
-    return response;
-};
-export const loginUser = async (email, password) => {
-    const user = await getUserByEmailOrUsername(email)
-
-
-    const validPassword = await bcrypt.compare(password, user.password);
-
-    if (!validPassword) {
-        errorsHelpers.notAuthorizedError("Credenciales inválidas", 'INVALID_CREDENTIALS');
-    }
-
-    if (!user.is_active) {
-        errorsHelpers.userPendingActivation("Usuario pendiente de activar. Verifique su correo electrónico para validar su cuenta.")
-    }
-
-    const tokenI = {
-        id: user.id,
-    }
-
-    const token = jwt.sign(tokenI, process.env.SECRET, { expiresIn: process.env.EXPIRE })
-
-    return token;
-
 };

@@ -111,4 +111,18 @@ export const deleteFile = async (entity_id, entity_type) => {
     return response;
 }
 
+export const demandExists = async (demand_id) => {
+    const pool = await getPool();
+    const [response] = await pool.query(
+        'SELECT * FROM demands WHERE id = ?',
+        [demand_id]
+    );
+
+    if (response.length !== 1) {
+        errors.entityNotFound('Demand');
+    }
+
+    return response;
+} 
+
 

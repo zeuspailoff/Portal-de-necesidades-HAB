@@ -5,6 +5,7 @@ import getAllDemandsByUserId from "./demands/getAllDemandsByUserId.middleware.js
 import deleteDemand from "./demands/deleteDemand.middleware.js";
 import updateDemandStatus from "./demands/updateDemandStatus.middleware.js";
 import editDemand from "./demands/editDemand.middleware.js";
+import demandExists from "./demands/demandExists.midleware.js"
 import newProposal from "./proposals/insertNewProposal.middleware.js";
 import deleteProposal from "./proposals/deleteProposal.middleware.js";
 import editProposalById from "./proposals/editProposal.middleware.js";
@@ -28,7 +29,8 @@ import getOwnUser from "../middleware/users/getOwnUser.middleware.js";
 
 export {
     insertNewDemand,
-    getAllDemands,
+    getAllDeman
+    demandExists,ds,
     getDemandById,
     getAllDemandsByUserId,
     deleteDemand,
