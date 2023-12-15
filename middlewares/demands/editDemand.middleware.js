@@ -1,5 +1,5 @@
 import validateSchema from '../../helpers/validationSchema.helper.js';
-import editDemandSchema from '../../schema/demands/editDemand.schema.js';
+import editDemandSchema from '../../schemas/demands/editDemand.schema.js';
 import { editDemandById } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {

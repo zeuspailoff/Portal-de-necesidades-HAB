@@ -1,5 +1,5 @@
 import validateSchema from '../../helpers/validationSchema.helper.js';
-import getUserByIdSchema from '../../schema/users/getUserById.schema.js';
+import getUserByIdSchema from '../../schemas/users/getUserById.schema.js';
 import { findOrFailUserById } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {

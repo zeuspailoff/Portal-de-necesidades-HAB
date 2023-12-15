@@ -1,5 +1,5 @@
 import validateSchema from '../../helpers/validationSchema.helper.js'
-import deleteDemandSchema from '../../schema/demands/deleteDemand.schema.js';
+import deleteDemandSchema from '../../schemas/demands/deleteDemand.schema.js';
 import { deleteDemandById } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {

@@ -1,5 +1,5 @@
 import validateSchema from '../../helpers/validationSchema.helper.js';
-import updateUserSchema from '../../schema/users/updateUser.schema.js';
+import updateUserSchema from '../../schemas/users/updateUser.schema.js';
 import { updateUserById } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {

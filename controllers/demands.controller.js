@@ -70,9 +70,7 @@ export const deleteFileById = async (entity_id, entity_type) => {
     return response;
 }
 
-export const demandExists = async (id) => {
-    const response = await demandExists(id);
+export const demandExists = async (demandId) => {
+    const response = await demandExists(demandId);
     return response;
 }
-
-

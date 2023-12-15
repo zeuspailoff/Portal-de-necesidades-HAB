@@ -1,6 +1,6 @@
 import randomstring from 'randomstring';
 import validateSchema from '../../helpers/validationSchema.helper.js'
-import insertNewUserSchema from '../../schema/users/insertNewUser.schema.js';
+import insertNewUserSchema from '../../schemas/users/insertNewUser.schema.js';
 import { createNewUser } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {

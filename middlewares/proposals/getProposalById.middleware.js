@@ -1,5 +1,5 @@
 import validateSchema from "../../helpers/validationSchema.helper.js";
-import getProposalByIdSchema from "../../schema/proposals/getProposalById.schema.js";
+import getProposalByIdSchema from "../../schemas/proposals/getProposalById.schema.js";
 import { getProposal } from "../../controllers/proposal.controller.js";
 
 const main = async (req, res, next) => {

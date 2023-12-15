@@ -1,5 +1,5 @@
 import validateSchema from '../../helpers/validationSchema.helper.js'
-import validateUserSchema from '../../schema/users/validateUser.schema.js'
+import validateUserSchema from '../../schemas/users/validateUser.schema.js'
 import { validateUserByRegistrationCode } from '../../controllers/users.controller.js'
 
 const main = async (req, res, next) => {

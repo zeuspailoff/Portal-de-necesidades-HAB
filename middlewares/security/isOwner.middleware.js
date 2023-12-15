@@ -1,20 +1,26 @@
 import validateSchema from "../../helpers/validationSchema.helper.js";
-import editUserPasswordSchema from '../../schemas/users/editUserPassword.schema.js';
-import { editUserPassword } from "../../controllers/users.controller.js";
+import isOwnerSchema from '../../schemas/users/isOwner.schema.js';
 
 const main = async(req,res,next)=>{
     try {
-        //Validaciones
-        await validateSchema(editUserPasswordSchema,req.body);
+        
+        await validateSchema(isOwnerSchema,req.body);
 
-        const { email, recoverPassCode, newPass } = req.body;
-        //Enviar al controlador
-        await editUserPassword(email, recoverPassCode, newPass)
+        const { proposal, demand } = req;
+        
+        if(proposal){
+            if(proposal.user_id !== req.user.id){
+                errors.notAuthorizedError("No está autorizado para editar esta entrada","NOT_AUTHORIZED");
+            }
+        }
 
-        res.send({
-            status: 'OK',
-            message: 'Contraseña actualizada',
-        });
+        if(demand){
+            if(demand.user_id!== req.user.id){
+                errors.notAuthorizedError("No está autorizado para editar esta entrada","NOT_AUTHORIZED");
+            }
+        }
+ 
+        next();
         
     } catch (err) {
         next(err);

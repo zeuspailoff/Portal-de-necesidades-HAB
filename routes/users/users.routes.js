@@ -17,7 +17,7 @@ import {
   //editUserPhoto,
   //passwordRecovery,
   //editPassword
-} from '../../middleware/index.middleware.js'
+} from '../../middlewares/index.middleware.js'
 
 const router = express.Router()
 

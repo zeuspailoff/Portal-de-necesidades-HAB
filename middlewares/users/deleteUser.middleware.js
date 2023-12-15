@@ -1,5 +1,5 @@
 import validateSchema from '../../helpers/validationSchema.helper.js'
-import deleteUserSchema from '../../schema/users/deleteUser.schema.js'
+import deleteUserSchema from '../../schemas/users/deleteUser.schema.js'
 import { deleteUserById } from '../../controllers/users.controller.js'
 
 const main = async (req, res, next) => {

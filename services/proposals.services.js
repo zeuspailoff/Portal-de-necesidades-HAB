@@ -76,10 +76,38 @@ const getProposalByDemandId = async (demand_id) => {
     return response;
 };
 
+const proposalExists = async (proposal_id) => {
+    const pool = await getPool();
+    const [response] = await pool.query(
+        'SELECT * FROM proposals WHERE id = ?',
+        [proposal_id]
+    );
+
+    if (response.length !== 1) {
+        errors.entityNotFound('Proposal');
+    }
+    return response;
+}
+
+const updateProposalStatus = async (id) => {
+    const pool = await getPool();
+    const [response] = await pool.query(
+        'UPDATE proposals SET is_correct = 1 WHERE id =?',
+        [id]
+    );
+ 
+    if (response.affectedRows!== 1) {
+        errors.conflictError('Error al editar la proposal', 'PROPOSAL_EDIT_ERROR');
+    }
+    return response;
+};
+
 export {
     newProposal,
     deleteProposal,
     editProposal,
     getProposalById,
-    getProposalByDemandId
+    getProposalByDemandId,
+    proposalExists,
+    updateProposalStatus
 };
