@@ -3,12 +3,13 @@ import insertNewProposalSchema from "../../schemas/proposals/insertNewProposal.s
 import { createProposal } from "../../controllers/proposal.controller.js";
 const main = async (req, res, next) => {
 
-    validateSchema(insertNewProposalSchema, req.body);
-
+    
     const { user_id, demand_id, description } = req.body;
     const files = req.files;
-
+    
     try {
+        await validateSchema(insertNewProposalSchema, req.body);
+        
         const response = await createProposal(user_id, demand_id, description, files);
 
         res.status(200).json({

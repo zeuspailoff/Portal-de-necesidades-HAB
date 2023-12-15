@@ -4,11 +4,12 @@ import { updateDemandStatusById } from '../../controllers/demands.controller.js'
 
 const main = async (req, res, next) => {
 
-    await validateSchema(updateDemandStatusSchema, req.body);
-
+    
     const { demand_id, status } = req.body;
-
+    
     try {
+        await validateSchema(updateDemandStatusSchema, req.body);
+        
         await updateDemandStatusById(demand_id, status);
         res.send({
             status: 200,

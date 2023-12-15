@@ -1,6 +1,6 @@
 import validateSchema from '../../helpers/validationSchema.helper.js'
 import demandExistsValidateSchema from '../../schemas/demands/validateDemandExists.schema.js';
-import { demandExists }  from '../../controllers/demands.controller.js';
+import { demandAlreadyExists }  from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
 
@@ -9,9 +9,9 @@ const main = async (req, res, next) => {
     try {
         await validateSchema(demandExistsValidateSchema, req.body);
 
-        const response = await demandExists(demand_id);
+        const response = await demandAlreadyExists(demand_id);
 
-        req.demand = response;
+        req.demand = response[0];
 
         next();
         

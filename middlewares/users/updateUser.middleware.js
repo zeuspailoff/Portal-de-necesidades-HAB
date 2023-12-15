@@ -4,11 +4,11 @@ import { updateUserById } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
 
-    await validateSchema(updateUserSchema, req.body);
-
+    
     const { id, username, email, password, biography, birthdate, phone, name, lastname } = req.body;
-
+    
     try {
+        await validateSchema(updateUserSchema, req.body);
         const response = await updateUserById(id, username, email, password, biography, birthdate, phone, name, lastname);
         res.send({
             status: 200,

@@ -2,7 +2,9 @@ import bcrypt from 'bcrypt'
 import getPool from '../db/getPool.js';
 import errors from '../helpers/errors.helper.js';
 
-export const insertNewUser = async (username, email, password, biography, birthdate, phone, name, lastname, registrationCode) => {
+export const insertNewUser = async (body, registrationCode) => {
+
+  const { username, email, password, biography, birthdate, phone, name, lastname } = body;
 
 
   const pool = await getPool();

@@ -2,15 +2,14 @@ import { getAllUsers } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
 
-    const { id } = req.body;
     try {
-        const user = await getAllUsers();
+        const users = await getAllUsers();
 
         res.send({
             status: 'OK',
             message: 'Listado de usuarios',
             data: {
-                user
+                users
             }
         })
     } catch (error) {

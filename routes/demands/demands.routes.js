@@ -24,7 +24,7 @@ router.get('/demands/getAll', getAllDemands);
 router.get('/demands/getDemand', getDemandById);
 router.get('/demands/getAllDemandsByUser', authUser, getAllDemandsByUserId);
 router.delete('/demands/delete', authUser, demandExists,isOwner, deleteDemand);
-router.put('/demands/updateStatus', authUser, demandExists,isOwner, updateDemandStatus);
+router.put('/demands/updateStatus', authUser, demandExists, isOwner, updateDemandStatus);
 router.put('/demands/edit', upload.array('files', 5), authUser, demandExists, isOwner, editDemand);
 
 export default router;

@@ -1,16 +1,16 @@
 import validateSchema from '../../helpers/validationSchema.helper.js'
-import updateProposalStatusSchema from '../..schemas/proposals/updateProposalStatus.schema.js'
-import { updateProposalStatus }  from '../../controllers/proposal.controller.js';
+import updateProposalStatusSchema from "../../schemas/proposals/updateProposalStatus.schema.js";
+import { updateProposalStatusById }  from '../../controllers/proposal.controller.js';
 
 const main = async (req, res, next) => {
 
-    await validateSchema(updateProposalStatusSchema, req.body);
-
+    
     const { id } = req.body;
     
     try {
+        await validateSchema(updateProposalStatusSchema, req.body);
 
-        const response = await updateProposalStatus(id);
+        const response = await updateProposalStatusById(id);
 
         res.send({
           status: 200,

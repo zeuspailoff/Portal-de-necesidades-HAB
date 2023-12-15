@@ -1,23 +1,21 @@
 import validateSchema from "../../helpers/validationSchema.helper.js";
 import isOwnerSchema from '../../schemas/users/isOwner.schema.js';
+import errors from "../../helpers/errors.helper.js";
 
 const main = async(req,res,next)=>{
     try {
         
         await validateSchema(isOwnerSchema,req.body);
+        let entity = {};
 
-        const { proposal, demand } = req;
-        
-        if(proposal){
-            if(proposal.user_id !== req.user.id){
-                errors.notAuthorizedError("No está autorizado para editar esta entrada","NOT_AUTHORIZED");
-            }
+        if(req.proposal){
+            entity = req.proposal;
+        }else{
+            entity = req.demand;
         }
 
-        if(demand){
-            if(demand.user_id!== req.user.id){
-                errors.notAuthorizedError("No está autorizado para editar esta entrada","NOT_AUTHORIZED");
-            }
+        if(entity.user_id != req.body.user_id){
+            errors.notAuthorizedError("No está autorizado para editar esta entrada","NOT_AUTHORIZED");
         }
  
         next();

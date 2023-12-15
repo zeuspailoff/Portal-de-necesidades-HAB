@@ -42,13 +42,14 @@ export const getProposalByDemand = async (demand_id) => {
     return responses;
 };
 
-export const proposalExists = async (response_id) => {
+export const proposalAlreadyExists = async (response_id) => {
     const response = await proposalExists(response_id);
     return response;
 }
 
-export const updateProposalStatus = async (id) => {
+export const updateProposalStatusById = async (id) => {
     const response = await updateProposalStatus(id);
+    return response;
 };
 export const voteProposal = async (value, proposal_id, user_id) => {
     if (user_id == proposal.user_id)

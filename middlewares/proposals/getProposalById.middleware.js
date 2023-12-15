@@ -4,11 +4,11 @@ import { getProposal } from "../../controllers/proposal.controller.js";
 
 const main = async (req, res, next) => {
 
-    await validateSchema(getProposalByIdSchema, req.body);
     
     const { id } = req.body;
-
+    
     try {
+        await validateSchema(getProposalByIdSchema, req.body);
 
         const proposals = await getProposal(id);
 
