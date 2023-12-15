@@ -68,6 +68,19 @@ CREATE TABLE IF NOT EXISTS files (
     deleted_at TIMESTAMP
 );
 `;
+const createVotesTableQuery = `
+CREATE TABLE IF NOT EXISTS proposals_votes (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  value TINYINT UNSIGNED NOT NULL,
+  user_id INT NOT NULL,
+  proposal_id INT NOT NULL,
+  demand_id INT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (proposal_id) REFERENCES proposals(id),
+  FOREIGN KEY (demand_id) REFERENCES demands(id)
+);
+`;
 //TODO: que campos son obligatorios y cuales tienen valor por defecto
 //REVISAR COMO ARREGLAR ESTO PARA QUE NO FALLE EL CHOQUE DE ID CON ID DE DEMANDA
 // FOREIGN KEY (entity_id) REFERENCES demands(id) ON DELETE CASCADE,
@@ -89,12 +102,13 @@ const initDb = async () => {
     await pool.query(createDemandsTableQuery);
     await pool.query(createProposalsTableQuery);
     await pool.query(createFilesTableQuery);
+    await pool.query(createVotesTableQuery);
 
     pool.end();
+    console.log('Base de datos inicializada.😁');
   } catch (error) {
     console.error('☠️Error al inicializar la base de datos:', error.message);
   }
-  console.log('Base de datos inicializada.😁');
 }
 
 initDb();

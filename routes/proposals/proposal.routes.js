@@ -1,5 +1,5 @@
 import express from 'express';
-import { 
+import {
     deleteProposal,
     newProposal,
     editProposalById,
@@ -8,9 +8,11 @@ import {
     proposalExists,
     isOwner,
     authUser,
-    updateProposalStatus 
+    updateProposalStatus,
+    votesProposal
 } from '../../middlewares/index.middleware.js';
 import multer from 'multer';
+
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -24,6 +26,8 @@ router.delete('/proposal/delete', authUser, proposalExists, isOwner, deletePropo
 router.put('/proposal/edit', upload.array('files', 5), authUser, proposalExists, isOwner, editProposalById);
 router.get('/proposal/get', getProposalById);
 router.get('/proposal/bydemand', getProposalByDemandId);
-router.put('/proposal/updateStatus', authUser, proposalExists, /*aca falta agregar que NO sea el duenio?*/ updateProposalStatus);
+router.put('/proposal/updateStatus', authUser, proposalExists,isOwner, updateProposalStatus);
+router.post('/proposal/votes', votesProposal);
+// router.get('/proposal/votesById/:id', getVotesByProposalId);
 
 export default router;
