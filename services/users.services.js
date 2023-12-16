@@ -17,7 +17,6 @@ export const insertNewUser = async (body, registrationCode) => {
 
 
     if (users.length > 0) {
-      console.log(users);
       console.error('Este usuario ya existe😥')
       errors.userAlreadyExists()
     }
@@ -39,7 +38,7 @@ export const insertNewUser = async (body, registrationCode) => {
 
 export const validateUser = async (registrationCode) => {//https://glovo.com/registrationUser?validateCode=320948239jdfsdjkfskdjf893jdfnbdi
   const pool = await getPool()
-  
+
   const [users] = await pool.query(
     'SELECT * FROM users WHERE registration_code = ? ',
     [registrationCode]
@@ -178,7 +177,7 @@ export const updateUser = async (id, username, email, password, biography, birth
 
   const [response] = await pool.query(
     'UPDATE users SET username=?, email=?, password=?, biography=?, birthdate=?, phone=?, name=?, lastname=? WHERE id=?',
-    [username,email,passwordHashed,biography,birthdate,phone,name,lastname,id]
+    [username, email, passwordHashed, biography, birthdate, phone, name, lastname, id]
   );
 
   if (response.affectedRows !== 1) {

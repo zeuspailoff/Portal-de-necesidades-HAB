@@ -6,7 +6,7 @@ const newUserSchema = joi.object({
         .min(3)
         .max(30)
         .required()
-        .pattern(/^\S*$/)
+        .pattern(/^\S+$/)
         .messages({ ...joiMsg.errorMsg, ...joiMsg.errorMsgUsername }),
     password: joi.string()
         .pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[¡!$%^&*()_+|~=`{}:";'<>¿?,.])[a-zA-Z0-9¡!$%^&*()_+|~=`{}:";'<>¿?,.]{8,}$/)

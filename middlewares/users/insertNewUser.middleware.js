@@ -5,14 +5,14 @@ import { createNewUser } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
 
-    const file = req.file;
+    const files = req.file;
 
     try {
         await validateSchema(insertNewUserSchema, req.body);
-        
+
         const registrationCode = randomstring.generate(30);
-        
-        const response = await createNewUser(req.body, registrationCode, file);
+
+        const response = await createNewUser(req.body, registrationCode, files);
 
         res.send({
             status: 200,
@@ -26,8 +26,8 @@ const main = async (req, res, next) => {
                 "birthdate": req.body.birthdate,
                 "phone": req.body.phone,
                 "name": req.body.name,
-                "lastname": req.body.lastname
-                // profilePicture: response.profilePicture
+                "lastname": req.body.lastname,
+                profile_picture: response.files[0]
             },
 
         })

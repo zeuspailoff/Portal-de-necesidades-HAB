@@ -28,6 +28,7 @@ import getOwnUser from "../middlewares/users/getOwnUser.middleware.js";
 import isOwner from "../middlewares/security/isOwner.middleware.js";
 import updateProposalStatus from "../middlewares/proposals/updateProposalStatus.middleware.js";
 import votesProposal from "../middlewares/proposals/votesProposal.middleware.js";
+import isNotOwner from "../middlewares/security/isNotOwner.middleware.js";
 
 export {
     insertNewDemand,
@@ -59,5 +60,6 @@ export {
     getOwnUser,
     isOwner,
     updateProposalStatus,
-    votesProposal
+    votesProposal,
+    isNotOwner
 }

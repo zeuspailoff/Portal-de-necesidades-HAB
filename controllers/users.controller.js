@@ -1,26 +1,35 @@
-import {insertNewUser,getUserById,updateUserPassword,deleteUser,updateUser, getUsers, getOwnUser,validateUser, getUserByEmailOrUsername} from '../services/users.services.js';
+import { insertNewUser, getUserById, updateUserPassword, deleteUser, updateUser, getUsers, getOwnUser, validateUser, getUserByEmailOrUsername } from '../services/users.services.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import errorsHelpers from '../helpers/errors.helper.js';
 import sendMail from '../helpers/sendMail.helper.js';
 
+const entity_type = 'users';
 
-export const createNewUser = async (body, registrationCode, file) => {
+export const createNewUser = async (body, registrationCode, files) => {
 
     const response = await insertNewUser(body, registrationCode);
 
     const { username, email } = body;
-    
-    const emailBody = 
-    `<h1>Bienvenido ${username}</h1>
+
+    const emailBody =
+        `<h1>Bienvenido ${username}</h1>
     Gracias por registrarte en Portal de necesidades. Para activar tu cuenta, haz clic en el siguiente enlace:
 
     <a href="http://localhost:8080/users/validate/${registrationCode}">Activar tu cuenta de PORTAL DE NECESIDADES</a>`
 
     await sendMail(email, `Activa tu cuenta`, emailBody);
 
+    const filesSrc = { insertId: response.insertId, files: [] }
 
-    return response;
+    if (files) {
+        const entity_id = response.insertId;
+        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
+    }
+
+    return filesSrc
+
+
 }
 
 export const findOrFailUserById = async (id) => {
@@ -38,9 +47,18 @@ export const deleteUserById = async (id) => {
     return response;
 }
 
-export const updateUserById = async (id, username, email, password, biography, birthdate, phone, name, lastname) => {
+export const updateUserById = async (id, username, email, password, biography, birthdate, phone, name, lastname, files) => {
+
     const response = await updateUser(id, username, email, password, biography, birthdate, phone, name, lastname);
-    return response;
+
+    const filesSrc = { insertId: response.insertId, files: [] }
+
+    if (files) {
+        const entity_id = response.insertId;
+        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
+    }
+    response.filesSrc = filesSrc;
+    return response
 }
 
 export const getOwnUserById = async (id) => {
@@ -58,17 +76,17 @@ export const getAllUsers = async () => {
     return response;
 }
 
-export const loginUser = async ( email, password) => {
+export const loginUser = async (email, password) => {
     const user = await getUserByEmailOrUsername(email)
 
 
     const validPassword = await bcrypt.compare(password, user.password);
 
-    if(!validPassword) {
-        errorsHelpers.notAuthorizedError("Credenciales inválidas",'INVALID_CREDENTIALS');
+    if (!validPassword) {
+        errorsHelpers.notAuthorizedError("Credenciales inválidas", 'INVALID_CREDENTIALS');
     }
 
-    if(!user.is_active){
+    if (!user.is_active) {
         errorsHelpers.userPendingActivation("Usuario pendiente de activar. Verifique su correo electrónico para validar su cuenta.")
     }
 
@@ -76,7 +94,7 @@ export const loginUser = async ( email, password) => {
         id: user.id,
     }
 
-    const token = jwt.sign(tokenI, process.env.SECRET, {expiresIn: process.env.EXPIRE})
+    const token = jwt.sign(tokenI, process.env.SECRET, { expiresIn: process.env.EXPIRE })
 
     return token;
 

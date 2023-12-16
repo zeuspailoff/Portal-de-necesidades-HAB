@@ -1,6 +1,7 @@
 import errors from "../../helpers/errors.helper.js";
 
 const main = async (req, res, next) => {
+
     try {
 
         let entity = {};
@@ -11,8 +12,8 @@ const main = async (req, res, next) => {
             entity = req.demand;
         }
 
-        if (entity.user_id != req.body.user_id) {
-            errors.notAuthorizedError("No está autorizado para editar esta entrada", "NOT_AUTHORIZED");
+        if (entity.user_id == req.body.user_id) {
+            errors.notAuthorizedError("No puedes hacer propuestas en tus necesidades", "NOT_AUTHORIZED");
         }
 
         next();

@@ -4,12 +4,13 @@ import { updateUserById } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
 
-    
+
     const { id, username, email, password, biography, birthdate, phone, name, lastname } = req.body;
-    
+    const files = req.files;
+
     try {
         await validateSchema(updateUserSchema, req.body);
-        const response = await updateUserById(id, username, email, password, biography, birthdate, phone, name, lastname);
+        const response = await updateUserById(id, username, email, password, biography, birthdate, phone, name, lastname, files);
         res.send({
             status: 200,
             message: `User with ID: ${id} modified successfully.`,
@@ -21,7 +22,8 @@ const main = async (req, res, next) => {
                 birthdate: birthdate,
                 phone: phone,
                 name: name,
-                lastname: lastname
+                lastname: lastname,
+                profile_picture: response.filesSrc[0]
             }
         })
     } catch (error) {

@@ -1,4 +1,4 @@
-import { newProposal, deleteProposal, editProposal, getProposalById, getProposalByDemandId, proposalExists, updateProposalStatus,insertVote } from '../services/proposals.services.js';
+import { newProposal, deleteProposal, editProposal, getProposalById, getProposalByDemandId, proposalExists, updateProposalStatus, insertVote } from '../services/proposals.services.js';
 import insertManyFiles from '../helpers/insertFilesInEntity.helper.js';
 
 const entity_type = 'proposals'
@@ -51,11 +51,7 @@ export const updateProposalStatusById = async (id) => {
     const response = await updateProposalStatus(id);
     return response;
 };
-export const voteProposal = async (value, proposal_id, user_id) => {
-    if (user_id == proposal.user_id)
-        errors.unauthorizedUser('el propietrario no puede votar ☠️')
-
-    const voteAvg = await insertVote(value, proposal_id, user_id);
-
+export const voteProposal = async (value, proposal_id, user_id, demand_id) => {
+    const voteAvg = await insertVote(value, proposal_id, user_id, demand_id);
     return voteAvg;
 }

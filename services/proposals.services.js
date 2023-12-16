@@ -75,7 +75,7 @@ const getProposalByDemandId = async (demand_id) => {
     }
     return response;
 };
-const insertVote = async (demand_id, proposal_id, value) => {
+const insertVote = async (value, proposal_id, user_id, demand_id) => {
     const pool = await getPool();
 
     const [actualVotes] = await pool.query(
@@ -89,8 +89,8 @@ const insertVote = async (demand_id, proposal_id, value) => {
     }
 
     const [response] = await pool.query(
-        'INSERT INTO proposals_votes (proposal_id, user_id, value) VALUES (?, ?, ?)',
-        [proposal_id, user_id, value]
+        'INSERT INTO proposals_votes (proposal_id, user_id, value, demand_id) VALUES (?, ?, ?, ?)',
+        [proposal_id, user_id, value, demand_id]
     )
 
     if (response.affectedRows !== 1) {
@@ -128,8 +128,8 @@ const updateProposalStatus = async (id) => {
         'UPDATE proposals SET is_correct = 1 WHERE id =?',
         [id]
     );
- 
-    if (response.affectedRows!== 1) {
+
+    if (response.affectedRows !== 1) {
         errors.conflictError('Error al editar la proposal', 'PROPOSAL_EDIT_ERROR');
     }
     return response;
