@@ -1,17 +1,17 @@
 import validateSchema from "../../helpers/validationSchema.helper.js";
 import passwordRecoverSchema from "../../schemas/users/passwordRecover.schema.js";
-import { recoverPassword } from "../../controllers/users.controller.js";
+import { passwordRecover } from "../../controllers/users.controller.js";
 
-const main = async (req, res, next) =>{
+const main = async (req, res, next) => {
     try {
         await validateSchema(passwordRecoverSchema, req.body);
 
         const { email } = req.body;
 
-        await recoverPassword(email);
+        await passwordRecover(email);
 
         res.send({
-            status: "OK",
+            status: 200,
             message: "Email de recuperación de contraseña enviado correctamente"
         })
 

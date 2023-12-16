@@ -1,4 +1,3 @@
-import validateSchema from '../../helpers/validationSchema.helper.js'
 import { demandAlreadyExists } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {

@@ -1,28 +1,24 @@
-import { insertNewUser, getUserById, updateUserPassword, deleteUser, updateUser, getUsers, getOwnUser, validateUser, getUserByEmailOrUsername } from '../services/users.services.js';
+import { insertNewUser, getUserById, updateUserPassword, deleteUser, updateUser, getUsers, getOwnUser, validateUser, getUserByEmailOrUsername, passwordRecoverUpdate ,setPasswordRecover,validateUserByRecoveryCode } from '../services/users.services.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import errorsHelpers from '../helpers/errors.helper.js';
-import sendMail from '../helpers/sendMail.helper.js';
+import insertManyFiles from '../helpers/insertFilesInEntity.helper.js'
+import { mailToRecoverPassword, mailToRegistration } from '../helpers/mailer.helper.js';
 
 const entity_type = 'users';
 
 export const createNewUser = async (body, registrationCode, files) => {
 
     const response = await insertNewUser(body, registrationCode);
-
     const { username, email } = body;
-
-    const emailBody =
-        `<h1>Bienvenido ${username}</h1>
-    Gracias por registrarte en Portal de necesidades. Para activar tu cuenta, haz clic en el siguiente enlace:
-
-    <a href="http://localhost:8080/users/validate/${registrationCode}">Activar tu cuenta de PORTAL DE NECESIDADES</a>`
-
-    await sendMail(email, `Activa tu cuenta`, emailBody);
-
     const filesSrc = { insertId: response.insertId, files: [] }
+    
+
+    await mailToRegistration(username,email, registrationCode)
+    
 
     if (files) {
+
         const entity_id = response.insertId;
         filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
     }
@@ -32,13 +28,24 @@ export const createNewUser = async (body, registrationCode, files) => {
 
 }
 
+
+export const recoverPassword = async (email) => {
+    const user = await getUserByEmailOrUsername(email)
+    const { username } = user
+  
+    const recoverPassCode = await passwordRecoverUpdate(user)
+  
+    await mailToRecoverPassword(username,email, recoverPassCode)
+  }
+
+
 export const findOrFailUserById = async (id) => {
     const response = await getUserById(id);
     return response;
 }
 
-export const editPasswordById = async (id, password) => {
-    const response = await updateUserPassword(id, password);
+export const editPasswordById = async (id, password,recovery) => {
+    const response = await updateUserPassword(id, password,recovery);
     return response;
 }
 
@@ -51,11 +58,11 @@ export const updateUserById = async (id, username, email, password, biography, b
 
     const response = await updateUser(id, username, email, password, biography, birthdate, phone, name, lastname);
 
-    const filesSrc = { insertId: response.insertId, files: [] }
+    const filesSrc = { insertId: response.insertId, profile_picture: [] }
 
     if (files) {
         const entity_id = response.insertId;
-        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
+        filesSrc.profile_picture = await (insertManyFiles(entity_id, files, entity_type));
     }
     response.filesSrc = filesSrc;
     return response
@@ -70,6 +77,12 @@ export const validateUserByRegistrationCode = async (registrationCode) => {
     const response = await validateUser(registrationCode);
     return response;
 };
+
+export const validateUserRecoveryCode = async (recoverPassCode) => {
+    const response = await validateUserByRecoveryCode(recoverPassCode);
+    return response;
+};
+
 
 export const getAllUsers = async () => {
     const response = await getUsers();

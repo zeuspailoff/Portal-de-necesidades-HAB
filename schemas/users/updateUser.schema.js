@@ -2,7 +2,7 @@ import joi from 'joi';
 import joiMsg from '../joi.error.messages.js'
 
 const updateUserSchema = joi.object({
-    id: joi.number().required().messages(joiMsg.errorMsg),
+    user_id: joi.number().required().messages(joiMsg.errorMsg),
     name: joi.string().min(5).max(50).messages(joiMsg),
     lastname: joi.string().min(5).max(50).messages(joiMsg),
     username: joi.string()

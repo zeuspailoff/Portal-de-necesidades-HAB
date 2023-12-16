@@ -14,14 +14,13 @@ import {
     editDemand,
     authUser,
     demandExists,
-    isOwner,
-    isNotOwner
+    isOwner
 } from "../../middlewares/index.middleware.js";
 
 const router = express.Router();
 
 router.get('/demands/getAll', getAllDemands);
-router.post('/demands/new', upload.array('files', 5), isNotOwner, authUser, insertNewDemand);
+router.post('/demands/new', upload.array('files', 5),authUser, insertNewDemand);
 router.get('/demands/getDemand', getDemandById);
 router.get('/demands/getAllDemandsByUser', authUser, getAllDemandsByUserId);
 router.put('/demands/edit', upload.array('files', 5), authUser, demandExists, isOwner, editDemand);

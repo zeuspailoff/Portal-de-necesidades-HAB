@@ -5,7 +5,7 @@ import { createNewUser } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
 
-    const files = req.file;
+    const files = req.files;
 
     try {
         await validateSchema(insertNewUserSchema, req.body);
@@ -27,7 +27,7 @@ const main = async (req, res, next) => {
                 "phone": req.body.phone,
                 "name": req.body.name,
                 "lastname": req.body.lastname,
-                profile_picture: response.files[0]
+                "profile_picture": response.files[0]
             },
 
         })

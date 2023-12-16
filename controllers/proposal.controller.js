@@ -1,4 +1,4 @@
-import { newProposal, deleteProposal, editProposal, getProposalById, getProposalByDemandId, proposalExists, updateProposalStatus, insertVote } from '../services/proposals.services.js';
+import { newProposal, deleteProposal, editProposal, getProposalById, getProposalByDemandId, proposalExists, updateProposalStatus, insertVote, getAvgVotes } from '../services/proposals.services.js';
 import insertManyFiles from '../helpers/insertFilesInEntity.helper.js';
 
 const entity_type = 'proposals'
@@ -14,6 +14,11 @@ export const createProposal = async (user_id, demand_id, description, files = nu
     }
 
     return filesSrc;
+};
+
+export const getAvgVotesById = async (demand_id) => {
+    const response = await getAvgVotes(demand_id);
+    return response;
 };
 
 
@@ -42,8 +47,8 @@ export const getProposalByDemand = async (demand_id) => {
     return responses;
 };
 
-export const proposalAlreadyExists = async (response_id) => {
-    const response = await proposalExists(response_id);
+export const proposalAlreadyExists = async (proposal_id) => {
+    const response = await proposalExists(proposal_id);
     return response;
 }
 

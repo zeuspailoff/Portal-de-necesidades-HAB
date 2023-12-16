@@ -16,6 +16,21 @@ const newProposal = async (user_id, demand_id, description) => {
     return response;
 };
 
+const getAvgVotes = async (demand_id) => {
+    const pool = await getPool();
+    const [votes] = await pool.query(
+        'SELECT AVG(value) as voteAvg FROM proposals_votes WHERE demand_id = ?',
+        [demand_id]
+    )
+
+    if (votes.length < 1) {
+        errors.entityNotFound('La demanda no existe🔍')
+    }
+
+    return votes[0].voteAvg;
+}
+
+
 const deleteProposal = async (id) => {
 
     const pool = await getPool();
@@ -112,7 +127,7 @@ const insertVote = async (value, proposal_id, user_id, demand_id) => {
 const proposalExists = async (proposal_id) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'SELECT * FROM proposals WHERE id = ?',
+        'SELECT * FROM proposals WHERE id =? AND deleted_at IS NULL',
         [proposal_id]
     );
 
@@ -143,5 +158,6 @@ export {
     getProposalByDemandId,
     proposalExists,
     updateProposalStatus,
-    insertVote
+    insertVote,
+    getAvgVotes
 };
