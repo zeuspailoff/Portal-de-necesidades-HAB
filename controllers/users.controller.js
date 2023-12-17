@@ -1,19 +1,51 @@
-import {insertNewUser,getUserById,updateUserPassword,deleteUser,updateUser,getOwnUser,validateUser} from '../services/users.services.js';
+import { insertNewUser, getUserById, updateUserPassword, deleteUser, updateUser, getUsers, getOwnUser, validateUser, getUserByEmailOrUsername, passwordRecoverUpdate ,setPasswordRecover,validateUserByRecoveryCode } from '../services/users.services.js';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import errorsHelpers from '../helpers/errors.helper.js';
+import insertManyFiles from '../helpers/insertFilesInEntity.helper.js'
+import { mailToRecoverPassword, mailToRegistration } from '../helpers/mailer.helper.js';
 
-export const createNewUser = async (username,email,password,biography,birthdate,phone,name,lastname) => {
+const entity_type = 'users';
 
-    const response = await insertNewUser(username,email,password,biography,birthdate,phone,name,lastname);
+export const createNewUser = async (body, registrationCode, files) => {
 
-    return response;
+    const response = await insertNewUser(body, registrationCode);
+    const { username, email } = body;
+    const filesSrc = { insertId: response.insertId, files: [] }
+    
+
+    await mailToRegistration(username,email, registrationCode)
+    
+
+    if (files) {
+
+        const entity_id = response.insertId;
+        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
+    }
+
+    return filesSrc
+
+
 }
+
+
+export const recoverPassword = async (email) => {
+    const user = await getUserByEmailOrUsername(email)
+    const { username } = user
+  
+    const recoverPassCode = await passwordRecoverUpdate(user)
+  
+    await mailToRecoverPassword(username,email, recoverPassCode)
+  }
+
 
 export const findOrFailUserById = async (id) => {
     const response = await getUserById(id);
     return response;
 }
 
-export const editPasswordById = async (id, password) => {
-    const response = await updateUserPassword(id, password);
+export const editPasswordById = async (id, password,recovery) => {
+    const response = await updateUserPassword(id, password,recovery);
     return response;
 }
 
@@ -22,9 +54,18 @@ export const deleteUserById = async (id) => {
     return response;
 }
 
-export const updateUserById = async (id, username, email, password, biography, birthdate, phone, name, lastname) => {
+export const updateUserById = async (id, username, email, password, biography, birthdate, phone, name, lastname, files) => {
+
     const response = await updateUser(id, username, email, password, biography, birthdate, phone, name, lastname);
-    return response;
+
+    const filesSrc = { insertId: response.insertId, profile_picture: [] }
+
+    if (files) {
+        const entity_id = response.insertId;
+        filesSrc.profile_picture = await (insertManyFiles(entity_id, files, entity_type));
+    }
+    response.filesSrc = filesSrc;
+    return response
 }
 
 export const getOwnUserById = async (id) => {
@@ -32,7 +73,43 @@ export const getOwnUserById = async (id) => {
     return response;
 }
 
-export const validateUserById = async (registrationCode) => {
+export const validateUserByRegistrationCode = async (registrationCode) => {
     const response = await validateUser(registrationCode);
     return response;
 };
+
+export const validateUserRecoveryCode = async (recoverPassCode) => {
+    const response = await validateUserByRecoveryCode(recoverPassCode);
+    return response;
+};
+
+
+export const getAllUsers = async () => {
+    const response = await getUsers();
+    return response;
+}
+
+export const loginUser = async (email, password) => {
+    const user = await getUserByEmailOrUsername(email)
+
+
+    const validPassword = await bcrypt.compare(password, user.password);
+
+    if (!validPassword) {
+        errorsHelpers.notAuthorizedError("Credenciales inválidas", 'INVALID_CREDENTIALS');
+    }
+
+    if (!user.is_active) {
+        errorsHelpers.userPendingActivation("Usuario pendiente de activar. Verifique su correo electrónico para validar su cuenta.")
+    }
+
+    const tokenI = {
+        id: user.id,
+    }
+
+    const token = jwt.sign(tokenI, process.env.SECRET, { expiresIn: process.env.EXPIRE })
+
+    return token;
+
+};
+

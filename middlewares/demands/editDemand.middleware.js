@@ -4,14 +4,16 @@ import { editDemandById } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
 
-    await validateSchema(editDemandSchema, req.body);
-
-    const { id, title, description, files } = req.body;
+    
+    const { demand_id, title, description, files } = req.body;
     try {
-        const response = await editDemandById(id, title, description, files);
+        await validateSchema(editDemandSchema, req.body);
+
+        const response = await editDemandById(demand_id, title, description, files);
+        
         res.send({
             status: 200,
-            message: `Demand with ID: ${id} edited successfully.`,
+            message: `Demand with ID: ${demand_id} edited successfully.`,
         })
     } catch (error) {
         next(error);

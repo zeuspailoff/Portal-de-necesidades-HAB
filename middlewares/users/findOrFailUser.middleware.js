@@ -2,13 +2,11 @@ import { findOrFailUserById } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
     
-    console.log('esto es el body',req.body);
-
-    const { id } = req.body
+    const { user_id } = req.body
 
     try {
 
-        await findOrFailUserById(id)
+        await findOrFailUserById(user_id)
 
         next();
     } catch (error) {

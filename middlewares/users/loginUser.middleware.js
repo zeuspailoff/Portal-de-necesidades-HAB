@@ -1,14 +1,14 @@
 import validateSchema from '../../helpers/validationSchema.helper.js';
 import loginUserSchema from '../../schemas/users/loginUser.schema.js';
-import {loginUser}  from '../../controllers/users.controller.js';
+import { loginUser }  from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
 
-    await validateSchema(loginUserSchema, req.body)
     
     const { email, password } = req.body;
-
+    
     try {
+        await validateSchema(loginUserSchema, req.body)
 
         const token = await loginUser(email, password)
 

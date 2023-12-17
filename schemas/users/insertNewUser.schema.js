@@ -8,16 +8,17 @@ const insertNewUserSchema = joi.object({
         .min(3)
         .max(30)
         .required()
-        //.pattern(/^\S$/)
+        .pattern(/^\S+$/)
         .messages({ ...joiMsg.errorMsg, ...joiMsg.errorMsgUsername }),
     password: joi.string()
-        //.pattern(/^(?=.\d)(?=.[a-z])(?=.[A-Z])(?=.[¡!$%^&()+|~=`{}:";'<>¿?,.])[a-zA-Z0-9¡!$%^&*()+|~=`{}:";'<>¿?,.]{8,}$/)
+        .pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[¡!$%^&*()_+|~=`{}:";'<>¿?,.])[a-zA-Z0-9¡!$%^&*()_+|~=`{}:";'<>¿?,.]{8,}$/)
         .required()
         .messages({ ...joiMsg.errorMsg, ...joiMsg.errorMsgPassword }),
     email: joi.string().email().required().messages(joiMsg),
     biography: joi.string().min(5).max(1000).required().messages(joiMsg),
     birthdate: joi.date().iso().required().messages(joiMsg),
     phone: joi.string().min(5).max(15).required().messages(joiMsg),
+    files: joi.array().items(joi.string().min(10).max(1000).messages(joiMsg)),
 });
 
 export default insertNewUserSchema;

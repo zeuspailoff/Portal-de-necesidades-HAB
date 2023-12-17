@@ -21,7 +21,7 @@ const main = async (req, res, next) => {
                 "user_id": user_id,
                 "title": title,
                 "description": description,
-                "files": response.files
+                "files": response.documents
             },
 
         })

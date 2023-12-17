@@ -1,14 +1,14 @@
-import validateSchema from '../../helpers/validationSchema.helper.js'
-import validateUserSchema from '../../schemas/users/validateUser.schema.js'
-import { validateUserByRegistrationCode } from '../../controllers/users.controller.js'
+import validateSchema from '../../helpers/validationSchema.helper.js';
+import validateUserSchema from '../../schemas/users/validateUser.schema.js';
+import { validateUserByRegistrationCode } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
 
-    await validateSchema(validateUserSchema, req.params);
-
+    
     const { registrationCode } = req.params;
-
+    
     try {
+        await validateSchema(validateUserSchema, req.params);
         const user = await validateUserByRegistrationCode(registrationCode);
         res.send({
             status: 200,

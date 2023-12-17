@@ -1,5 +1,6 @@
 import getPool from './getPool.js';
 
+const dropVotesTableQuery = 'DROP TABLE IF EXISTS proposals_votes';
 const dropUsersTableQuery = 'DROP TABLE IF EXISTS users';
 const dropDemandsTableQuery = 'DROP TABLE IF EXISTS demands';
 const dropProposalsTableQuery = 'DROP TABLE IF EXISTS proposals';
@@ -93,6 +94,7 @@ const initDb = async () => {
     await pool.query(createDatabaseQuery);
     await pool.query(useDatabaseQuery);
 
+    await pool.query(dropVotesTableQuery);
     await pool.query(dropFilesTableQuery);
     await pool.query(dropProposalsTableQuery);
     await pool.query(dropDemandsTableQuery);

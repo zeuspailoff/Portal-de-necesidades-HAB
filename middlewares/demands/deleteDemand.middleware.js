@@ -4,15 +4,16 @@ import { deleteDemandById } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
 
-    await validateSchema(deleteDemandSchema, req.body);
 
-    const { id } = req.body;
+    const { demand_id } = req.body;
 
     try {
-        await deleteDemandById(id);
+        await validateSchema(deleteDemandSchema, req.body);
+
+        await deleteDemandById(demand_id);
         res.send({
             status: 200,
-            message: `Demand with ID: ${id} deleted successfully`
+            message: `Demand with ID: ${demand_id} deleted successfully`
         })
     } catch (error) {
         next(error);

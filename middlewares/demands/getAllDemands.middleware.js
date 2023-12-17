@@ -6,6 +6,7 @@ const main = async (req, res, next) => {
     
     try {
         const [...response] = await getAllDemands(user_id);
+        
         res.send({
             status: 200,
             message: 'Demands fetched successfully',

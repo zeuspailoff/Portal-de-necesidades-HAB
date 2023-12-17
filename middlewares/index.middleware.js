@@ -13,7 +13,6 @@ import getProposalById from "./proposals/getProposalById.middleware.js";
 import getProposalByDemandId from "./proposals/getProposalByDemand.middleware.js";
 import proposalExists from "./proposals/proposalExists.middleware.js";
 import newUser from "./users/insertNewUser.middleware.js";
-import updateUserStatus from "../middlewares/users/updateUser.middleware.js"
 import getUserById from "../middlewares/users/getUserById.middleware.js";
 import deleteUserById from "../middlewares/users/deleteUser.middleware.js";
 import validateUser from "../middlewares/users/validateUser.middleware.js";
@@ -29,11 +28,14 @@ import getOwnUser from "../middlewares/users/getOwnUser.middleware.js";
 import isOwner from "../middlewares/security/isOwner.middleware.js";
 import updateProposalStatus from "../middlewares/proposals/updateProposalStatus.middleware.js";
 import votesProposal from "../middlewares/proposals/votesProposal.middleware.js";
+import isNotOwner from "../middlewares/security/isNotOwner.middleware.js";
+import recoveryCodeValidate from "./security/recoveryPassword.middleware.js"
+import passwordRecover from "../middlewares/security/passwordRecover.middleware.js";
+import getAvgVotesByProposalId from "./proposals/getAvgVotesByProposal.middleware.js";
 
 export {
     insertNewDemand,
     getAllDemands,
-    demandExists,
     getDemandById,
     getAllDemandsByUserId,
     deleteDemand,
@@ -48,7 +50,6 @@ export {
     proposalExists,
     newUser,
     validateUser,
-    updateUserStatus,
     getUserById,
     deleteUserById,
     getUserList,
@@ -62,5 +63,9 @@ export {
     getOwnUser,
     isOwner,
     updateProposalStatus,
-    votesProposal
+    votesProposal,
+    isNotOwner,
+    recoveryCodeValidate,
+    passwordRecover,
+    getAvgVotesByProposalId
 }

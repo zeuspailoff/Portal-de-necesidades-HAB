@@ -114,7 +114,7 @@ export const deleteFile = async (entity_id, entity_type) => {
 export const demandExists = async (demand_id) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'SELECT * FROM demands WHERE id = ?',
+        'SELECT * FROM demands WHERE id = ? AND deleted_at IS NULL',
         [demand_id]
     );
 

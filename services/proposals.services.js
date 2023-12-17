@@ -16,6 +16,21 @@ const newProposal = async (user_id, demand_id, description) => {
     return response;
 };
 
+const getAvgVotes = async (demand_id) => {
+    const pool = await getPool();
+    const [votes] = await pool.query(
+        'SELECT AVG(value) as voteAvg FROM proposals_votes WHERE demand_id = ?',
+        [demand_id]
+    )
+
+    if (votes.length < 1) {
+        errors.entityNotFound('La demanda no existe🔍')
+    }
+
+    return votes[0].voteAvg;
+}
+
+
 const deleteProposal = async (id) => {
 
     const pool = await getPool();
@@ -75,7 +90,7 @@ const getProposalByDemandId = async (demand_id) => {
     }
     return response;
 };
-const insertVote = async (demand_id, proposal_id, value) => {
+const insertVote = async (value, proposal_id, user_id, demand_id) => {
     const pool = await getPool();
 
     const [actualVotes] = await pool.query(
@@ -89,8 +104,8 @@ const insertVote = async (demand_id, proposal_id, value) => {
     }
 
     const [response] = await pool.query(
-        'INSERT INTO proposals_votes (proposal_id, user_id, value) VALUES (?, ?, ?)',
-        [proposal_id, user_id, value]
+        'INSERT INTO proposals_votes (proposal_id, user_id, value, demand_id) VALUES (?, ?, ?, ?)',
+        [proposal_id, user_id, value, demand_id]
     )
 
     if (response.affectedRows !== 1) {
@@ -112,7 +127,7 @@ const insertVote = async (demand_id, proposal_id, value) => {
 const proposalExists = async (proposal_id) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'SELECT * FROM proposals WHERE id = ?',
+        'SELECT * FROM proposals WHERE id =? AND deleted_at IS NULL',
         [proposal_id]
     );
 
@@ -128,8 +143,8 @@ const updateProposalStatus = async (id) => {
         'UPDATE proposals SET is_correct = 1 WHERE id =?',
         [id]
     );
- 
-    if (response.affectedRows!== 1) {
+
+    if (response.affectedRows !== 1) {
         errors.conflictError('Error al editar la proposal', 'PROPOSAL_EDIT_ERROR');
     }
     return response;
@@ -143,5 +158,6 @@ export {
     getProposalByDemandId,
     proposalExists,
     updateProposalStatus,
-    insertVote
+    insertVote,
+    getAvgVotes
 };

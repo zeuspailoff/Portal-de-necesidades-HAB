@@ -4,18 +4,19 @@ import { editProposalById } from "../../controllers/proposal.controller.js";
 
 const main = async (req, res, next) => {
 
-    await validateSchema(editProposalSchema, req.body);
-
-    const { id, description } = req.body;
-
+    
+    const { proposal_id, description } = req.body;
+    
     try {
-        await editProposalById(id, description);
+        await validateSchema(editProposalSchema, req.body);
+        
+        await editProposalById(proposal_id, description);
 
         res.send({
             status: 200,
             message: 'Propousal was edited successfully😁',
             data:{
-                id: id,
+                id: proposal_id,
                 description: description
             }
         });

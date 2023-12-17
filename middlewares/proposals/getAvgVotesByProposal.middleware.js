@@ -1,22 +1,24 @@
 import validateSchema from "../../helpers/validationSchema.helper.js";
 import getProposalByIdSchema from "../../schemas/proposals/getProposalById.schema.js";
-import { getProposal } from "../../controllers/proposal.controller.js";
+import { getAvgVotesById } from "../../controllers/proposal.controller.js";
 
 const main = async (req, res, next) => {
 
     
-    const { proposal_id } = req.body;
+    const proposal  = req.proposal;
     
     try {
         await validateSchema(getProposalByIdSchema, req.body);
 
-        const proposals = await getProposal(proposal_id);
+        const Avg = await getAvgVotesById(proposal.demand_id);
 
         res.send({
             status: 200,
             message: 'Propousal successfully😁',
             data: {
-                proposals
+                proposal_id: proposal.id,
+                demand_id: proposal.demand_id,
+                AvgVotes: Avg
             }
         });
     } catch (error) {

@@ -4,11 +4,11 @@ import { findOrFailUserById } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
 
-    await validateSchema(getUserByIdSchema, req.params);
-
+    
     const { id } = req.params;
-
+    
     try {
+        await validateSchema(getUserByIdSchema, req.params);
         const response = await findOrFailUserById(id);
         res.send({
             status: 200,

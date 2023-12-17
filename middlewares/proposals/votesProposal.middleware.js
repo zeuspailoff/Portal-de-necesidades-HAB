@@ -8,9 +8,9 @@ const main = async (req, res, next) => {
 
         await validateSchema(voteProposalSchema, req.body);
 
-        const { value, proposal_id, user_id } = req.body;
+        const { value, proposal_id, user_id, demand_id } = req.body;
 
-        const votes = await voteProposal(value, proposal_id, user_id);
+        const votes = await voteProposal(value, proposal_id, user_id, demand_id);
 
         res.send({
             status: 200,
