@@ -10,7 +10,7 @@ La API ineddup es una plataforma que te permite compartir demandas y recibir pro
 ## Uso básico
 
 1. **Registro y activación de la cuenta:**
-   - Regístrate en la plataforma utilizando [este enlace](enlace_registro).
+   - Regístrate en la plataforma utilizando.
    - Activa tu cuenta haciendo clic en el enlace enviado a tu correo electrónico.
 
 2. **Inicio de sesión:**
@@ -19,24 +19,14 @@ La API ineddup es una plataforma que te permite compartir demandas y recibir pro
 3. **Obtención del token:**
    - Después de iniciar sesión con éxito, obtendrás un token de autenticación. Este token será necesario para realizar operaciones en la API.
 
+   - Puedes colocolarlo en la variable gloval de postman
+
 4. **Añadir demanda:**
-   - Con el token de autenticación, puedes agregar tu demanda utilizando la siguiente solicitud cURL como ejemplo:
+   - Con el token de autenticación, puedes agregar tu demanda en la collection de postman.
 
-     ```bash
-     curl -X POST \
-     -H "Authorization: Bearer [TU_TOKEN]" \
-     -H "Content-Type: application/json" \
-     -d '{"demanda": "Tu demanda aquí"}' \
-     https://api.ineddup.com/demandas
-     ```
-
-     Asegúrate de reemplazar `[TU_TOKEN]` con tu token de autenticación y ajustar la demanda según tus necesidades.
+     Asegúrate de reemplazar `[auth_token]` con tu token de autenticación y ajustar la demanda según tus necesidades.
 
 5. **Recibir propuestas:**
    - Una vez que hayas agregado tu demanda, otros usuarios podrán verla y ofrecer propuestas. Explora las propuestas recibidas y selecciona la que mejor se adapte a tus necesidades.
 
-## Ejemplos de solicitudes HTTP
-
-- **Obtener demandas:**
-  ```bash
-  curl -X GET https://api.ineddup.com/demandas
+## Empieza a probar la collection de postman

@@ -76,10 +76,8 @@ CREATE TABLE IF NOT EXISTS proposals_votes (
   user_id INT NOT NULL,
   proposal_id INT NOT NULL,
   demand_id INT NOT NULL,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (proposal_id) REFERENCES proposals(id),
-  FOREIGN KEY (demand_id) REFERENCES demands(id)
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  
 );
 `;
 //TODO: que campos son obligatorios y cuales tienen valor por defecto
