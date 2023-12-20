@@ -1,0 +1,10 @@
+- cambiar min() de letras de shema a 3 en nombre y lastName
+- mejorar correos con imagenes y logo 
+- añadir pagos a demandas y proposal 
+- como añadimos pagos añadir tickets para generar en pdf o similar para enviar por correo
+- ?chat o buzon de entrada 
+- categorias para demandas 
+- igualar tamaños de fotos con sharp 
+- añadir proposal favorita del anfitrion de la demanda 
+- 404 not found 
+- añadir role en user para que si este usuario tiene muchos votos positivos en sus proposal o demandas para diferenciar a los buenos usuarios o mas fiables (añadir votos a los usuarios o ligar los votos de las proposal y demandas al usuario que la publico)
