@@ -1,18 +1,16 @@
 import insertNewDemand from "./demands/insertNewDemand.middleware.js";
-import getAllDemands from "../middleware/demands/getAllDemands.js";
-import getDemandById from "../middleware/demands/getDemandById.js";
-import getAllDemandsByUserId from "../middleware/demands/getAllDemandsByUserId.js";
-import deleteDemand from "../middleware/demands/deleteDemand.js";
-import updateDemandStatus from "../middleware/demands/updateDemandStatus.js";
-import editDemand from "../middleware/demands/editDemand.js";
-import insertFile from "../middleware/files/insertFile.js";
-import deleteFile from "../middleware/files/deleteFile.js";
-import newProposal from "./proposals/insertNewProposal.js";
-import deleteProposal from "./proposals/deleteProposal.js";
-import editProposalById from "./proposals/editProposal.js";
-import getProposalById from "./proposals/getProposalById.js";
-import getProposalByDemandId from "./proposals/getProposalByDemand.js";
-import newUser from "./users/insertNewUser.js";
+import getAllDemands from "./demands/getAllDemands.middleware.js";
+import getDemandById from "./demands/getDemandById.middleware.js";
+import getAllDemandsByUserId from "./demands/getAllDemandsByUserId.middleware.js";
+import deleteDemand from "./demands/deleteDemand.middleware.js";
+import updateDemandStatus from "./demands/updateDemandStatus.middleware.js";
+import editDemand from "./demands/editDemand.middleware.js";
+import newProposal from "./proposals/insertNewProposal.middleware.js";
+import deleteProposal from "./proposals/deleteProposal.middleware.js";
+import editProposalById from "./proposals/editProposal.middleware.js";
+import getProposalById from "./proposals/getProposalById.middleware.js";
+import getProposalByDemandId from "./proposals/getProposalByDemand.middleware.js";
+import newUser from "./users/insertNewUser.middleware.js";
 
 export {
     insertNewDemand,
@@ -22,8 +20,6 @@ export {
     deleteDemand,
     updateDemandStatus,
     editDemand,
-    insertFile,
-    deleteFile,
     newProposal,
     deleteProposal,
     editProposalById,

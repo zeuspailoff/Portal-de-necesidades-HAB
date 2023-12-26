@@ -14,7 +14,7 @@ const errorMsg = {
     'object.unknown': 'No se permiten campos adicionales en este objeto',
 };
 
-const errorMsgUsername =  {
+const errorMsgUsername = {
     'string.pattern.base':
         'El campo "{#key}" no debe contener espacios en blanco.',
 };

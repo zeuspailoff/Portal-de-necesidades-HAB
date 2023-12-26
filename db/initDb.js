@@ -1,5 +1,10 @@
 import getPool from './getPool.js';
 
+const dropUsersTableQuery = 'DROP TABLE IF EXISTS users';
+const dropDemandsTableQuery = 'DROP TABLE IF EXISTS demands';
+const dropProposalsTableQuery = 'DROP TABLE IF EXISTS proposals';
+const dropFilesTableQuery = 'DROP TABLE IF EXISTS files';
+
 const createDatabaseQuery = 'CREATE DATABASE IF NOT EXISTS ineedup';
 const useDatabaseQuery = 'USE ineedup';
 
@@ -59,11 +64,13 @@ CREATE TABLE IF NOT EXISTS files (
     entity_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
-    FOREIGN KEY (entity_id) REFERENCES demands(id) ON DELETE CASCADE,
-    FOREIGN KEY (entity_id) REFERENCES proposals(id) ON DELETE CASCADE
+    deleted_at TIMESTAMP
 );
 `;
+//TODO: que campos son obligatorios y cuales tienen valor por defecto
+//REVISAR COMO ARREGLAR ESTO PARA QUE NO FALLE EL CHOQUE DE ID CON ID DE DEMANDA
+// FOREIGN KEY (entity_id) REFERENCES demands(id) ON DELETE CASCADE,
+//     FOREIGN KEY (entity_id) REFERENCES proposals(id) ON DELETE CASCADE
 
 const initDb = async () => {
   try {
@@ -71,6 +78,11 @@ const initDb = async () => {
 
     await pool.query(createDatabaseQuery);
     await pool.query(useDatabaseQuery);
+
+    await pool.query(dropFilesTableQuery);
+    await pool.query(dropProposalsTableQuery);
+    await pool.query(dropDemandsTableQuery);
+    await pool.query(dropUsersTableQuery);
 
     await pool.query(createUsersTableQuery);
     await pool.query(createDemandsTableQuery);

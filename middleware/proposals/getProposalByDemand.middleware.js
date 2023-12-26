@@ -4,9 +4,9 @@ import { getProposalByDemand } from "../../controllers/proposal.controller.js";
 
 const main = async (req, res, next) => {
 
-    const { demand_id } = req.params;
-
-    await validateSchema(getProposalByDemandIdSchema, req.params);
+    await validateSchema(getProposalByDemandIdSchema, req.body);
+    
+    const { demand_id } = req.body;
 
     try {
         const proposals = await getProposalByDemand(demand_id);
