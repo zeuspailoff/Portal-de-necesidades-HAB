@@ -81,15 +81,6 @@ export const getUserByEmailOrUsername = async (email) => {
   return users[0]
 }
 
-//FORM LOGIN
-//ruta.x.post(EMAIL/USERNAME, PASSWORD)
-//CONST USER = getUserByEmailOrUsername(EMAIL/USERNAME)//si esto es ok, me devuelve el usuario
-//bcrypt.compare(user.password, USER.password) //si esto es ok loggeo al usuario.// user.password === PASSWORD//si esto es ok loggeo al usuario.
-//si estoy en front guardo en el navegador el registrationCode
-//IF SESIONDELNAVEGADOR.REGISTRATIONCODE != null
-//LOGGEO AL USUARIO
-
-
 
 export const getUsers = async () => {
   const pool = await getPool()
@@ -196,7 +187,6 @@ export const updateUser = async (id, username, email, password, biography, birth
 
 export const getOwnUser = async (id) => {
   const pool = await getPool();
-  //TODO:AVERIGUAR SI LO MEJOR ES FILTRAR LOS DATOS DEL USER EN SERVICIOS O EN CONTROLLERS.
   const [response] = await pool.query(
     'SELECT * FROM users WHERE id =? and deleted_at IS NULL',
     [id]

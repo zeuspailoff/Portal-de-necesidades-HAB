@@ -2,7 +2,6 @@ const main = async (req, res, next) => {
     try {
         const userInfo = req.user;
         
-        //DTO - Data Transfer Object
         const user = {
             id: userInfo.id,
             username: userInfo.username,

@@ -1,4 +1,38 @@
 import getPool from './getPool.js';
+import dotenv from 'dotenv';
+import errors from '../helpers/errors.helper.js';
+import fs from 'fs';
+import path from 'path';
+
+const createDirectories = () => {
+  const currentDirectory = process.cwd();
+  const publicPath = path.join(currentDirectory, 'public');
+  const uploadsPath = path.join(publicPath, 'uploads');
+  const usersPath = path.join(uploadsPath, 'users');
+  const demandsPath = path.join(uploadsPath, 'demands');
+  const proposalsPath = path.join(uploadsPath, 'proposals');
+
+  createDirectoryIfNotExists(publicPath);
+  createDirectoryIfNotExists(uploadsPath);
+  createDirectoryIfNotExists(usersPath);
+  createDirectoryIfNotExists(demandsPath);
+  createDirectoryIfNotExists(proposalsPath);
+};
+
+const createDirectoryIfNotExists = (directoryPath) => {
+  if (!fs.existsSync(directoryPath)) {
+    fs.mkdirSync(directoryPath);
+    console.log(`Directorio creado: ${directoryPath}`);
+  } else {
+    console.log(`El directorio ya existe: ${directoryPath}`);
+  }
+};
+
+createDirectories();
+
+dotenv.config();
+
+const { MYSQL_DB } = process.env;
 
 const dropVotesTableQuery = 'DROP TABLE IF EXISTS proposals_votes';
 const dropUsersTableQuery = 'DROP TABLE IF EXISTS users';
@@ -6,14 +40,14 @@ const dropDemandsTableQuery = 'DROP TABLE IF EXISTS demands';
 const dropProposalsTableQuery = 'DROP TABLE IF EXISTS proposals';
 const dropFilesTableQuery = 'DROP TABLE IF EXISTS files';
 
-const createDatabaseQuery = 'CREATE DATABASE IF NOT EXISTS ineedup';
-const useDatabaseQuery = 'USE ineedup';
+const createDatabaseQuery = `CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}`;
+const useDatabaseQuery = `USE ${MYSQL_DB}`;
 
 const createUsersTableQuery = `
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255),
-    email VARCHAR(255),
+    username VARCHAR(255) UNIQUE,
+    email VARCHAR(255) UNIQUE,
     biography TEXT,
     password VARCHAR(255),
     registration_code VARCHAR(30),
@@ -67,6 +101,9 @@ CREATE TABLE IF NOT EXISTS files (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP
+    FOREIGN KEY (entity_id) REFERENCES proposals(id),
+    FOREIGN KEY (entity_id) REFERENCES demands(id),
+    FOREIGN KEY (entity_id) REFERENCES users(id)
 );
 `;
 const createVotesTableQuery = `
@@ -77,13 +114,11 @@ CREATE TABLE IF NOT EXISTS proposals_votes (
   proposal_id INT NOT NULL,
   demand_id INT NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  
-);
-`;
-//TODO: que campos son obligatorios y cuales tienen valor por defecto
-//REVISAR COMO ARREGLAR ESTO PARA QUE NO FALLE EL CHOQUE DE ID CON ID DE DEMANDA
-// FOREIGN KEY (entity_id) REFERENCES demands(id) ON DELETE CASCADE,
-//     FOREIGN KEY (entity_id) REFERENCES proposals(id) ON DELETE CASCADE
+  FOREIGN KEY (demand_id) REFERENCES demands(id)
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (proposal_id) REFERENCES proposals(id),
+  );
+  `;
 
 const initDb = async () => {
   try {
@@ -105,9 +140,11 @@ const initDb = async () => {
     await pool.query(createVotesTableQuery);
 
     pool.end();
-    console.log('Base de datos inicializada.😁');
+    process.exit(0);
   } catch (error) {
     console.error('☠️Error al inicializar la base de datos:', error.message);
+    errors.conflictError('Error al inicializar la base de datos', 'DATABASE_ERROR');
+    process.exit(1);
   }
 }
 

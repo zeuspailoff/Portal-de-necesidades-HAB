@@ -33,8 +33,6 @@ router.get('/users/validate/:registrationCode', validateUser)
 router.post('/users/login', loginUser)
 router.put('/users/SetPassByrecover/:recoveryCode', recoveryCodeValidate, passwordUpdate)
 router.post('/users/recover', passwordRecover)
-//TODO: Revisar a partir de aca.
 router.get('/users', authUser, userExists, getOwnUser)
-//router.post('/users/password/recovery', passwordRecovery)
 
 export default router;

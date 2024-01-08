@@ -2,17 +2,19 @@ import express from 'express';
 import routes from './routes/index.routes.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import errorController from './controllers/errors.controller.js';
-
+import notFoundMiddleware from './middlewares/security/notFound.middleware.js';
+import errorHandlerMiddleware from './middlewares/security/errorHandler.middleware.js';
 
 dotenv.config();
 
 const app = express();
+
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(routes);
-app.use(errorController);
 
 
 
