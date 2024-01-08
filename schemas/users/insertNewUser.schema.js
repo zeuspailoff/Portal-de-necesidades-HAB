@@ -1,4 +1,4 @@
-import joi, { allow } from 'joi';
+import joi from 'joi';
 import joiMsg from '../joi.error.messages.js';
 
 const insertNewUserSchema = joi.object({

@@ -18,6 +18,6 @@ app.use(routes);
 
 
 
-app.listen(8080, () => {
-    console.log('Server running on port 8080: http://localhost:8080')
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}: http://localhost:${PORT}`);
 });
