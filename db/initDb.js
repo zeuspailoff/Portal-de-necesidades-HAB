@@ -97,15 +97,13 @@ CREATE TABLE IF NOT EXISTS files (
     id INT AUTO_INCREMENT PRIMARY KEY,
     entity_type VARCHAR(255),
     src VARCHAR(255),
-    demand_id INT,
-    proposals_id INT,
-    user_id INT,
+    entity_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
-    FOREIGN KEY (proposals_id) REFERENCES proposals(id),
-    FOREIGN KEY (demand_id) REFERENCES demands(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (entity_id) REFERENCES proposals(id) ON DELETE CASCADE,
+    FOREIGN KEY (entity_id) REFERENCES demands(id) ON DELETE CASCADE,
+    FOREIGN KEY (entity_id) REFERENCES users(id) ON DELETE CASCADE
 );
 `;
 const createVotesTableQuery = `
@@ -116,9 +114,9 @@ CREATE TABLE IF NOT EXISTS proposals_votes (
   proposal_id INT NOT NULL,
   demand_id INT NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (demand_id) REFERENCES demands(id),
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (proposal_id) REFERENCES proposals(id)
+  FOREIGN KEY (demand_id) REFERENCES demands(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (proposal_id) REFERENCES proposals(id) ON DELETE CASCADE
   );
   `;
 
@@ -142,6 +140,7 @@ const initDb = async () => {
     await pool.query(createVotesTableQuery);
 
     pool.end();
+    console.log('Base de datos inicializada 😎');
     process.exit(0);
   } catch (error) {
     console.error('☠️Error al inicializar la base de datos:', error.message);
