@@ -97,13 +97,15 @@ CREATE TABLE IF NOT EXISTS files (
     id INT AUTO_INCREMENT PRIMARY KEY,
     entity_type VARCHAR(255),
     src VARCHAR(255),
-    entity_id INT,
+    demand_id INT,
+    proposals_id INT,
+    user_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP
-    FOREIGN KEY (entity_id) REFERENCES proposals(id),
-    FOREIGN KEY (entity_id) REFERENCES demands(id),
-    FOREIGN KEY (entity_id) REFERENCES users(id)
+    deleted_at TIMESTAMP,
+    FOREIGN KEY (proposals_id) REFERENCES proposals(id),
+    FOREIGN KEY (demand_id) REFERENCES demands(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 `;
 const createVotesTableQuery = `
@@ -113,10 +115,10 @@ CREATE TABLE IF NOT EXISTS proposals_votes (
   user_id INT NOT NULL,
   proposal_id INT NOT NULL,
   demand_id INT NOT NULL,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  FOREIGN KEY (demand_id) REFERENCES demands(id)
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (demand_id) REFERENCES demands(id),
   FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (proposal_id) REFERENCES proposals(id),
+  FOREIGN KEY (proposal_id) REFERENCES proposals(id)
   );
   `;
 
