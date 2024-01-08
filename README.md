@@ -6,6 +6,12 @@ La API ineddup es una plataforma que te permite compartir demandas y recibir pro
 
 - Es necesario registrarse en la plataforma.
 - Debes activar tu cuenta utilizando el enlace que recibirás en el correo electrónico automático después de registrarte.
+- Completa todas la variables del .env
+
+## Empezar
+- Recuerda que tienes que empesar insertando un usuario 
+- Luego activas el usuario con la url que te ha llegado al mail proporcionado en postman(no esta configurado para activar en postman)
+- Luego te logeas y pones el token en los headers de autorization (esta colocado como variable auth_token solo debes cambiarla)
 
 ## Uso básico
 
