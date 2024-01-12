@@ -4,11 +4,11 @@ import { deleteUserById } from '../../controllers/users.controller.js'
 
 const main = async (req, res, next) => {
 
-    
-    const { id } = req.params;
-    
+
+    const { id } = req.body;
+
     try {
-        await validateSchema(deleteUserSchema, req.params);
+        await validateSchema(deleteUserSchema, req.body);
         const response = await deleteUserById(id);
         res.send({
             status: 200,

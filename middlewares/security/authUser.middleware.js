@@ -4,8 +4,8 @@ import errors from '../../helpers/errors.helper.js';
 const main = async (req, res, next) => {
     try {
         const { auth_token } = req.headers;
-        if (!auth_token){
-           errors.notAthenticatedError();
+        if (!auth_token) {
+            errors.notAthenticatedError();
         }
 
         let tokenInfo;
@@ -15,8 +15,8 @@ const main = async (req, res, next) => {
         } catch (err) {
             errors.unauthorizedUser();
         }
-        
-        req.user = tokenInfo;
+
+        res.user = tokenInfo;
 
         next();
     } catch (err) {
