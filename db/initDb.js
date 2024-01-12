@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS demands (
     user_id INT,
     title VARCHAR(255),
     description TEXT,
-    status BOOLEAN default 0,
+    is_closed BOOLEAN default 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
@@ -97,24 +97,25 @@ CREATE TABLE IF NOT EXISTS files (
     id INT AUTO_INCREMENT PRIMARY KEY,
     entity_type VARCHAR(255),
     src VARCHAR(255),
-    entity_id INT,
+    proposal_id INT,
+    demand_id INT,
+    user_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
-    FOREIGN KEY (entity_id) REFERENCES proposals(id) ON DELETE CASCADE,
-    FOREIGN KEY (entity_id) REFERENCES demands(id) ON DELETE CASCADE,
-    FOREIGN KEY (entity_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (proposal_id) REFERENCES proposals(id) ON DELETE CASCADE,
+    FOREIGN KEY (demand_id) REFERENCES demands(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 `;
-const createVotesTableQuery = `
+const createProposalsVotesTableQuery = `
 CREATE TABLE IF NOT EXISTS proposals_votes (
   id INT PRIMARY KEY AUTO_INCREMENT,
   value TINYINT UNSIGNED NOT NULL,
   user_id INT NOT NULL,
   proposal_id INT NOT NULL,
-  demand_id INT NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (demand_id) REFERENCES demands(id) ON DELETE CASCADE,
+  UNIQUE KEY unique_user_proposal (user_id, proposal_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (proposal_id) REFERENCES proposals(id) ON DELETE CASCADE
   );
@@ -137,7 +138,7 @@ const initDb = async () => {
     await pool.query(createDemandsTableQuery);
     await pool.query(createProposalsTableQuery);
     await pool.query(createFilesTableQuery);
-    await pool.query(createVotesTableQuery);
+    await pool.query(createProposalsVotesTableQuery);
 
     pool.end();
     console.log('Base de datos inicializada 😎');

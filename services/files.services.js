@@ -3,11 +3,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import randomstring from 'randomstring';
 import errors from '../helpers/errors.helper.js'
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const saveFile = async (file, entity_type) => {
 
@@ -37,7 +33,7 @@ const saveFile = async (file, entity_type) => {
         charset: 'alphanumeric'
     }) + fileExtension;
 
-    const filePath = path.join(__dirname, '..', 'public', 'uploads', entity_type, fileName);
+    const filePath = path.join('uploads', entity_type, fileName);
 
     await fs.writeFile(filePath, file.buffer);
 
@@ -56,28 +52,6 @@ export const insertFile = async (entity_id, entity_type, src) => {
     }
 
     return response;
-}
-
-const setUpFolders = () => {
-    const publicFolderPath = path.join(__dirname, 'public');
-    const uploadsFolderPath = path.join(publicFolderPath, 'uploads');
-    const demandsFolderPath = path.join(uploadsFolderPath, 'demands');
-    const proposalsFolderPath = path.join(uploadsFolderPath, 'proposals');
-
-    const verifyAndCreate = (carpeta) => {
-        try {
-            if (!fs.existsSync(carpeta)) {
-                fs.mkdirSync(carpeta, { recursive: true });
-            }
-        } catch (error) {
-
-        }
-    }
-
-    verifyAndCreate(publicFolderPath);
-    verifyAndCreate(uploadsFolderPath);
-    verifyAndCreate(demandsFolderPath);
-    verifyAndCreate(proposalsFolderPath);
 }
 
 

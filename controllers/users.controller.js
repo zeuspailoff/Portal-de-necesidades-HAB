@@ -1,4 +1,4 @@
-import { insertNewUser, getUserById, updateUserPassword, deleteUser, updateUser, getUsers, getOwnUser, validateUser, getUserByEmailOrUsername, passwordRecoverUpdate ,setPasswordRecover,validateUserByRecoveryCode } from '../services/users.services.js';
+import { insertNewUser, getUserById, updateUserPassword, deleteUser, updateUser, getUsers, getOwnUser, validateUser, getUserByEmailOrUsername, passwordRecoverUpdate, setPasswordRecover, validateUserByRecoveryCode } from '../services/users.services.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import errorsHelpers from '../helpers/errors.helper.js';
@@ -12,10 +12,10 @@ export const createNewUser = async (body, registrationCode, files) => {
     const response = await insertNewUser(body, registrationCode);
     const { username, email } = body;
     const filesSrc = { insertId: response.insertId, files: [] }
-    
 
-    await mailToRegistration(username,email, registrationCode)
-    
+
+    await mailToRegistration(username, email, registrationCode)
+
 
     if (files) {
 
@@ -32,20 +32,23 @@ export const createNewUser = async (body, registrationCode, files) => {
 export const recoverPassword = async (email) => {
     const user = await getUserByEmailOrUsername(email)
     const { username } = user
-  
+
     const recoverPassCode = await passwordRecoverUpdate(user)
-  
-    await mailToRecoverPassword(username,email, recoverPassCode)
-  }
+
+    await mailToRecoverPassword(username, email, recoverPassCode)
+}
 
 
 export const findOrFailUserById = async (id) => {
     const response = await getUserById(id);
+
+    //TODO: chequear que el usuario que pido sea el mio, si es el mio traer toda la data que pide users/update, sino devolver solo informacion publica.
+
     return response;
 }
 
-export const editPasswordById = async (id, password,recovery) => {
-    const response = await updateUserPassword(id, password,recovery);
+export const editPasswordById = async (id, password, recovery) => {
+    const response = await updateUserPassword(id, password, recovery);
     return response;
 }
 

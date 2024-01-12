@@ -42,7 +42,7 @@ export const validateUser = async (registrationCode) => {//https://glovo.com/reg
   const pool = await getPool()
 
   const [users] = await pool.query(
-    'SELECT * FROM users WHERE registration_code = ?',
+    'SELECT * FROM users WHERE registration_code = ? AND deleted_at IS NULL',
     [registrationCode]
   )
 
@@ -50,9 +50,16 @@ export const validateUser = async (registrationCode) => {//https://glovo.com/reg
     errors.entityNotFound('Usuario')
   }
 
+  if (users[0].is_active === true) {
+    errors.conflictError(
+      'User has already been activated',
+      'USER_ACTIVATED_ERROR'
+    )
+  }
+
   try {
     const sqlQuery =
-      'UPDATE users SET is_active = TRUE WHERE id = ? '
+      'UPDATE users SET is_active = TRUE, registration_code = NULL WHERE id = ? '
     const values = [users[0].id]
 
     const [response] = await pool.query(sqlQuery, values)
@@ -147,7 +154,7 @@ export const updateUserPassword = async (id, password, recovery) => {
     await pool.query('UPDATE users SET password_recovered = NULL WHERE id =? ', [id]);
   }
   return response;
-  
+
 }
 
 export const deleteUser = async (id) => {
@@ -209,7 +216,7 @@ export const setPasswordRecover = async (user_id, recoverPassCode) => {
     [recoverPassCode, user_id]
   )
 
-  if (response.affectedRows!== 1) {
+  if (response.affectedRows !== 1) {
     errors.conflictError(
       'Error al generar el codigo de recuperacion de contrasena.',
       'RECOVER_PASS_ERROR'
@@ -217,32 +224,32 @@ export const setPasswordRecover = async (user_id, recoverPassCode) => {
   }
 
   return response;
-  
+
 };
 
 export const validateUserByRecoveryCode = async (recoverPassCode) => {
   const pool = await getPool()
-try {
-  const [users] = await pool.query(
-    'SELECT * FROM users WHERE password_recovered = ? ',
-    [recoverPassCode]
-  )
+  try {
+    const [users] = await pool.query(
+      'SELECT * FROM users WHERE password_recovered = ? ',
+      [recoverPassCode]
+    )
 
-  if (users.length !== 1) {
+    if (users.length !== 1) {
+      errors.conflictError(
+        'Codigo de recuperacion invalido.',
+        'RECOVER_PASS_ERROR'
+      )
+    }
+    return users[0]
+
+  } catch (err) {
     errors.conflictError(
-      'Codigo de recuperacion invalido.',
-      'RECOVER_PASS_ERROR'
+      'Error al intentar recuperar contraseña.',
+      'USER_ACTIVATED_ERROR'
     )
   }
-  return users[0]
 
-} catch (err) {
-  errors.conflictError(
-    'Error al intentar recuperar contraseña.',
-    'USER_ACTIVATED_ERROR'
-    )
-  }
-  
 }
 export const passwordRecoverUpdate = async (user) => {
   const recoverPassCode = randomstring.generate(10)
