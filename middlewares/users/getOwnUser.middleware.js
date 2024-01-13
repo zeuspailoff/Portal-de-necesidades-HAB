@@ -13,7 +13,7 @@ const main = async (req, res, next) => {
 
         res.send({
             status: "OK",
-            message: "Usuario encontrado",
+            message: "User found",
             data:{
                 user
             }

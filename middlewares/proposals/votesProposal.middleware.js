@@ -14,7 +14,7 @@ const main = async (req, res, next) => {
 
         res.send({
             status: 200,
-            message: 'voto completado con exito 🗳️',
+            message: 'Vote added successfully',
             data: {
                 votes
             }

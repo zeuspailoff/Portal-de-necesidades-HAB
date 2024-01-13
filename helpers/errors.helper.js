@@ -38,7 +38,7 @@ const internalServerError = (msg, code = 'INTERNAL_ERROR') =>{
     throw err;
 }
 
-const sendEmailError = (msg = 'Error al enviar el email') => {
+const sendEmailError = (msg = 'Error sending email') => {
     internalServerError(msg,'SEND_EMAIL_ERROR')
 }
 
@@ -46,23 +46,23 @@ const userPendingActivation = (msg) =>{
     forbiddenError(msg,'PENDING_ACTIVATION')
 }
 
-const userAlreadyExists = (msg = 'El usuario ya existe') =>{
+const userAlreadyExists = (msg = 'User already exists') =>{
     conflictError(msg,'USER_ALREADY_EXISTS')
 }
 
-const insertUserError = (msg = 'Error al registrar el usuario') =>{
+const insertUserError = (msg = 'Error registering user') =>{
     internalServerError(msg,'INSERT_USER_ERROR')
 }
 
-const unauthorizedUser = (msg = 'El usuario no está autorizado') =>{
+const unauthorizedUser = (msg = 'User not authorized') =>{
     notAuthorizedError(msg)
 }
 
-const entityNotFound = (entity = 'Entidad') =>{
-    notFoundError(entity + " no encontrado/a.", 'ENTITY_NOT_FOUND')
+const entityNotFound = (entity = 'Entity') =>{
+    notFoundError(entity + " not found.", 'ENTITY_NOT_FOUND')
 }
 
-const notAthenticatedError = (msg = 'Debe enviar un token en el header') =>{
+const notAthenticatedError = (msg = 'Token must be sent onto the header') =>{
     notAuthorizedError(msg, 'NOT_AUTHENTICATED')
 }
 

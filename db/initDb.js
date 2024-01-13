@@ -105,9 +105,9 @@ const initDb = async () => {
     await pool.query(createVotesTableQuery);
 
     pool.end();
-    console.log('Base de datos inicializada.😁');
+    console.log('Database initialized correctly.😁');
   } catch (error) {
-    console.error('☠️Error al inicializar la base de datos:', error.message);
+    console.error('☠️Error trying to initialize Database:', error.message);
   }
 }
 

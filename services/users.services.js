@@ -18,7 +18,7 @@ export const insertNewUser = async (body, registrationCode) => {
 
     if (users.length > 0) {
       console.log(users);
-      console.error('Este usuario ya existe😥')
+      console.error('User already exists')
       errors.userAlreadyExists()
     }
 
@@ -46,7 +46,7 @@ export const validateUser = async (registrationCode) => {//https://glovo.com/reg
   )
 
   if (users.length !== 1) {
-    errors.entityNotFound('Usuario')
+    errors.entityNotFound('User')
   }
 
   try {
@@ -59,7 +59,7 @@ export const validateUser = async (registrationCode) => {//https://glovo.com/reg
     return users[0]
   } catch (err) {
     errors.conflictError(
-      'Error al intentar activar el usuario',
+      'Error trying to activate user',
       'USER_ACTIVATED_ERROR'
     )
   }
@@ -74,7 +74,7 @@ export const getUserByEmailOrUsername = async (email) => {
   )
 
   if (users.length == 0) {
-    errors.entityNotFound('Usuario')
+    errors.entityNotFound('User')
   }
 
   return users[0]
@@ -110,7 +110,7 @@ export const updatePasswordRecover = async (user) => {
 
   if (response.affectedRows !== 1) {
     errors.conflictError(
-      'Error al generar recoverPassCode.',
+      'Error trying to generate recovery passcode.',
       'RECOVER_PASS_ERROR'
     )
   }
@@ -148,7 +148,7 @@ export const updateUserPassword = async (id, password) => {
   const [response] = await pool.query(sqlQuery, values);
 
   if (response.affectedRows !== 1) {
-    errors.conflictError('Error al actualizar el usuario', 'PASSWORD_UPDATE_ERROR');
+    errors.conflictError('Error trying to update user password', 'PASSWORD_UPDATE_ERROR');
   }
 
   return response;
@@ -163,7 +163,7 @@ export const deleteUser = async (id) => {
   );
 
   if (response.affectedRows !== 1) {
-    errors.conflictError('Error al actualizar el usuario', 'DELETE_USER_ERROR');
+    errors.conflictError('Error trying to delete user', 'DELETE_USER_ERROR');
   }
 
   return response;
@@ -182,7 +182,7 @@ export const updateUser = async (id, username, email, password, biography, birth
   );
 
   if (response.affectedRows !== 1) {
-    errors.conflictError('Error al actualizar el usuario', 'USER_UPDATE_ERROR');
+    errors.conflictError('Error trying to update user', 'USER_UPDATE_ERROR');
   }
 
   return response;

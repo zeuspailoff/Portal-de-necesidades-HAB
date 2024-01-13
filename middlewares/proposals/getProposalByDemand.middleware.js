@@ -14,7 +14,7 @@ const main = async (req, res, next) => {
 
         res.send({
             status: 200,
-            message: "Proposals found😁",
+            message: "Proposals found",
             data: {
                 proposals
             }

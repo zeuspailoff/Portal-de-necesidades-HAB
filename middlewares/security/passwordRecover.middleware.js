@@ -12,7 +12,7 @@ const main = async (req, res, next) =>{
 
         res.send({
             status: "OK",
-            message: "Email de recuperación de contraseña enviado correctamente"
+            message: "Password recovery email sent successfully"
         })
 
     } catch (err) {

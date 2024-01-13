@@ -8,12 +8,10 @@ const updateUserSchema = joi.object({
     username: joi.string()
         .min(3)
         .max(30)
-        
         //.pattern(/^\S$/)
         .messages({ ...joiMsg.errorMsg, ...joiMsg.errorMsgUsername }),
     password: joi.string()
         //.pattern(/^(?=.\d)(?=.[a-z])(?=.[A-Z])(?=.[¡!$%^&()+|~=`{}:";'<>¿?,.])[a-zA-Z0-9¡!$%^&*()+|~=`{}:";'<>¿?,.]{8,}$/)
-        
         .messages({ ...joiMsg.errorMsg, ...joiMsg.errorMsgPassword }),
     email: joi.string().email().messages(joiMsg),
     biography: joi.string().min(5).max(1000).messages(joiMsg),

@@ -13,7 +13,7 @@ const main = async(req,res,next)=>{
 
         res.send({
             status: 'OK',
-            message: 'Contraseña actualizada',
+            message: 'Password updated successfully',
         });
         
     } catch (err) {

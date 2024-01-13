@@ -12,12 +12,12 @@ export const createNewUser = async (body, registrationCode, file) => {
     const { username, email } = body;
     
     const emailBody = 
-    `<h1>Bienvenido ${username}</h1>
-    Gracias por registrarte en Portal de necesidades. Para activar tu cuenta, haz clic en el siguiente enlace:
+    `<h1>Welcome, ${username}!</h1>
+    Thank you for becoming a part of iNeedApp. In order to activte your account, please follow the link provided below:
 
-    <a href="http://localhost:8080/users/validate/${registrationCode}">Activar tu cuenta de PORTAL DE NECESIDADES</a>`
+    <a href="http://localhost:8080/users/validate/${registrationCode}">Activate my iNeedApp account!</a>`
 
-    await sendMail(email, `Activa tu cuenta`, emailBody);
+    await sendMail(email, `iNeedApp Account activation`, emailBody);
 
 
     return response;
@@ -58,18 +58,18 @@ export const getAllUsers = async () => {
     return response;
 }
 
-export const loginUser = async ( email, password) => {
+export const loginUser = async (email, password) => {
     const user = await getUserByEmailOrUsername(email)
 
 
     const validPassword = await bcrypt.compare(password, user.password);
 
     if(!validPassword) {
-        errorsHelpers.notAuthorizedError("Credenciales inválidas",'INVALID_CREDENTIALS');
+        errorsHelpers.notAuthorizedError("Invalid credentials",'INVALID_CREDENTIALS');
     }
 
     if(!user.is_active){
-        errorsHelpers.userPendingActivation("Usuario pendiente de activar. Verifique su correo electrónico para validar su cuenta.")
+        errorsHelpers.userPendingActivation("User activation pending. Please verify your email inbox in order to activate your account.")
     }
 
     const tokenI = {

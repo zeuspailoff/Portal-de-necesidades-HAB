@@ -9,8 +9,6 @@ const isOwnerSchema = joi.object({
     title: joi.string().messages(joiMsg),
     description: joi.string().min(10).max(1000).messages(joiMsg),
     files: joi.array().items(joi.string().min(10).max(1000).messages(joiMsg))
-
-
 });
 
 export default isOwnerSchema;

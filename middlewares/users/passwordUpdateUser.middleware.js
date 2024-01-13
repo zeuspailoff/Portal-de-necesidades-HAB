@@ -12,7 +12,7 @@ const main = async (req, res, next) => {
         const response = await editPasswordById(user_id, password);
         res.send({
             status: 200,
-            message: `User password with ID: ${user_id} modified successfully.`,
+            message: `Password for User ${user_id} updated successfully.`,
             data: {response}
         })
     } catch (error) {

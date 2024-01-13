@@ -13,7 +13,7 @@ const main = async (req, res, next) => {
         const response = await createProposal(user_id, demand_id, description, files);
 
         res.status(200).json({
-            message: 'Proposal was created successfully😁',
+            message: 'Proposal created successfully',
             id: response.insertId,
             user: user_id,
             demand: demand_id,

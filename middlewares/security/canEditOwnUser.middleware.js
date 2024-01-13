@@ -4,7 +4,7 @@ const main = async (req, res, next) => {
     try {
         
         if(req.user.id !== req.entry.userId){
-            errors.notAuthorizedError("No está autorizado para editar esta entrada","NOT_AUTHORIZED");
+            errors.notAuthorizedError("User not authorized to edit or modify this entry", "NOT_AUTHORIZED");
         }
 
         next();

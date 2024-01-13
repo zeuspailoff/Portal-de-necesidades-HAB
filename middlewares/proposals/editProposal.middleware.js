@@ -14,7 +14,7 @@ const main = async (req, res, next) => {
 
         res.send({
             status: 200,
-            message: 'Propousal was edited successfully😁',
+            message: 'Proposal edited successfully',
             data:{
                 id: proposal_id,
                 description: description

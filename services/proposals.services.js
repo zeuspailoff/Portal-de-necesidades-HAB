@@ -11,7 +11,7 @@ const newProposal = async (user_id, demand_id, description) => {
         [user_id, demand_id, description]
     );
     if (response.affectedRows !== 1) {
-        errors.conflictError('Error al insertar la proposal', 'PROPOSAL_INSERT_ERROR');
+        errors.conflictError('Error trying to insert proposal', 'PROPOSAL_INSERT_ERROR');
     }
     return response;
 };
@@ -27,7 +27,7 @@ const deleteProposal = async (id) => {
         [id]
     );
     if (response.affectedRows !== 1) {
-        errors.conflictError('Error al borrar la porposal', 'PROPOSAL_DELETE_ERROR');
+        errors.conflictError('Error trying to delete proposal', 'PROPOSAL_DELETE_ERROR');
     }
     return response;
 };
@@ -41,7 +41,7 @@ const editProposal = async (id, description) => {
         [description, id]
     );
     if (response.affectedRows !== 1) {
-        errors.conflictError('Error al editar la proposal', 'PROPOSAL_EDIT_ERROR');
+        errors.conflictError('Error trying to edit proposal', 'PROPOSAL_EDIT_ERROR');
     }
     return response;
 };
@@ -84,7 +84,7 @@ const insertVote = async (demand_id, proposal_id, value) => {
     )
     if (actualVotes.length > 0) {
         errors.unauthorizedUser(
-            'Solo un voto por persona😤'
+            'Only one vote per user is allowed'
         )
     }
 
@@ -94,7 +94,7 @@ const insertVote = async (demand_id, proposal_id, value) => {
     )
 
     if (response.affectedRows !== 1) {
-        errors.conflictError('Error al insertar el voto', 'VOTE_INSERT_ERROR')
+        errors.conflictError('Error trying to insert vote', 'VOTE_INSERT_ERROR')
     }
 
     const [votes] = await pool.query(
@@ -103,7 +103,7 @@ const insertVote = async (demand_id, proposal_id, value) => {
     )
 
     if (votes.length < 1) {
-        errors.entityNotFound('La demanda no existe🔍')
+        errors.entityNotFound('Demand does not exist')
     }
 
     return votes[0].voteAvg;
@@ -130,7 +130,7 @@ const updateProposalStatus = async (id) => {
     );
  
     if (response.affectedRows!== 1) {
-        errors.conflictError('Error al editar la proposal', 'PROPOSAL_EDIT_ERROR');
+        errors.conflictError('Error trying to edit proposal', 'PROPOSAL_EDIT_ERROR');
     }
     return response;
 };

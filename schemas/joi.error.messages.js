@@ -1,27 +1,27 @@
 const errorMsg = {
-    'any.required': 'El campo "{#key}" es requerido',
-    'string.base': 'El valor de "{#key}" debe ser una cadena',
-    'string.empty': 'El campo "{#key}" no debe estar vacío',
-    'date.base': 'El valor de "{#key}" debe ser un tipo date YYYY-MM-DD',
-    'number.base': 'El valor de "{#key}" debe ser un número',
-    'number.max': 'El archivo no debe exceder los 5 MB',
-    'object.base': 'El valor de "{#key}" debe ser un objeto',
-    'any.only': 'Solo se permiten fotos jpeg o png',
+    'any.required': '"{#key}" field required',
+    'string.base': '"{#key}" value must be a string',
+    'string.empty': '"{#key}" value cannot be empty',
+    'date.base': '"{#key}" value must be YYYY-MM-DD format type date',
+    'number.base': '"{#key}" value must be numeric',
+    'number.max': 'File size cannot exceed 5mb',
+    'object.base': '"{#key}" value must be an object-type',
+    'any.only': 'Only .jpeg or .png format files allowed',
     'string.email':
-        'Debe proporcionar un correo electrónico válido para "{#key}"',
-    'string.min': 'El campo "{#key}" debe tener al menos {#limit} caracteres',
-    'string.max': 'El campo "{#key}" no debe exceder los {#limit} caracteres',
-    'object.unknown': 'No se permiten campos adicionales en este objeto',
+        'A valid email address must be provided for "{#key}"',
+    'string.min': '"{#key}" must be {#limit} characters long at least',
+    'string.max': '"{#key}" cannot be lenghtier than {#limit} characters',
+    'object.unknown': 'Additional fields are not allowed for this object',
 };
 
 const errorMsgUsername = {
     'string.pattern.base':
-        'El campo "{#key}" no debe contener espacios en blanco.',
+        '"{#key}" must not contain spacings',
 };
 
 const errorMsgPassword = {
     'string.pattern.base':
-        'La contraseña debe contener al menos una mayúscula, una minúscula, un número y un símbolo de puntuación para "{#key}"',
+        'Password for "{#key}" must have at least a capitalized letter, a low-cap letter, a number and a symbol/special character',
 };
 
 export default {

@@ -7,7 +7,7 @@ const main = async (req, res, next) => {
 
         res.send({
             status: 'OK',
-            message: 'Listado de usuarios',
+            message: 'Users list',
             data: {
                 users
             }

@@ -10,7 +10,7 @@ export const insertNewDemand = async (user_id, title, description) => {
     );
 
     if (response.affectedRows!== 1) {
-        errors.conflictError('Error al insertar la demanda', 'DEMAND_INSERT_ERROR');
+        errors.conflictError('Error trying to insert demand', 'DEMAND_INSERT_ERROR');
     }
 
     return response;
@@ -63,7 +63,7 @@ export const updateDemandStatus = async (demandId, status) => {
     );
 
     if (response.affectedRows!== 1) {
-        errors.conflictError('Error al actualizar la demanda', 'DEMAND_UPDATE_ERROR');
+        errors.conflictError('Error trying to update demand', 'DEMAND_UPDATE_ERROR');
     }
 
     return response;
@@ -77,7 +77,7 @@ export const editDemand = async (demandId, title, description) => {
     );
 
     if (response.affectedRows!== 1) {
-        errors.conflictError('Error al actualizar la demanda', 'DEMAND_UPDATE_ERROR');
+        errors.conflictError('Error trying to update demand', 'DEMAND_UPDATE_ERROR');
     }
 
     return response;
@@ -91,7 +91,7 @@ export const deleteDemand = async (id) => {
     );
 
     if (response.affectedRows !== 1) {
-        errors.conflictError('Error al borrar la demanda', 'DEMAND_DELETE_ERROR');
+        errors.conflictError('Error trying to delete demand', 'DEMAND_DELETE_ERROR');
     }
 
     return response;
@@ -105,7 +105,7 @@ export const deleteFile = async (entity_id, entity_type) => {
     );
 
     if (response.affectedRows !== 1) {
-        errors.conflictError('Error al borrar el archivo', 'FILE_DELETE_ERROR');
+        errors.conflictError('Error trying to delete file', 'FILE_DELETE_ERROR');
     }
 
     return response;

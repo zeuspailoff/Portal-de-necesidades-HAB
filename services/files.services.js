@@ -1,10 +1,9 @@
 import getPool from '../db/getPool.js';
-import path from 'path';
 import fs from 'fs/promises';
 import randomstring from 'randomstring';
 import errors from '../helpers/errors.helper.js'
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { dirname, path } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -16,11 +15,11 @@ const saveFile = async (file, entity_type) =>{
     const fileExtension = path.extname(file.originalname).toLowerCase();
         
     if(!['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.png', '.jpg', '.jpeg'].includes(fileExtension.toLowerCase())){
-        errors.notAuthorizedError("El archivo no es valido", 'FILE_NOT_VALID_ERROR')
+        errors.notAuthorizedError("Invalid file", 'FILE_NOT_VALID_ERROR')
     }
 
     if(file.size > 5000000){
-        errors.notAuthorizedError("El archivo es demasiado grande", 'FILE_TOO_BIG_ERROR')
+        errors.notAuthorizedError("File is too big", 'FILE_TOO_BIG_ERROR')
     }
     
     const fileName = randomstring.generate({
@@ -43,7 +42,7 @@ export const insertFile = async (entity_id, entity_type, src) => {
     );
 
     if (response.affectedRows!== 1) {
-        errors.conflictError('Error al insertar el archivo', 'FILE_INSERT_ERROR');
+        errors.conflictError('Error trying to insert file', 'FILE_INSERT_ERROR');
     }
 
     return response;

@@ -16,7 +16,7 @@ const main = async (req, res, next) => {
 
         res.send({
             status: 200,
-            message: 'User inserted successfully😁',
+            message: 'New user inserted successfully',
             data: {
                 "id:": response.insertId,
                 "username": req.body.username,
