@@ -1,19 +1,8 @@
-- PONER COMUNICACION EN INGLES
+// PONER COMUNICACION EN INGLES
 
------------------------------- Sefano Feedback -----------------------------------------------
-
-------------------------------preguntas a stefano --------------------------------------------
-
-
--------------------------------------mas adelante depende del front-----------------------------------------------------------
 
 revisar el orden de eliminación de las tablas en initDB, probar init BD con datos en el db
 si el file asociado al usuario es el avatar, pondría el campo avatar directamente en la tabla usuarios
-
-en general cuando se "implementa" la validación (vuestro caso con Joi) hay que mirar la BD.
-
-bien el correo de activación usuario. Poner en .env una variable de entorno con valor: http://localhost:3050/users/validate/ esto porque cuando tendréis el Front, la url en el correo será la de una página de React no del Back. Esta hará la petición al back.
-
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 //hacer testing porque por ejemplo la api permite obtener proposal de una demands borrada

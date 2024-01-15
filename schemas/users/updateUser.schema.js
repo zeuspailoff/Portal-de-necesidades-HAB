@@ -7,7 +7,7 @@ const updateUserSchema = joi.object({
     lastname: joi.string().min(1).max(50).required().messages(joiMsg),
     username: joi.string()
         .min(3)
-        .max(30)
+        .max(50)
         .required()
         .pattern(/^\S+$/)
         .messages({ ...joiMsg.errorMsg, ...joiMsg.errorMsgUsername }),
@@ -18,8 +18,7 @@ const updateUserSchema = joi.object({
     email: joi.string().email().required().messages(joiMsg),
     biography: joi.string().min(5).max(1000).allow('').messages(joiMsg),
     birthdate: joi.date().iso().required().messages(joiMsg),
-    phone: joi.string().min(5).max(15).required().messages(joiMsg),
-    files: joi.array().allow('').items(joi.string().min(10).max(1000).messages(joiMsg)),
+    phone: joi.string().min(5).max(20).required().messages(joiMsg),
 });
 
 export default updateUserSchema;
