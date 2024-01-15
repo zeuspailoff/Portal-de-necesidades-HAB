@@ -4,12 +4,10 @@ import { deleteProposalById } from "../../controllers/proposal.controller.js";
 
 const main = async (req, res, next) => {
 
-    
-    const { proposal_id } = req.body;
-    
-    try {
-        await validateSchema(deleteProposalSchema, req.body);
 
+    const { proposal_id } = req.proposal.id;
+
+    try {
         await deleteProposalById(proposal_id);
 
         res.send({

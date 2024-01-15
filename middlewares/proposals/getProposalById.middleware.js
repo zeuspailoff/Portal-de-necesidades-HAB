@@ -1,14 +1,11 @@
-import validateSchema from "../../helpers/validationSchema.helper.js";
-import getProposalByIdSchema from "../../schemas/proposals/getProposalById.schema.js";
 import { getProposal } from "../../controllers/proposal.controller.js";
 
 const main = async (req, res, next) => {
 
 
-    const { proposal_id } = req.params;
+    const proposal_id = req.proposal.id;
 
     try {
-        await validateSchema(getProposalByIdSchema, req.body);
 
         const proposals = await getProposal(proposal_id);
 

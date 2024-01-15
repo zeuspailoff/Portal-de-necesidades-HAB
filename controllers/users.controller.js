@@ -41,8 +41,6 @@ export const recoverPassword = async (email) => {
 export const findOrFailUserById = async (id) => {
     const response = await getUserById(id);
 
-    //TODO: chequear que el usuario que pido sea el mio, si es el mio traer toda la data que pide users/update, sino devolver solo informacion publica.
-
     return response;
 }
 
@@ -56,9 +54,9 @@ export const deleteUserById = async (id) => {
     return response;
 }
 
-export const updateUserById = async (id, username, email, password, biography, birthdate, phone, name, lastname, files) => {
+export const updateUserById = async (id, username, password, biography, birthdate, phone, name, lastname, files) => {
 
-    const response = await updateUser(id, username, email, password, biography, birthdate, phone, name, lastname);
+    const response = await updateUser(id, username, password, biography, birthdate, phone, name, lastname);
 
     const filesSrc = { insertId: response.insertId, profile_picture: [] }
 
@@ -70,7 +68,7 @@ export const updateUserById = async (id, username, email, password, biography, b
         const profile_picture = await saveFile(files[0], entity_type);
 
         await replaceUserAvatar(entity_id, profile_picture)
-        
+
         response.avatar = profile_picture;
     }
     return response

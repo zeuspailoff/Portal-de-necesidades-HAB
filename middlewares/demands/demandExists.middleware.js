@@ -2,7 +2,7 @@ import { demandAlreadyExists } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
 
-    const { demand_id } = req.params;
+    const { demand_id } = req.params || req.body;
 
     try {
 

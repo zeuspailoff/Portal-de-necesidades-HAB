@@ -73,19 +73,6 @@ export const validateUser = async (registrationCode) => {
   }
 }
 
-// username ,
-//     email ,
-//     biography
-// birthdate DATE,
-//     phone ,
-//     name
-// lastname
-// created_at
-//avatar
-//demandas
-//proposals hechas
-
-
 export const getUserByEmailOrUsername = async (email) => {
   const pool = await getPool()
 
@@ -135,14 +122,59 @@ export const getUserById = async (id) => {
   const pool = await getPool();
 
   const [response] = await pool.query(
-    'SELECT * FROM users WHERE id =? and deleted_at IS NULL',
-    [id]
+    ` SELECT 
+      u.username,
+      u.biography,
+      u.created_at,
+      fu.src as avatarSrc,
+      d.*,
+      COUNT(p.id) as entries
+      FROM 
+          users u
+      LEFT JOIN 
+          files fu ON u.id = fu.user_id
+      LEFT JOIN 
+          demands d ON u.id = d.users_id AND d.deleted_at IS NULL
+      LEFT JOIN 
+          proposals p ON u.id = p.users_id
+      WHERE 
+          u.id = ? AND u.deleted_at IS NULL
+      GROUP BY 
+          u.id, fu.id, d.id;
+    `, [id]
   );
 
   if (response.length === 0) {
     errors.notFoundError('User not found', 'USER_NOT_FOUND');
   }
   return response[0];
+}
+
+export const getOwnUser = async (id) => {
+  const pool = await getPool();
+  const [response] = await pool.query(
+    `SELECT 
+      u.username,
+      u.lastname,
+      u.name,
+      u.phone,
+      u.birthdate,
+      u.biography,
+      fu.src as avatarSrc,
+    FROM 
+      users u
+    LEFT JOIN 
+      files fu ON u.id = fu.user_id
+    WHERE id =? and deleted_at IS NULL
+    `, [id]
+  );
+
+  if (response.length === 0) {
+    errors.notFoundError('User not found', 'USER_NOT_FOUND');
+  }
+
+  return response;
+
 }
 
 export const updateUserPassword = async (id, password, recovery) => {
@@ -186,14 +218,14 @@ export const deleteUser = async (id) => {
 
 }
 
-export const updateUser = async (id, username, email, password, biography, birthdate, phone, name, lastname) => {
+export const updateUser = async (id, username, password, biography, birthdate, phone, name, lastname) => {
   const pool = await getPool();
 
   const passwordHashed = await bcrypt.hash(password, 5)
 
   const [response] = await pool.query(
-    'UPDATE users SET username=?, email=?, password=?, biography=?, birthdate=?, phone=?, name=?, lastname=? WHERE id=?',
-    [username, email, passwordHashed, biography, birthdate, phone, name, lastname, id]
+    'UPDATE users SET username=?, password=?, biography=?, birthdate=?, phone=?, name=?, lastname=? WHERE id=?',
+    [username, passwordHashed, biography, birthdate, phone, name, lastname, id]
   );
 
   if (response.affectedRows !== 1) {
@@ -203,22 +235,6 @@ export const updateUser = async (id, username, email, password, biography, birth
   return response;
 
 }
-
-export const getOwnUser = async (id) => {
-  const pool = await getPool();
-  const [response] = await pool.query(
-    'SELECT * FROM users WHERE id =? and deleted_at IS NULL',
-    [id]
-  );
-
-  if (response.length === 0) {
-    errors.notFoundError('User not found', 'USER_NOT_FOUND');
-  }
-
-  return response;
-
-}
-
 export const setPasswordRecover = async (user_id, recoverPassCode) => {
   const pool = await getPool();
 

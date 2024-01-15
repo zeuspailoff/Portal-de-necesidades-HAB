@@ -9,7 +9,7 @@ export const insertNewDemand = async (user_id, title, description) => {
         [user_id, title, description]
     );
 
-    if (response.affectedRows!== 1) {
+    if (response.affectedRows !== 1) {
         errors.conflictError('Error al insertar la demanda', 'DEMAND_INSERT_ERROR');
     }
 
@@ -19,7 +19,7 @@ export const insertNewDemand = async (user_id, title, description) => {
 export const selectDemandById = async (id) => {
     const pool = await getPool();
     const [response] = await pool.query(
-    `SELECT 
+        `SELECT 
         d.description, d.is_closed, d.category_id, d.created_at, 
         u.email as creator_email,
         u.username as creator_username,
@@ -107,7 +107,7 @@ export const selectAllDemandsByUserId = async (userId) => {
                 user_id =? 
             AND
                 d.deleted_at IS NULL;
-        `,[userId,userId]
+        `, [userId, userId]
     );
 
     if (response.length == 0) {
@@ -124,7 +124,7 @@ export const updateDemandStatus = async (demandId, status) => {
         [status, demandId]
     );
 
-    if (response.affectedRows!== 1) {
+    if (response.affectedRows !== 1) {
         errors.conflictError('Error al actualizar la demanda', 'DEMAND_UPDATE_ERROR');
     }
 
@@ -138,7 +138,7 @@ export const editDemand = async (demandId, title, description) => {
         [title, description, demandId]
     );
 
-    if (response.affectedRows!== 1) {
+    if (response.affectedRows !== 1) {
         errors.conflictError('Error al actualizar la demanda', 'DEMAND_UPDATE_ERROR');
     }
 
@@ -191,6 +191,6 @@ export const demandExists = async (demand_id) => {
     }
 
     return response;
-} 
+}
 
 

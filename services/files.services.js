@@ -64,13 +64,13 @@ export const replaceUserAvatar = async (user_id, src) => {
     if (previousAvatar.length !== 1) {
         errors.conflictError('Error al editar el archivo', 'FILE_EDIT_ERROR');
     }
-    
+
     const [response] = await pool.query(
         `UPDATE files SET src =? WHERE user_id =?`,
         [src, user_id]
     );
 
-    if (response.affectedRows!== 1) {
+    if (response.affectedRows !== 1) {
         errors.conflictError('Error al editar el archivo', 'FILE_EDIT_ERROR');
     }
 
@@ -79,11 +79,38 @@ export const replaceUserAvatar = async (user_id, src) => {
     return response;
 }
 
+export const deleteFile = async (file_id, src) => {
+    const pool = await getPool();
+
+    const [previousFile] = await pool.query(
+        'SELECT src FROM files WHERE id =?'
+        [file_id]
+    )
+
+    if (previousFile.affectedRows == 0) {
+        errors.conflictError('There are no files to delete', 'NO_EXISTING_FILES_ERROR');
+    }
+
+    const [response] = await pool.query(
+        'DELETE FROM files WHERE id =?'
+        [file_id]
+    )
+    if (response.affectedRows == 0) {
+        errors.conflictError('Error trying to delete file', 'FILE_DELETE_ERROR');
+    }
+
+    await fs.unlink(path.join(__dirname, previousFile[0].src));
+
+    return response;
+
+}
+
 
 
 export default {
     saveFile,
     insertFile,
-    replaceUserAvatar
+    replaceUserAvatar,
+    deleteFile
 }
 

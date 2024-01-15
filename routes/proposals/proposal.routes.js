@@ -4,7 +4,6 @@ import {
     newProposal,
     editProposalById,
     getProposalById,
-    getProposalByDemandId,
     proposalExists,
     isOwner,
     authUser,
@@ -20,15 +19,14 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 
-
 const router = express.Router();
 
-router.get('/proposals/:demand_id/proposals', getProposalByDemandId);
-router.post('/demands/:demand_id/proposals', upload.array('files', 5), demandExists, isNotOwner, authUser, newProposal);
-router.get('/proposals/:proposal_id', getProposalById);
+
+router.post('/proposals/', upload.array('files', 5), demandExists, isNotOwner, authUser, newProposal);
+router.get('/proposals/:proposal_id', proposalExists, getProposalById);
 router.put('/proposals/:proposal_id/edit', upload.array('files', 5), authUser, proposalExists, isOwner, editProposalById);
-router.put('/proposals/updateStatus', authUser, proposalExists, isOwner, updateProposalStatus);
+router.put('/proposals/:proposal_id/updateStatus', authUser, proposalExists, isOwner, updateProposalStatus);
 router.post('/proposals/:proposal_id/votes', authUser, proposalExists, isNotOwner, votesProposal);
-router.delete('/proposals/delete', authUser, proposalExists, isOwner, deleteProposal);
+router.delete('/proposals/:porposal_id', authUser, proposalExists, isOwner, deleteProposal);
 
 export default router;

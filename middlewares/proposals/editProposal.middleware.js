@@ -6,16 +6,17 @@ const main = async (req, res, next) => {
 
     const { proposal_id } = req.proposal.id;
     const { description } = req.body;
-    
+    const { files } = req.files;
+
     try {
         await validateSchema(editProposalSchema, req.body);
-        
-        await editProposalById(proposal_id, description);
+
+        await editProposalById(proposal_id, description, files);
 
         res.send({
             status: 200,
             message: 'Propousal was edited successfully😁',
-            data:{
+            data: {
                 id: proposal_id,
                 description: description
             }

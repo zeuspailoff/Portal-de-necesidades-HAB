@@ -4,12 +4,11 @@ import { getDemandById } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
 
-    
-    const { id } = req.body;
-    
+
+    const { id } = req.params;
+
     try {
-        await validateSchema(getDemandByIdSchema, req.body);
-        
+
         const response = await getDemandById(id);
         res.send({
             status: 200,

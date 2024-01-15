@@ -1,14 +1,21 @@
-import validateSchema from '../../helpers/validationSchema.helper.js'
-import deleteUserSchema from '../../schemas/users/deleteUser.schema.js'
 import { deleteUserById } from '../../controllers/users.controller.js'
+import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.helper.js';
 
 const main = async (req, res, next) => {
 
 
-    const { id } = req.body;
+    const { id } = req.params;
+    const loggedUserId = extractUserIdFromToken(req.headers.auth_token)
 
     try {
-        await validateSchema(deleteUserSchema, req.body);
+
+        if (id !== loggedUserId) {
+            return res.status(401).send({
+                status: 401,
+                message: 'Unauthorized'
+            })
+        }
+
         const response = await deleteUserById(id);
         res.send({
             status: 200,

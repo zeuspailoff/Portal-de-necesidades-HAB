@@ -1,15 +1,21 @@
-import validateSchema from '../../helpers/validationSchema.helper.js';
-import getUserByIdSchema from '../../schemas/users/getUserById.schema.js';
-import { findOrFailUserById } from '../../controllers/users.controller.js';
+import { findOrFailUserById, getOwnUserById } from '../../controllers/users.controller.js';
+import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.helper.js';
 
 const main = async (req, res, next) => {
-
-    
     const { id } = req.params;
-    
+
+    const loggedUserId = extractUserIdFromToken(req.headers.auth_token)
+
+
+
     try {
-        await validateSchema(getUserByIdSchema, req.params);
-        const response = await findOrFailUserById(id);
+
+        if (id !== loggedUserId) {
+            const response = await findOrFailUserById(id);
+        } else {
+            const response = await getOwnUserById(id);
+        }
+
         res.send({
             status: 200,
             message: `User ${id} fetched successfully`,

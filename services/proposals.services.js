@@ -73,7 +73,7 @@ const getProposalById = async (id) => {
             users u ON p.users_id = u.id
         WHERE 
             p.id = ? 
-            AND p.deleted_at IS NULL;`,[id]
+            AND p.deleted_at IS NULL;`, [id]
     );
 
     if (response.length < 1) {
@@ -88,7 +88,7 @@ const getProposalByDemandId = async (demand_id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
-    `
+        `
         SELECT 
             p.*,
             u.username as creator_username,
@@ -114,7 +114,7 @@ const getProposalByDemandId = async (demand_id) => {
         WHERE 
             p.demand_id = ? 
             AND p.deleted_at IS NULL;
-    `,[demand_id]
+    `, [demand_id]
     );
     if (response.length < 1) {
         errors.entityNotFound('Proposal');

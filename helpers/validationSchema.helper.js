@@ -1,4 +1,6 @@
-const validateSchema = async (schema, body) =>{
+
+
+const validateSchema = async (schema, body) => {
     try {
         await schema.validateAsync(body);
     } catch (error) {

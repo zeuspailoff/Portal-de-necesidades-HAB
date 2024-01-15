@@ -6,7 +6,8 @@ import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.helper.
 const main = async (req, res, next) => {
 
     let recovery = '';
-    let { user_id, password } = req.body;
+    let { password } = req.body;
+    const user_id = res.user?.id || req.params;
 
     if (res.hasOwnProperty('user')) {
         recovery = res.user.password_recovered
@@ -18,7 +19,7 @@ const main = async (req, res, next) => {
 
         if (loggedUserId !== user_id) {
             res.status(400).send({
-                status: 400,
+                status: 401,
                 message: `You don't have permission to modify this user's password.`,
 
             })
