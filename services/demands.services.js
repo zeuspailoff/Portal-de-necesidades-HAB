@@ -19,8 +19,8 @@ export const insertNewDemand = async (user_id, title, description) => {
 export const selectDemandById = async (id) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        `SELECT 
-        d.*, 
+    `SELECT 
+        d.description, d.is_closed, d.category_id, d.created_at, 
         u.email as creator_email,
         u.username as creator_username,
         p.*,
@@ -28,7 +28,8 @@ export const selectDemandById = async (id) => {
         AVG(pv.value) as voteAvg,
         fd.src as demandFileSrc,
         fp.src as proposalFileSrc,
-        fu.src as userFileSrc
+        fu.src as userFileSrc,
+        c.value as category
     FROM 
         demands d
     LEFT JOIN 
@@ -43,6 +44,8 @@ export const selectDemandById = async (id) => {
         files fp ON p.id = fp.proposal_id
     LEFT JOIN 
         files fu ON u.id = fu.user_id
+    LEFT JOIN
+        categories c ON d.category_id = c.id
     WHERE 
         d.id = ? AND d.deleted_at IS NULL
     GROUP BY 
@@ -59,8 +62,23 @@ export const selectDemandById = async (id) => {
 
 export const selectAllDemands = async () => {
     const pool = await getPool();
-    const [response] = await pool.query(
-        'SELECT * FROM demands WHERE deleted_at IS NULL'
+    const [response] = await pool.query(`
+        SELECT 
+            d.id,
+            d.title,
+            d.description,
+            d.is_closed,
+            c.name as category,
+            u.username as creator_username,
+        FROM 
+            demands d
+        LEFT JOIN 
+            users u ON d.users_id = u.id
+        LEFT JOIN
+            categories c ON d.category_id = c.id
+        WHERE 
+            d.deleted_at IS NULL;
+    `
     );
     if (response.length == 0) {
         errors.entityNotFound('Demand');
@@ -71,8 +89,25 @@ export const selectAllDemands = async () => {
 export const selectAllDemandsByUserId = async (userId) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'SELECT * FROM demands WHERE user_id = ? AND deleted_at IS NULL',
-        [userId]
+        `
+            SELECT 
+                d.id,
+                d.title,
+                d.description,
+                d.is_closed,
+                c.name as category,
+                u.username as creator_username,
+            FROM 
+                demands d
+            LEFT JOIN 
+                users u ON d.users_id =?
+            LEFT JOIN
+                categories c ON d.category_id = c.id
+            WHERE 
+                user_id =? 
+            AND
+                d.deleted_at IS NULL;
+        `,[userId,userId]
     );
 
     if (response.length == 0) {

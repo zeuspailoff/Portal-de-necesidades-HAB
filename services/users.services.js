@@ -38,7 +38,7 @@ export const insertNewUser = async (body, registrationCode) => {
   }
 }
 
-export const validateUser = async (registrationCode) => {//https://glovo.com/registrationUser?validateCode=320948239jdfsdjkfskdjf893jdfnbdi
+export const validateUser = async (registrationCode) => {
   const pool = await getPool()
 
   const [users] = await pool.query(
@@ -73,6 +73,19 @@ export const validateUser = async (registrationCode) => {//https://glovo.com/reg
   }
 }
 
+// username ,
+//     email ,
+//     biography
+// birthdate DATE,
+//     phone ,
+//     name
+// lastname
+// created_at
+//avatar
+//demandas
+//proposals hechas
+
+
 export const getUserByEmailOrUsername = async (email) => {
   const pool = await getPool()
 
@@ -88,11 +101,12 @@ export const getUserByEmailOrUsername = async (email) => {
   return users[0]
 }
 
-
 export const getUsers = async () => {
   const pool = await getPool()
 
-  const [users] = await pool.query('SELECT * FROM users WHERE deleted_at IS NULL');
+  const [users] = await pool.query(`
+    SELECT username, email,name,lastname FROM users WHERE deleted_at IS NULL
+  `);
 
   return users
 }
@@ -116,7 +130,6 @@ export const updatePasswordRecover = async (user) => {
 
   return recoverPassCode
 }
-
 
 export const getUserById = async (id) => {
   const pool = await getPool();
@@ -173,7 +186,6 @@ export const deleteUser = async (id) => {
 
 }
 
-
 export const updateUser = async (id, username, email, password, biography, birthdate, phone, name, lastname) => {
   const pool = await getPool();
 
@@ -207,7 +219,6 @@ export const getOwnUser = async (id) => {
 
 }
 
-
 export const setPasswordRecover = async (user_id, recoverPassCode) => {
   const pool = await getPool();
 
@@ -225,7 +236,7 @@ export const setPasswordRecover = async (user_id, recoverPassCode) => {
 
   return response;
 
-};
+}
 
 export const validateUserByRecoveryCode = async (recoverPassCode) => {
   const pool = await getPool()
@@ -251,6 +262,7 @@ export const validateUserByRecoveryCode = async (recoverPassCode) => {
   }
 
 }
+
 export const passwordRecoverUpdate = async (user) => {
   const recoverPassCode = randomstring.generate(10)
 

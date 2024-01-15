@@ -51,8 +51,29 @@ const getProposalById = async (id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
-        'SELECT p.*, (SELECT AVG(value) FROM proposals_votes WHERE proposal_id = p.id) as voteAvg, (SELECT COUNT(*) FROM proposals_votes WHERE proposal_id = p.id) as voteCount FROM proposals p WHERE p.id = ? AND p.deleted_at IS NULL;',
-        [id]
+        `SELECT 
+        p.id,
+        p.description,
+        p.is_correct,
+        p.created_at,
+        u.username as creator_username,
+            (SELECT AVG(value) 
+            FROM 
+                proposals_votes 
+            WHERE 
+                proposal_id = p.id) as voteAvg, 
+            (SELECT COUNT(*) 
+            FROM 
+                proposals_votes 
+            WHERE 
+                proposal_id = p.id) as voteCount 
+            FROM 
+                proposals p
+        LEFT JOIN 
+            users u ON p.users_id = u.id
+        WHERE 
+            p.id = ? 
+            AND p.deleted_at IS NULL;`,[id]
     );
 
     if (response.length < 1) {
@@ -67,14 +88,40 @@ const getProposalByDemandId = async (demand_id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
-        'SELECT p.*, (SELECT AVG(value) FROM proposals_votes WHERE demand_id = p.demand_id) as voteAvg, (SELECT COUNT(*) FROM proposals_votes WHERE demand_id = p.demand_id) as voteCount FROM proposals p WHERE p.demand_id = ? AND p.deleted_at IS NULL;',
-        [demand_id]
+    `
+        SELECT 
+            p.*,
+            u.username as creator_username,
+            d.title,
+            d.description,
+            df.src as demandFileSrc,
+            pf.src as proposalFileSrc,
+            uf.src as userFileSrc,
+            (SELECT AVG(value) FROM proposals_votes WHERE demand_id = p.demand_id) as voteAvg,
+            (SELECT COUNT(*) FROM proposals_votes WHERE demand_id = p.demand_id) as voteCount
+        FROM 
+            proposals p
+        LEFT JOIN 
+            users u ON p.users_id = u.id
+        LEFT JOIN 
+            demands d ON p.demand_id = d.id
+        LEFT JOIN 
+            files df ON d.id = df.demand_id AND df.proposal_id IS NULL
+        LEFT JOIN 
+            files pf ON p.id = pf.proposal_id
+        LEFT JOIN 
+            files uf ON u.id = uf.user_id
+        WHERE 
+            p.demand_id = ? 
+            AND p.deleted_at IS NULL;
+    `,[demand_id]
     );
     if (response.length < 1) {
         errors.entityNotFound('Proposal');
     }
     return response;
 };
+
 const insertVote = async (value, proposal_id, user_id, demand_id) => {
     const pool = await getPool();
 
