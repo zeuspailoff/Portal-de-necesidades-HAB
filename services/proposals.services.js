@@ -16,21 +16,6 @@ const newProposal = async (user_id, demand_id, description) => {
     return response;
 };
 
-const getAvgVotes = async (demand_id) => {
-    const pool = await getPool();
-    const [votes] = await pool.query(
-        'SELECT AVG(value) as voteAvg FROM proposals_votes WHERE demand_id = ?',
-        [demand_id]
-    )
-
-    if (votes.length < 1) {
-        errors.entityNotFound('La demanda no existe🔍')
-    }
-
-    return votes[0].voteAvg;
-}
-
-
 const deleteProposal = async (id) => {
 
     const pool = await getPool();
@@ -66,7 +51,7 @@ const getProposalById = async (id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
-        'SELECT * FROM proposals WHERE id =? and deleted_at IS NULL',
+        'SELECT p.*, (SELECT AVG(value) FROM proposals_votes WHERE proposal_id = p.id) as voteAvg, (SELECT COUNT(*) FROM proposals_votes WHERE proposal_id = p.id) as voteCount FROM proposals p WHERE p.id = ? AND p.deleted_at IS NULL;',
         [id]
     );
 
@@ -82,7 +67,7 @@ const getProposalByDemandId = async (demand_id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
-        'SELECT * FROM proposals WHERE demand_id = ? and deleted_at IS NULL',
+        'SELECT p.*, (SELECT AVG(value) FROM proposals_votes WHERE demand_id = p.demand_id) as voteAvg, (SELECT COUNT(*) FROM proposals_votes WHERE demand_id = p.demand_id) as voteCount FROM proposals p WHERE p.demand_id = ? AND p.deleted_at IS NULL;',
         [demand_id]
     );
     if (response.length < 1) {
@@ -158,6 +143,5 @@ export {
     getProposalByDemandId,
     proposalExists,
     updateProposalStatus,
-    insertVote,
-    getAvgVotes
+    insertVote
 };

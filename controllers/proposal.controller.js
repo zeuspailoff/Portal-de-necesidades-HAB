@@ -18,12 +18,6 @@ export const createProposal = async (demand_id, description, files = null) => {
     return filesSrc;
 };
 
-export const getAvgVotesById = async (demand_id) => {
-    const response = await getAvgVotes(demand_id);
-    return response;
-};
-
-
 export const deleteProposalById = async (id) => {
     const response = await deleteProposal(id);
     return response;
@@ -58,6 +52,7 @@ export const updateProposalStatusById = async (id) => {
     const response = await updateProposalStatus(id);
     return response;
 };
+
 export const voteProposal = async (value, proposal_id, user_id, demand_id) => {
     const voteAvg = await insertVote(value, proposal_id, user_id, demand_id);
     return voteAvg;

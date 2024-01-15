@@ -19,7 +19,34 @@ export const insertNewDemand = async (user_id, title, description) => {
 export const selectDemandById = async (id) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'SELECT * FROM demands WHERE id = ? AND deleted_at IS NULL',
+        `SELECT 
+        d.*, 
+        u.email as creator_email,
+        u.username as creator_username,
+        p.*,
+        COUNT(pv.id) as voteCount,
+        AVG(pv.value) as voteAvg,
+        fd.src as demandFileSrc,
+        fp.src as proposalFileSrc,
+        fu.src as userFileSrc
+    FROM 
+        demands d
+    LEFT JOIN 
+        users u ON d.users_id = u.id
+    LEFT JOIN 
+        proposals p ON d.id = p.demand_id AND p.deleted_at IS NULL
+    LEFT JOIN 
+        proposals_votes pv ON p.id = pv.proposal_id
+    LEFT JOIN 
+        files fd ON d.id = fd.demand_id AND fd.proposal_id IS NULL
+    LEFT JOIN 
+        files fp ON p.id = fp.proposal_id
+    LEFT JOIN 
+        files fu ON u.id = fu.user_id
+    WHERE 
+        d.id = ? AND d.deleted_at IS NULL
+    GROUP BY 
+        d.id, u.id, p.id, fd.id, fp.id, fu.id;`,
         [id]
     );
 
@@ -93,6 +120,12 @@ export const deleteDemand = async (id) => {
     if (response.affectedRows !== 1) {
         errors.conflictError('Error al borrar la demanda', 'DEMAND_DELETE_ERROR');
     }
+
+    await pool.query(
+        'UPDATE proposals SET deleted_at = NOW() WHERE demand_id =?',
+        [id]
+    );
+
 
     return response;
 }

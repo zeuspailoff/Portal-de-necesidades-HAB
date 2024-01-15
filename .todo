@@ -51,12 +51,14 @@ estas dos últimas tendrían que devolver los files y el username o email del us
 
 en general, si pido el detalle de una demanda o una respuesta, tendría que obtener más informaciones que en el "listado" (tenéis que pensar al Front y a lo que queréis visualizar)
 
-cambiar PUT /proposals/edit por /proposals/:proposal_id, nada en body
+cambiar * en todas las consultas, por los datos necesarios en cada consulta
 
-cambiar POST /proposals/votes por /proposals/:proposal_id/ y en el body solo value
+//cambiar PUT /proposals/edit por /proposals/:proposal_id, nada en body
 
-cuando voto una respuesta devolver la media que tiene en esta respuesta, la media de todas las respuestas de una demanda puedo devolverla cuando pido el listado de demandas ( para cada demanda)
+//cambiar POST /proposals/votes por /proposals/:proposal_id/ y en el body solo value
 
-No hace falta este endpoint: proposals/AvgVotesById
+//cuando voto una respuesta devolver la media que tiene en esta respuesta, la media de todas las respuestas de una demanda puedo devolverla cuando pido el listado de demandas ( para cada demanda)
 
-hacer testing porque por ejemplo la api permite obtener proposal de una demands borrada
+//No hace falta este endpoint: proposals/AvgVotesById
+
+//hacer testing porque por ejemplo la api permite obtener proposal de una demands borrada

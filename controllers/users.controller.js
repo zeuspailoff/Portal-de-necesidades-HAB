@@ -29,7 +29,6 @@ export const createNewUser = async (body, registrationCode, files) => {
 
 }
 
-
 export const recoverPassword = async (email) => {
     const user = await getUserByEmailOrUsername(email)
     const { username } = user
@@ -38,7 +37,6 @@ export const recoverPassword = async (email) => {
 
     await mailToRecoverPassword(username, email, recoverPassCode)
 }
-
 
 export const findOrFailUserById = async (id) => {
     const response = await getUserById(id);
@@ -92,7 +90,6 @@ export const validateUserRecoveryCode = async (recoverPassCode) => {
     const response = await validateUserByRecoveryCode(recoverPassCode);
     return response;
 };
-
 
 export const getAllUsers = async () => {
     const response = await getUsers();
