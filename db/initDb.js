@@ -37,6 +37,7 @@ const { MYSQL_DB } = process.env;
 const dropVotesTableQuery = 'DROP TABLE IF EXISTS proposals_votes';
 const dropUsersTableQuery = 'DROP TABLE IF EXISTS users';
 const dropDemandsTableQuery = 'DROP TABLE IF EXISTS demands';
+const dropCategoriesTableQuery = 'DROP TABLE IF EXISTS categories';
 const dropProposalsTableQuery = 'DROP TABLE IF EXISTS proposals';
 const dropFilesTableQuery = 'DROP TABLE IF EXISTS files';
 
@@ -63,17 +64,26 @@ CREATE TABLE IF NOT EXISTS users (
 );
 `;
 
+const createCategoriesTableQuery = `
+CREATE TABLE IF NOT EXISTS categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    value VARCHAR(255)
+);
+`;
+
 const createDemandsTableQuery = `
 CREATE TABLE IF NOT EXISTS demands (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     title VARCHAR(255),
     description TEXT,
-    status BOOLEAN default 0,
+    status BOOLEAN DEFAULT 0,
+    category_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 `;
 
@@ -97,13 +107,15 @@ CREATE TABLE IF NOT EXISTS files (
     id INT AUTO_INCREMENT PRIMARY KEY,
     entity_type VARCHAR(255),
     src VARCHAR(255),
-    entity_id INT,
+    user_id INT,
+    demand_id INT,
+    proposal_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
-    FOREIGN KEY (entity_id) REFERENCES proposals(id) ON DELETE CASCADE,
-    FOREIGN KEY (entity_id) REFERENCES demands(id) ON DELETE CASCADE,
-    FOREIGN KEY (entity_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (proposal_id) REFERENCES proposals(id) ON DELETE CASCADE,
+    FOREIGN KEY (demand_id) REFERENCES demands(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 `;
 const createVotesTableQuery = `
@@ -131,9 +143,11 @@ const initDb = async () => {
     await pool.query(dropFilesTableQuery);
     await pool.query(dropProposalsTableQuery);
     await pool.query(dropDemandsTableQuery);
+    await pool.query(dropCategoriesTableQuery);
     await pool.query(dropUsersTableQuery);
 
     await pool.query(createUsersTableQuery);
+    await pool.query(createCategoriesTableQuery);
     await pool.query(createDemandsTableQuery);
     await pool.query(createProposalsTableQuery);
     await pool.query(createFilesTableQuery);

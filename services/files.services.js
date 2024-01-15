@@ -11,8 +11,6 @@ const __dirname = dirname(__filename);
 
 const saveFile = async (file, entity_type) => {
 
-    setUpFolders();
-
     const fileExtension = path.extname(file.originalname).toLowerCase();
 
     const validAllFiles = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.png', '.jpg', '.jpeg'];
@@ -38,17 +36,19 @@ const saveFile = async (file, entity_type) => {
     }) + fileExtension;
 
     const filePath = path.join(__dirname, '..', 'public', 'uploads', entity_type, fileName);
+    const relativePath = path.join('public', 'uploads', entity_type, fileName);
 
     await fs.writeFile(filePath, file.buffer);
 
-    return filePath;
+    return relativePath;
 }
 
 export const insertFile = async (entity_id, entity_type, src) => {
+    const column = entity_type.slice(0, -1) + '_id';
     const pool = await getPool();
     const [response] = await pool.query(
-        'INSERT INTO files (entity_type, src, entity_id) VALUES (?,?,?)',
-        [entity_type, src, entity_id]
+        `INSERT INTO files (${column}, src) VALUES (?,?,?)`,
+        [entity_id, src]
     );
 
     if (response.affectedRows !== 1) {
@@ -58,30 +58,39 @@ export const insertFile = async (entity_id, entity_type, src) => {
     return response;
 }
 
-const setUpFolders = () => {
-    const publicFolderPath = path.join(__dirname, 'public');
-    const uploadsFolderPath = path.join(publicFolderPath, 'uploads');
-    const demandsFolderPath = path.join(uploadsFolderPath, 'demands');
-    const proposalsFolderPath = path.join(uploadsFolderPath, 'proposals');
+export const replaceUserAvatar = async (user_id, src) => {
+    const pool = await getPool();
 
-    const verifyAndCreate = (carpeta) => {
-        try {
-            if (!fs.existsSync(carpeta)) {
-                fs.mkdirSync(carpeta, { recursive: true });
-            }
-        } catch (error) {
+    const [previousAvatar] = await pool.query(
+        `SELECT src FROM files WHERE user_id =?`,
+        [user_id]
+    )
+    if (previousAvatar.length !== 1) {
+        errors.conflictError('Error al editar el archivo', 'FILE_EDIT_ERROR');
+    }
+    
+    const [response] = await pool.query(
+        `UPDATE files SET src =? WHERE user_id =?`,
+        [src, user_id]
+    );
 
-        }
+    if (response.affectedRows!== 1) {
+        errors.conflictError('Error al editar el archivo', 'FILE_EDIT_ERROR');
     }
 
-    verifyAndCreate(publicFolderPath);
-    verifyAndCreate(uploadsFolderPath);
-    verifyAndCreate(demandsFolderPath);
-    verifyAndCreate(proposalsFolderPath);
+    await fs.unlink(path.join(__dirname, previousAvatar[0].src));
+
+
+    
+    
+
+    return response;
 }
+
 
 
 export default {
     saveFile,
-    insertFile
+    insertFile,
+    replaceUserAvatar
 }
