@@ -1,6 +1,6 @@
 import { newProposal, deleteProposal, editProposal, getProposalById, getProposalByDemandId, proposalExists, updateProposalStatus, insertVote, getAvgVotes } from '../services/proposals.services.js';
 import insertManyFiles from '../helpers/insertFilesInEntity.helper.js';
-import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.js';
+import extractUserIdFromToken from '../helpers/extractUserIdFromToken.helper.js';
 
 const entity_type = 'proposals'
 

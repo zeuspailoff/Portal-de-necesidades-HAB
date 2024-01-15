@@ -1,12 +1,15 @@
 import validateSchema from '../../helpers/validationSchema.helper.js'
 import newDemandSchema from '../../schemas/demands/newDemand.schema.js';
-import { createDemand }  from '../../controllers/demands.controller.js';
+import { createDemand } from '../../controllers/demands.controller.js';
+import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.helper.js';
 
 const main = async (req, res, next) => {
 
-    const { user_id, title, description } = req.body;
+
+    const user_id = extractUserIdFromToken(req.headers.auth_token);
+    const { title, description } = req.body;
     const files = req.files;
-    
+
     try {
 
         await validateSchema(newDemandSchema, req.body);

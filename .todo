@@ -42,16 +42,17 @@ Devolvería el número de repuestas que tiene cada una, si contesté o no y, si 
 /demands/edit el id de la demanda en req.props no en el body
 /demands/delete el id de la demanda en req.props no en el body; valorar si eliminar file en uploads
 en los enpoint proposals valen las consideraciones de antes, no vuelvo a repetir los mismos problemas
-cambiar POST /proposals/public por /demands/:demand_id/proposals
 
-cambiar GET /proposals/get por /proposals/:proposal_id y nada en body
+//cambiar POST /proposals/public por /demands/:demand_id/proposals
 
-cambiar GET /proposals/bydemand por /demands/:demand_id/proposals,  nada en body
+//cambiar GET /proposals/get por /proposals/:proposal_id y nada en body
+
+//cambiar GET /proposals/bydemand por /demands/:demand_id/proposals,  nada en body
 estas dos últimas tendrían que devolver los files y el username o email del usuario, la media votos, si voté o no (de la única o del listado)
 
-en general, si pido el detalle de una demanda o una respuesta, tendría que obtener más informaciones que en el "listado" (tenéis que pensar al Front y a lo que queréis visualizar)
+//en general, si pido el detalle de una demanda o una respuesta, tendría que obtener más informaciones que en el "listado" (tenéis que pensar al Front y a lo que queréis visualizar)
 
-cambiar * en todas las consultas, por los datos necesarios en cada consulta
+//cambiar * en todas las consultas, por los datos necesarios en cada consulta
 
 //cambiar PUT /proposals/edit por /proposals/:proposal_id, nada en body
 
@@ -62,3 +63,85 @@ cambiar * en todas las consultas, por los datos necesarios en cada consulta
 //No hace falta este endpoint: proposals/AvgVotesById
 
 //hacer testing porque por ejemplo la api permite obtener proposal de una demands borrada
+
+
+poner el puerto como configurable en .env, no fijo a 8080 (util para el deploy)
+
+bien la organización del código
+
+Habría puesto en el README.md las instrucciones para arrancar la API
+
+si getPool va en error generar un error específico, no solo console.log
+
+instalar nodemon como dependencia de tipo desarrollo
+
+poner username y email como UNIQUE en la tabla users
+
+Puedo configurar el nombre del DB en .env con MYSQL_DB y luego se usa un nombre fijo en initDB
+
+Falta process.exit para salir de initDB. exit(1) en caso de error, exit(0) ok.
+
+eliminar o comentar los console.log de debug
+
+eliminar comentarios innecesarios
+
+Falta middleware routa no encontrada y middleware de los errores
+
+va en error cuando creo usuario: Error: ENOENT: no such file or directory, open '/home/stefano/bootcamps/JSB28RT_recursos/proyectos/2/a/Portal-de-necesidades-HAB/public/uploads/users/1YBX69GePe.jpg'.
+en la tabla proposals_votes no hace falta la fk a demands(id). Una respuesta está ya asociada a una pregunta. Además, añadiría el vínculo UNIQUE(user_id,  proposal_id) para que no se puedan hacer dos insert con el mismo valor de user_id,  proposal_id; o sea, el DB no permite votar dos veces a un usuario la misma respuesta
+en demands el campo status, que es boolean, lo renombraría en is_closed o algo parecido
+
+revisar el orden de eliminación de las tablas en initDB, probar init BD con datos en el db
+
+si el file asociado al usuario es el avatar, pondría el campo avatar directamente en la tabla usuarios
+
+no es posible definir una FK dinámica en un DB relacional. Un ORM es un "layer" al DB que permite simplificar "el trabajo" con el mismo, pero lo que hay debajo el SQL.  En la tabla file:
+quitar entity_type
+crear campo proposal_id como FK a proposals(id), nullable
+crear campo demands_id como FK a demands(id), nullable
+ejemplo: si el file es de una demanda, pongo en demands_id el id de la demanda
+
+en general cuando se "implementa" la validación (vuestro caso con Joi) hay que mirar la BD. No tiene sentido name: joi.string().min(1).max(50).required() cuando el campo es un varchar(255) y no requerido. Revisar todos los esquemas Joi
+en todos los casos que devolvemos un file devolver solo users/xGZOh8GS4L.png (path dentro el directorio estático). Lo mismo guardo en el DB. Ahora se devuelve el path absoluto que es además un problema de seguridad.
+falta definir public/uploads como directorio estático. Cuando lo tengáis, podréis acceder, por ejemplo desde browser, a las imágenes o files de esta forma "http://localhost:8080/users/xGZOh8GS4L.png"
+En el el middleware del los errores el status code está en el err.httpStatus no en res.statusCode. En caso de error creo que ahora se devuelva siempre 500
+
+en el .env.exaple falta NODE_ENV
+
+bien el correo de activación usuario. Poner en .env una variable de entorno con valor: http://localhost:3050/users/validate/ esto porque cuando tendréis el Front, la url en el correo será la de una página de React no del Back. Esta hará la petición al back.
+puedo clicar infinitas veces el enlace de validación y siempre da "User with ID: 1 validated successfully". Si código no existe o usuario ya validado dar mensaje específico. Además, borrar el registración code en el DB una vez validado el usuario
+la http://localhost:8080/users/getById/1 no tiene que devolver todos los datos. ¡Problema de seguridad! No devolver pwd, deletd, reg_code, active. Un usuario no validado no se puede devolver, tengo que devolver usuario no encontrado. Si el usuario de lo que pido los datos no coincide con el id en el token, devuelvo menos informaciones (ejemplo no birthdate, phone, ...  ). Si el usuario es lo del token devolver las informaciones que necesita /users/update (para proponer en React los datos anteriores
+)
+las mismas consideraciones de antes también en getAllUsers
+
+en delete user el id del usuario no lo puedo pasar por req.params. Asi todo el mundo que se loguea puede eliminar otro usuario. Problema de seguridad. El id del usuario se lee desde token
+eliminar router.get('/users', authUser, userExists, getOwnUser), no funciona y ya tenemos /users/getById/:id
+en /users/passwordupdate el id del usuario no en el body, problema de seguridad. Será lo del token. Así un usuario logueado puede intentar de cambiar la pwd de otro usuario.
+
+Lo mismo de antes también en /users/update
+
+Cuando hago update de usuario tendría que borrar desde file system y BD la imagen anterior.
+
+En update usuario no pondría la pwd, ya tenéis otro endpoint. Pero esto depende mucho de como decidiréis implementar el Front.
+
+en update usuario si permito cambiar email tendríamos que volver a enviar correo de validación (podría poner un email de cualquiera si no valido)
+
+en el correo de recuperación pwd solo tendríamos que poner una frase y la url de la página de Front (guardar url en .env) que permite cambiar la contraseña; esta página será la que hará la put al backend  http://localhost:8080/users/SetPassByrecover/Ar6gV9KAjN con en el body la nueva pwd.
+por lo dicho, creo que será innecesario el middleware findOrFailUser
+en todos los endpoint de demands y proposals el id del usuario no en el body con user_id, lo cojo del token (ya dicho antes en los enpoints users)
+/demands/getAll:
+tendría que devolver user name o email del propietario
+
+Devolvería el número de repuestas que tiene cada una, si contesté o no y, si queréis, la media de los votos de todas las respuestas (pero creo que tenga poco sentido/valor)
+/demands/getDemand el id de la demanda en req.props no en el body y tendría que devolver los files
+
+/demands/getAllDemandsByUser el id del usuario en req.props no en el body
+tendría que devolver user name o email del propietario
+
+Devolvería el número de repuestas que tiene cada una, si contesté o no y, si queréis, la media de los votos de todas las respuestas (pero creo que tenga poco sentido/valor)
+/demands/updateStatus el id de la demanda en req.props no en el body
+/demands/edit el id de la demanda en req.props no en el body
+/demands/delete el id de la demanda en req.props no en el body; valorar si eliminar file en uploads
+
+en los enpoint proposals valen las consideraciones de antes, no vuelvo a repetir los mismos problemas
+

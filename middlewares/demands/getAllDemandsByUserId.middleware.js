@@ -1,15 +1,16 @@
 import validateSchema from "../../helpers/validationSchema.helper.js";
 import getAllDemandsByUserIdSchema from "../../schemas/demands/getAllDemandsByUserId.schema.js";
 import { getAllDemandsByUserId } from "../../controllers/demands.controller.js";
+import extractUserIdFromToken from "../../helpers/extractUserIdFromToken.helper.js";
 
 const main = async (req, res, next) => {
 
-    
-    const { user_id } = req.body;
-    
+
+    const user_id = extractUserIdFromToken(req.headers.auth_token);
+
     try {
         await validateSchema(getAllDemandsByUserIdSchema, req.body);
-        
+
         const [...response] = await getAllDemandsByUserId(user_id);
         res.send({
             status: 200,

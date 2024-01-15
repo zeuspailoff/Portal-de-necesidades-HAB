@@ -4,9 +4,9 @@ import { getProposal } from "../../controllers/proposal.controller.js";
 
 const main = async (req, res, next) => {
 
-    
-    const { proposal_id } = req.body;
-    
+
+    const { proposal_id } = req.params;
+
     try {
         await validateSchema(getProposalByIdSchema, req.body);
 
