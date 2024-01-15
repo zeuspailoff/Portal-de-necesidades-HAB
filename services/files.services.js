@@ -3,11 +3,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import randomstring from 'randomstring';
 import errors from '../helpers/errors.helper.js'
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const saveFile = async (file, entity_type) => {
 
@@ -80,10 +76,6 @@ export const replaceUserAvatar = async (user_id, src) => {
 
     await fs.unlink(path.join(__dirname, previousAvatar[0].src));
 
-
-    
-    
-
     return response;
 }
 
@@ -94,3 +86,4 @@ export default {
     insertFile,
     replaceUserAvatar
 }
+

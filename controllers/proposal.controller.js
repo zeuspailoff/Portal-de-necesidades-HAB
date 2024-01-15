@@ -1,10 +1,12 @@
 import { newProposal, deleteProposal, editProposal, getProposalById, getProposalByDemandId, proposalExists, updateProposalStatus, insertVote, getAvgVotes } from '../services/proposals.services.js';
 import insertManyFiles from '../helpers/insertFilesInEntity.helper.js';
+import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.js';
 
 const entity_type = 'proposals'
 
-export const createProposal = async (user_id, demand_id, description, files = null) => {
-    const response = await newProposal(user_id, demand_id, description);
+export const createProposal = async (demand_id, description, files = null) => {
+    const user_id = await extractUserIdFromToken(req.headers.auth_token);
+    const response = await newProposal(demand_id, description);
 
     const filesSrc = { insertId: response.insertId, files: [] }
 
