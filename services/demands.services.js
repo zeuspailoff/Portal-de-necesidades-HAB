@@ -21,7 +21,6 @@ export const selectDemandById = async (id) => {
     const [response] = await pool.query(
         `SELECT 
         d.description, d.is_closed, d.category_id, d.created_at, 
-        u.email as creator_email,
         u.username as creator_username,
         p.*,
         COUNT(pv.id) as voteCount,
