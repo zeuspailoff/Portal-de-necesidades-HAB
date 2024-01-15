@@ -1,7 +1,7 @@
 import validateSchema from '../../helpers/validationSchema.helper.js';
 import passwordUpdateUserSchema from '../../schemas/users/passwordUpdateUser.schema.js';
 import { editPasswordById } from '../../controllers/users.controller.js';
-import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.js'
+import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.js';
 
 const main = async (req, res, next) => {
 

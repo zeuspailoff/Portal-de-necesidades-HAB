@@ -54,8 +54,17 @@ export const insertFile = async (entity_id, entity_type, src) => {
     return response;
 }
 
+const replaceFile = async (entity_id, src, entity_type) => {
+    const pool = await getPool();
+    const [response] = await pool.query(
+        'UPDATE files SET src =? WHERE entity_id =? AND entity_type =?',
+        [src, entity_id, entity_type]
+    );
+
+}
 
 export default {
     saveFile,
     insertFile
 }
+

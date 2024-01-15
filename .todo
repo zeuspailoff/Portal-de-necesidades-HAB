@@ -22,11 +22,7 @@ las mismas consideraciones de antes también en getAllUsers
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-Lo mismo de antes también en /users/update
-
 Cuando hago update de usuario tendría que borrar desde file system y BD la imagen anterior.
-
-En update usuario no pondría la pwd, ya tenéis otro endpoint. Pero esto depende mucho de como decidiréis implementar el Front.
 
 en update usuario si permito cambiar email tendríamos que volver a enviar correo de validación (podría poner un email de cualquiera si no valido)
 en el correo de recuperación pwd solo tendríamos que poner una frase y la url de la página de Front (guardar url en .env) que permite cambiar la contraseña; esta página será la que hará la put al backend  http://localhost:8080/users/SetPassByrecover/Ar6gV9KAjN con en el body la nueva pwd.

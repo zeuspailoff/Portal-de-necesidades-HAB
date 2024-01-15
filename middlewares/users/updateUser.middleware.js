@@ -1,11 +1,12 @@
 import validateSchema from '../../helpers/validationSchema.helper.js';
 import updateUserSchema from '../../schemas/users/updateUser.schema.js';
 import { updateUserById } from '../../controllers/users.controller.js';
+import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.helper.js'
 
 const main = async (req, res, next) => {
 
-
-    const { user_id, username, email, password, biography, birthdate, phone, name, lastname } = req.body;
+    const user_id = extractUserIdFromToken(req.headers.auth_token);
+    const { username, email, password, biography, birthdate, phone, name, lastname } = req.body;
     const files = req.files;
 
     try {

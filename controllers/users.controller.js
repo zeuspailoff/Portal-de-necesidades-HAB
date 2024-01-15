@@ -63,10 +63,13 @@ export const updateUserById = async (id, username, email, password, biography, b
 
     const filesSrc = { insertId: response.insertId, profile_picture: [] }
 
+
+
     if (files) {
         const entity_id = response.insertId;
         filesSrc.profile_picture = await (insertManyFiles(entity_id, files, entity_type));
     }
+
     response.filesSrc = filesSrc;
     return response
 }
