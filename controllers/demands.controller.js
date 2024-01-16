@@ -13,11 +13,12 @@ import insertManyFiles from '../helpers/insertFilesInEntity.helper.js'
 
 const entity_type = 'demands'
 
-export const createDemand = async (user_id, title, description, files = null) => {
+export const createDemand = async (user_id, title, description,category_id, files = null) => {
     const response = await insertNewDemand(
         user_id,
         title,
-        description
+        description,
+        category_id
     )
 
     const filesSrc = { insertId: response.insertId, documents: [] }
@@ -55,8 +56,8 @@ export const updateDemandStatusById = async (demandId, status) => {
     return response;
 }
 
-export const editDemandById = async (demandId, title, description, files = null) => {
-    const response = await editDemand(demandId, title, description);
+export const editDemandById = async (demandId, title, description, category_id, files = null) => {
+    const response = await editDemand(demandId, title, description, category_id);
     const filesSrc = { insertId: response.insertId, files: [] }
     if (files) {
         filesSrc.files = await (insertManyFiles(demandId, files, entity_type));

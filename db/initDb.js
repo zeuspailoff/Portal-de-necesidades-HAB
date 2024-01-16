@@ -102,6 +102,15 @@ CREATE TABLE IF NOT EXISTS proposals (
 );
 `;
 
+const seedCategoriesTableQuery = `
+INSERT INTO categories (value) VALUES 
+('Web Design'),
+('Translations'),
+('Developing'),
+('MovieMakers'),
+('Digital Marketing');
+`;
+
 const createFilesTableQuery = `
 CREATE TABLE IF NOT EXISTS files (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -147,6 +156,7 @@ const initDb = async () => {
 
     await pool.query(createUsersTableQuery);
     await pool.query(createCategoriesTableQuery);
+    await pool.query(seedCategoriesTableQuery);
     await pool.query(createDemandsTableQuery);
     await pool.query(createProposalsTableQuery);
     await pool.query(createFilesTableQuery);

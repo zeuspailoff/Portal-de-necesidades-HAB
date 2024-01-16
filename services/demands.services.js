@@ -1,12 +1,12 @@
 import getPool from '../db/getPool.js';
 import errors from '../helpers/errors.helper.js';
 
-export const insertNewDemand = async (user_id, title, description) => {
+export const insertNewDemand = async (user_id, title, description,category_id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
-        'INSERT INTO demands (user_id, title, description) VALUES (?,?,?)',
-        [user_id, title, description]
+        'INSERT INTO demands (user_id, title, description,category_id) VALUES (?,?,?,?)',
+        [user_id, title, description,category_id]
     );
 
     if (response.affectedRows !== 1) {
@@ -171,11 +171,11 @@ export const updateDemandStatus = async (demand_id, status) => {
     return response;
 }
 
-export const editDemand = async (demandId, title, description) => {
+export const editDemand = async (demandId, title, description, category_id) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        `UPDATE demands SET title = ?, description = ? WHERE id = ?`,
-        [title, description, demandId]
+        `UPDATE demands SET title = ?, description = ? , category_id = ? WHERE id = ?`,
+        [title, description, category_id, demandId]
     );
 
     if (response.affectedRows !== 1) {
