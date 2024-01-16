@@ -126,6 +126,7 @@ export const getUserById = async (id) => {
       u.username,
       u.biography,
       u.created_at,
+      fu.id as avatar_id,
       fu.src as avatarSrc,
       d.*,
       COUNT(p.id) as entries
@@ -236,6 +237,7 @@ export const updateUser = async (id, username, password, biography, birthdate, p
   return response;
 
 }
+
 export const setPasswordRecover = async (user_id, recoverPassCode) => {
   const pool = await getPool();
 

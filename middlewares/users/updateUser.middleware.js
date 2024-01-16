@@ -8,10 +8,11 @@ const main = async (req, res, next) => {
     const user_id = extractUserIdFromToken(req.headers.auth_token);
     const { username, password, biography, birthdate, phone, name, lastname } = req.body;
     const files = req.files;
+    const user = req.user;
 
     try {
         await validateSchema(updateUserSchema, req.body);
-        const response = await updateUserById(user_id, username, password, biography, birthdate, phone, name, lastname, files);
+        const response = await updateUserById(user_id, username, password, biography, birthdate, phone, name, lastname, files, user);
         res.send({
             status: 200,
             message: `User with ID: ${user_id} modified successfully.`,

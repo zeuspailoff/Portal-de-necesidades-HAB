@@ -28,5 +28,3 @@ router.put('/demands/:demand_id/updateStatus', authUser, demandExists, isOwner, 
 router.delete('/demands/:demand_id/', authUser, demandExists, isOwner, deleteDemand);
 
 export default router;
-
-

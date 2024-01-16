@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS files (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 `;
+
 const createProposalsVotesTableQuery = `
 CREATE TABLE IF NOT EXISTS proposals_votes (
   id INT PRIMARY KEY AUTO_INCREMENT,

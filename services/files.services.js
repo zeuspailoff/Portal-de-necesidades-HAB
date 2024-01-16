@@ -6,25 +6,35 @@ import errors from '../helpers/errors.helper.js'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
+//TODO TRAER CARPETA RAIZ DEL DOT ENV
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const validateAvatarExtension = (fileExtension) => {
+    const avatarAllowedExtensions = ['.png', '.jpg', '.jpeg'];
 
-export const saveFile = async (file, entity_type) => {
+    if (!avatarAllowedExtensions.includes(fileExtension.toLowerCase())) {
+        errors.notAuthorizedError("El archivo no es valido", 'FILE_NOT_VALID_ERROR')
+    }
+}
+const validateFilesExtension = (fileExtension) => {
+    const filesAllowedExtensions = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.png', '.jpg', '.jpeg'];
+
+    if (!filesAllowedExtensions.includes(fileExtension.toLowerCase())) {
+        errors.notAuthorizedError("El archivo no es valido", 'FILE_NOT_VALID_ERROR')
+    }
+}
+
+const storeFile = async (file, entity_type) => {
 
     const fileExtension = path.extname(file.originalname).toLowerCase();
 
-    const validAllFiles = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.png', '.jpg', '.jpeg'];
-    const validPhotos = ['.png', '.jpg', '.jpeg'];
-
     if (entity_type == 'users') {
-        if (!validPhotos.includes(fileExtension.toLowerCase())) {
-            errors.notAuthorizedError("El archivo no es valido", 'FILE_NOT_VALID_ERROR')
-        }
+        validateAvatarExtension(fileExtension)
     } else {
-        if (!validAllFiles.includes(fileExtension.toLowerCase())) {
-            errors.notAuthorizedError("El archivo no es valido", 'FILE_NOT_VALID_ERROR')
-        }
+        validateFilesExtension(fileExtension)
     }
 
     if (file.size > 5000000) {
@@ -44,7 +54,7 @@ export const saveFile = async (file, entity_type) => {
     return relativePath;
 }
 
-export const insertFile = async (entity_id, entity_type, src) => {
+export const insertFileSrc = async (entity_id, entity_type, src) => {
     const column = entity_type.slice(0, -1) + '_id';
     const pool = await getPool();
 
@@ -60,32 +70,7 @@ export const insertFile = async (entity_id, entity_type, src) => {
     return response;
 }
 
-export const replaceUserAvatar = async (user_id, src) => {
-    const pool = await getPool();
-
-    const [previousAvatar] = await pool.query(
-        `SELECT src FROM files WHERE user_id =?`,
-        [user_id]
-    )
-    console.log("NADA ACA?", previousAvatar.length);
-    if (previousAvatar.length != 1) {
-        console.log("ADENTRO DEL IF");
-        await insertFile(user_id, 'users', src)
-    }
-    console.log("DESPUES DEL IF");
-
-
-    const [response] = await pool.query(
-        `UPDATE files SET src =? WHERE user_id =?`,
-        [src, user_id]
-    );
-
-    await fs.unlink(path.join(__dirname, previousAvatar[0].src));
-
-    return response;
-}
-
-export const deleteFile = async (file_id, src) => {
+export const deleteFile = async (file_id) => {
     const pool = await getPool();
 
     const [previousFile] = await pool.query(
@@ -111,12 +96,9 @@ export const deleteFile = async (file_id, src) => {
 
 }
 
-
-
 export default {
-    saveFile,
-    insertFile,
-    replaceUserAvatar,
+    storeFile,
+    insertFileSrc,
     deleteFile
 }
 

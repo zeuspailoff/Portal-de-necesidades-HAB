@@ -9,7 +9,6 @@ import {
     selectAllDemandsByUserId,
     demandExists
 } from '../services/demands.services.js'
-import insertManyFiles from '../helpers/insertFilesInEntity.helper.js'
 
 const entity_type = 'demands'
 

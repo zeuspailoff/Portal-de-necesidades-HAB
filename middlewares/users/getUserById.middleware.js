@@ -7,8 +7,6 @@ const main = async (req, res, next) => {
 
     const loggedUserId = extractUserIdFromToken(req.headers.auth_token)
 
-
-
     try {
         let response = {};
 
