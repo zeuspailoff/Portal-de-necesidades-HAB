@@ -5,8 +5,11 @@ import randomstring from 'randomstring';
 import errors from '../helpers/errors.helper.js'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import dotenv from 'dotenv';
 
-//TODO TRAER CARPETA RAIZ DEL DOT ENV
+dotenv.config();
+const UPLOADS_DIR  = process.env.UPLOADS_DIR
+
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -27,7 +30,7 @@ const validateFilesExtension = (fileExtension) => {
     }
 }
 
-const storeFile = async (file, entity_type) => {
+export const storeFile = async (file, entity_type) => {
 
     const fileExtension = path.extname(file.originalname).toLowerCase();
 
@@ -46,8 +49,8 @@ const storeFile = async (file, entity_type) => {
         charset: 'alphanumeric'
     }) + fileExtension;
 
-    const filePath = path.join(__dirname, '..', 'public/uploads', entity_type, fileName);
-    const relativePath = path.join('public/uploads', entity_type, fileName);
+    const filePath = path.join(__dirname, '..',UPLOADS_DIR ,'uploads', entity_type, fileName);
+    const relativePath = path.join('uploads', entity_type, fileName);
 
     await fs.writeFile(filePath, file.buffer);
 
@@ -74,7 +77,7 @@ export const deleteFile = async (file_id) => {
     const pool = await getPool();
 
     const [previousFile] = await pool.query(
-        'SELECT src FROM files WHERE id =?'
+        `SELECT src FROM files WHERE id = ?`,
         [file_id]
     )
 
@@ -83,14 +86,18 @@ export const deleteFile = async (file_id) => {
     }
 
     const [response] = await pool.query(
-        'DELETE FROM files WHERE id =?'
+        `DELETE FROM files WHERE id =?`,
         [file_id]
     )
     if (response.affectedRows == 0) {
         errors.conflictError('Error trying to delete file', 'FILE_DELETE_ERROR');
     }
 
-    await fs.unlink(path.join(__dirname, previousFile[0].src));
+    try {
+        await fs.unlink(path.join(__dirname,"..", previousFile[0].src));
+    } catch (error) {
+        console.error(error.getMessage());
+    }
 
     return response;
 
@@ -102,11 +109,7 @@ export default {
     deleteFile
 }
 
-// "error": {
-//     "message": "ENOENT: no such file or directory, unlink 'D:\\hack a boss\\Proyectos\\Proyecto2\\Portal-de-necesidades-HAB\\services\\public\\uploads\\users\\3YjsP4xHqh.png'",
-//         "stack": "Error: ENOENT: no such file or directory, unlink 'D:\\hack a boss\\Proyectos\\Proyecto2\\Portal-de-necesidades-HAB\\services\\public\\uploads\\users\\3YjsP4xHqh.png'"
-// }
-// }
+
 
 
 

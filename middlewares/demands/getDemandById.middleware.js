@@ -3,14 +3,14 @@ import { getDemandById } from '../../controllers/demands.controller.js';
 const main = async (req, res, next) => {
 
 
-    const { id } = req.params;
+    const { demand_id } = req.params;
 
     try {
 
-        const response = await getDemandById(id);
+        const response = await getDemandById(demand_id);
         res.send({
             status: 200,
-            message: `Demand ${id} fetched successfully`,
+            message: `Demand ${demand_id} fetched successfully`,
             data: response
         })
     } catch (error) {

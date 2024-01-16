@@ -9,12 +9,15 @@ const main = async (req, res, next) => {
     const { title, description } = req.body;
     try {
         await validateSchema(editDemandSchema, req.body);
-
+        
         const response = await editDemandById(demand_id, title, description, files);
 
         res.send({
             status: 200,
             message: `Demand with ID: ${demand_id} edited successfully.`,
+            response: {response}
+
+            
         })
     } catch (error) {
         next(error);

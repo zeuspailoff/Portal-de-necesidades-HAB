@@ -1,21 +1,23 @@
 import { newProposal, deleteProposal, editProposal, getProposalById, getProposalByDemandId, proposalExists, updateProposalStatus, insertVote } from '../services/proposals.services.js';
 import insertManyFiles from '../helpers/insertFilesInEntity.helper.js';
-import extractUserIdFromToken from '../helpers/extractUserIdFromToken.helper.js';
 
 const entity_type = 'proposals'
 
-export const createProposal = async (demand_id, description, files = null) => {
-    const user_id = await extractUserIdFromToken(req.headers.auth_token);
-    const response = await newProposal(demand_id, description);
+export const createProposal = async (user_id, demand_id, description, files = null) => {
 
-    const filesSrc = { insertId: response.insertId, files: [] }
+    const response = await newProposal(user_id, demand_id, description);
 
-    if (files) {
+    const filesSrc = { documents: [] }
+
+    if (files != null) {
+
         const entity_id = response.insertId;
-        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
+        filesSrc.documents = await (insertManyFiles(entity_id, files, entity_type));
     }
 
-    return filesSrc;
+    response.files = {...filesSrc.documents };
+
+    return response;
 };
 
 export const deleteProposalById = async (id) => {
@@ -26,10 +28,16 @@ export const deleteProposalById = async (id) => {
 export const editProposalById = async (id, description, files = null) => {
     const response = await editProposal(id, description);
 
+    const filesSrc = { documents: [] }
+
+
     if (files) {
-        const entity_id = response.insertId;
-        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
+        filesSrc.documents = await (insertManyFiles(id, files, entity_type));
     }
+
+    response.files = {...filesSrc.documents };
+
+
     return response;
 };
 

@@ -5,7 +5,8 @@ const main = async (req, res, next) => {
     try {
 
         let entity = {};
-        user_id = extractUserIdFromToken(req.headers.authorization);
+
+        const user_id = extractUserIdFromToken(req.headers.auth_token);
 
         if (req.proposal) {
             entity = req.proposal;

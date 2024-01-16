@@ -20,35 +20,49 @@ export const selectDemandById = async (id) => {
     const pool = await getPool();
     const [response] = await pool.query(
         `SELECT 
-        d.description, d.is_closed, d.category_id, d.created_at, 
-        u.username as creator_username,
-        p.*,
-        COUNT(pv.id) as voteCount,
-        AVG(pv.value) as voteAvg,
-        fd.src as demandFileSrc,
-        fp.src as proposalFileSrc,
-        fu.src as userFileSrc,
-        c.value as category
+        d.id AS demandId,
+        d.title AS demandTitle,
+        d.description AS demandDescription,
+        d.created_at AS demandCreatedAt,
+        u.id AS userId,
+        u.username AS username,
+        u.created_at AS userCreatedAt,
+        fu.id AS userAvatarId,
+        fu.src AS userAvatarSrc,
+        (
+            SELECT JSON_ARRAYAGG(
+                JSON_OBJECT('fileId', df.id, 'fileSrc', df.src)
+            )
+            FROM files df
+            WHERE df.demand_id = d.id
+        ) AS demandFiles,
+        (
+            SELECT JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'proposalId', p.id,
+                    'proposalDescription', p.description,
+                    'proposalCreatedAt', p.created_at,
+                    'proposalFiles', (
+                        SELECT JSON_ARRAYAGG(
+                            JSON_OBJECT('fileId', pf.id, 'fileSrc', pf.src)
+                        )
+                        FROM files pf
+                        WHERE pf.proposal_id = p.id
+                    )
+                )
+            )
+            FROM proposals p
+            WHERE p.demand_id = d.id AND p.deleted_at IS NULL
+        ) AS proposals
     FROM 
         demands d
     LEFT JOIN 
         users u ON d.user_id = u.id
     LEFT JOIN 
-        proposals p ON d.id = p.demand_id AND p.deleted_at IS NULL
-    LEFT JOIN 
-        proposals_votes pv ON p.id = pv.proposal_id
-    LEFT JOIN 
-        files fd ON d.id = fd.demand_id AND fd.proposal_id IS NULL
-    LEFT JOIN 
-        files fp ON p.id = fp.proposal_id
-    LEFT JOIN 
         files fu ON u.id = fu.user_id
-    LEFT JOIN
-        categories c ON d.category_id = c.id
     WHERE 
-        d.id = ? AND d.deleted_at IS NULL
-    GROUP BY 
-        d.id, u.id, p.id, fd.id, fp.id, fu.id;`,
+        d.id = ? AND d.deleted_at IS NULL;
+    `,
         [id]
     );
 
@@ -67,8 +81,8 @@ export const selectAllDemands = async () => {
             d.title,
             d.description,
             d.is_closed,
-            c.name as category,
-            u.username as creator_username,
+            c.value as category,
+            u.username as creator_username
         FROM 
             demands d
         LEFT JOIN 
@@ -89,23 +103,50 @@ export const selectAllDemandsByUserId = async (userId) => {
     const pool = await getPool();
     const [response] = await pool.query(
         `
-            SELECT 
-                d.id,
-                d.title,
-                d.description,
-                d.is_closed,
-                c.name as category,
-                u.username as creator_username,
-            FROM 
-                demands d
-            LEFT JOIN 
-                users u ON d.user_id =?
-            LEFT JOIN
-                categories c ON d.category_id = c.id
-            WHERE 
-                user_id =? 
-            AND
-                d.deleted_at IS NULL;
+        SELECT 
+    d.id AS demandId,
+    d.title AS demandTitle,
+    d.description AS demandDescription,
+    d.created_at AS demandCreatedAt,
+    u.id AS userId,
+    u.username AS username,
+    u.created_at AS userCreatedAt,
+    fu.id AS userAvatarId,
+    fu.src AS userAvatarSrc,
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT('fileId', df.id, 'fileSrc', df.src)
+        )
+        FROM files df
+        WHERE df.demand_id = d.id
+    ) AS demandFiles,
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'proposalId', p.id,
+                'proposalDescription', p.description,
+                'proposalCreatedAt', p.created_at,
+                'proposalFiles', (
+                    SELECT JSON_ARRAYAGG(
+                        JSON_OBJECT('fileId', pf.id, 'fileSrc', pf.src)
+                    )
+                    FROM files pf
+                    WHERE pf.proposal_id = p.id
+                )
+            )
+        )
+        FROM proposals p
+        WHERE p.demand_id = d.id AND p.deleted_at IS NULL
+    ) AS proposals
+FROM 
+    demands d
+LEFT JOIN 
+    users u ON d.user_id = u.id
+LEFT JOIN 
+    files fu ON u.id = fu.user_id
+WHERE 
+    u.id = ? AND d.deleted_at IS NULL;
+
         `, [userId, userId]
     );
 
@@ -116,11 +157,11 @@ export const selectAllDemandsByUserId = async (userId) => {
     return response;
 }
 
-export const updateDemandStatus = async (demandId, status) => {
+export const updateDemandStatus = async (demand_id, status) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'UPDATE demands SET status = ? WHERE id = ?',
-        [status, demandId]
+        'UPDATE demands SET is_closed = ? WHERE id = ?',
+        [status, demand_id]
     );
 
     if (response.affectedRows !== 1) {
@@ -133,7 +174,7 @@ export const updateDemandStatus = async (demandId, status) => {
 export const editDemand = async (demandId, title, description) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'UPDATE demands SET title = ?, description = ? WHERE id = ?',
+        `UPDATE demands SET title = ?, description = ? WHERE id = ?`,
         [title, description, demandId]
     );
 

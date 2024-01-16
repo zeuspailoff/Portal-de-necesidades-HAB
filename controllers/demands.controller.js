@@ -9,6 +9,7 @@ import {
     selectAllDemandsByUserId,
     demandExists
 } from '../services/demands.services.js'
+import insertManyFiles from '../helpers/insertFilesInEntity.helper.js'
 
 const entity_type = 'demands'
 
@@ -58,10 +59,10 @@ export const editDemandById = async (demandId, title, description, files = null)
     const response = await editDemand(demandId, title, description);
     const filesSrc = { insertId: response.insertId, files: [] }
     if (files) {
-        const entity_id = response.insertId;
-        filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
+        filesSrc.files = await (insertManyFiles(demandId, files, entity_type));
     }
-    return filesSrc
+    response.files = filesSrc;
+    return response
 }
 
 export const deleteFileById = async (entity_id, entity_type) => {

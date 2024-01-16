@@ -105,7 +105,6 @@ CREATE TABLE IF NOT EXISTS proposals (
 const createFilesTableQuery = `
 CREATE TABLE IF NOT EXISTS files (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    entity_type VARCHAR(255),
     src VARCHAR(255),
     proposal_id INT,
     demand_id INT,

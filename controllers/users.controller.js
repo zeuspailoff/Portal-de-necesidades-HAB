@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import errorsHelpers from '../helpers/errors.helper.js';
 import { mailToRecoverPassword, mailToRegistration } from '../helpers/mailer.helper.js';
 import { storeFile, deleteFile, insertFileSrc } from '../services/files.services.js';
+import  insertManyFiles  from '../helpers/insertFilesInEntity.helper.js';
 
 const entity_type = 'users';
 
@@ -57,16 +58,17 @@ export const updateUserById = async (id, username, password, biography, birthdat
 
     const response = await updateUser(id, username, password, biography, birthdate, phone, name, lastname);
 
-    const actualAvatarId = user.avatar_id;
-
+    const actualAvatarId = user?.avatar_id;
+    const newAvatar = {}
+    let deleteOldAvatar = null;
     if (files) {
-        const newAvatarSrc = await storeFile(files[0], entity_type);
-         if (newAvatarSrc){
-            await deleteFile(actualAvatarId);
-            await insertFileSrc(user.id, entity_type, newAvatarSrc);
+        newAvatar.src = await storeFile(files[0], entity_type);
+         if (newAvatar.src){
+            if(actualAvatarId != null)  deleteOldAvatar = await deleteFile(actualAvatarId);
+            await insertFileSrc(user.id, entity_type, newAvatar.src);
          }
 
-        response.avatar = newAvatar;
+        response.avatar = newAvatar.src;
     }
     return response
 }

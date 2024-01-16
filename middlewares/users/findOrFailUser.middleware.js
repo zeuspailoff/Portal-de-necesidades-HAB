@@ -1,14 +1,22 @@
-import { findOrFailUserById } from '../../controllers/users.controller.js';
+import { findOrFailUserById,getOwnUserById } from '../../controllers/users.controller.js';
+import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.helper.js';
 
 const main = async (req, res, next) => {
 
-    const { user_id } = req.params
+    const { user_id } = req.params;
+
+    const loggedUserId = extractUserIdFromToken(req.headers.auth_token)
 
     try {
+        let user = {};
+        
+        if (user_id != loggedUserId) {
+            user = await findOrFailUserById(user_id);
+        } else {
+            user = await getOwnUserById(user_id);
+        }
 
-        const user = await findOrFailUserById(user_id)
-
-        res.user = { ...res.user, ...user }
+        res.user = { ...res.user, ...user[0] }
 
         next();
     } catch (error) {
