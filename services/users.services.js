@@ -134,9 +134,9 @@ export const getUserById = async (id) => {
       LEFT JOIN 
           files fu ON u.id = fu.user_id
       LEFT JOIN 
-          demands d ON u.id = d.users_id AND d.deleted_at IS NULL
+          demands d ON u.id = d.user_id AND d.deleted_at IS NULL
       LEFT JOIN 
-          proposals p ON u.id = p.users_id
+          proposals p ON u.id = p.user_id
       WHERE 
           u.id = ? AND u.deleted_at IS NULL
       GROUP BY 
@@ -160,12 +160,13 @@ export const getOwnUser = async (id) => {
       u.phone,
       u.birthdate,
       u.biography,
-      fu.src as avatarSrc,
+      fu.src as avatarSrc
     FROM 
-      users u
+        users u
     LEFT JOIN 
-      files fu ON u.id = fu.user_id
-    WHERE id =? and deleted_at IS NULL
+        files fu ON u.id = fu.user_id
+    WHERE 
+        u.id = ? AND u.deleted_at IS NULL;
     `, [id]
   );
 

@@ -32,7 +32,7 @@ export const selectDemandById = async (id) => {
     FROM 
         demands d
     LEFT JOIN 
-        users u ON d.users_id = u.id
+        users u ON d.user_id = u.id
     LEFT JOIN 
         proposals p ON d.id = p.demand_id AND p.deleted_at IS NULL
     LEFT JOIN 
@@ -72,7 +72,7 @@ export const selectAllDemands = async () => {
         FROM 
             demands d
         LEFT JOIN 
-            users u ON d.users_id = u.id
+            users u ON d.user_id = u.id
         LEFT JOIN
             categories c ON d.category_id = c.id
         WHERE 
@@ -99,7 +99,7 @@ export const selectAllDemandsByUserId = async (userId) => {
             FROM 
                 demands d
             LEFT JOIN 
-                users u ON d.users_id =?
+                users u ON d.user_id =?
             LEFT JOIN
                 categories c ON d.category_id = c.id
             WHERE 

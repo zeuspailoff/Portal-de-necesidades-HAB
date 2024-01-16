@@ -58,16 +58,19 @@ export const updateUserById = async (id, username, password, biography, birthdat
 
     const response = await updateUser(id, username, password, biography, birthdate, phone, name, lastname);
 
-    const filesSrc = { insertId: response.insertId, profile_picture: [] }
 
-
+    const profile_picture = '';
 
     if (files) {
-        const entity_id = response.insertId;
 
         const profile_picture = await saveFile(files[0], entity_type);
 
-        await replaceUserAvatar(entity_id, profile_picture)
+        const editedfile = await replaceUserAvatar(id, profile_picture)
+        console.log("SI ESTO SE VE ES PORQUE AVANZAMOS");
+
+        if (editedfile.length < 1) {
+            const newFile = insertFile(id, entity_type, profile_picture)
+        }
 
         response.avatar = profile_picture;
     }

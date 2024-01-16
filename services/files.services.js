@@ -3,9 +3,14 @@ import path from 'path';
 import fs from 'fs/promises';
 import randomstring from 'randomstring';
 import errors from '../helpers/errors.helper.js'
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 
-const saveFile = async (file, entity_type) => {
+export const saveFile = async (file, entity_type) => {
 
     const fileExtension = path.extname(file.originalname).toLowerCase();
 
@@ -31,8 +36,8 @@ const saveFile = async (file, entity_type) => {
         charset: 'alphanumeric'
     }) + fileExtension;
 
-    const filePath = path.join(__dirname, '..', 'public', 'uploads', entity_type, fileName);
-    const relativePath = path.join('public', 'uploads', entity_type, fileName);
+    const filePath = path.join(__dirname, '..', 'public/uploads', entity_type, fileName);
+    const relativePath = path.join('public/uploads', entity_type, fileName);
 
     await fs.writeFile(filePath, file.buffer);
 
@@ -42,8 +47,9 @@ const saveFile = async (file, entity_type) => {
 export const insertFile = async (entity_id, entity_type, src) => {
     const column = entity_type.slice(0, -1) + '_id';
     const pool = await getPool();
+
     const [response] = await pool.query(
-        `INSERT INTO files (${column}, src) VALUES (?,?,?)`,
+        `INSERT INTO files (${column}, src) VALUES (?,?)`,
         [entity_id, src]
     );
 
@@ -61,18 +67,18 @@ export const replaceUserAvatar = async (user_id, src) => {
         `SELECT src FROM files WHERE user_id =?`,
         [user_id]
     )
-    if (previousAvatar.length !== 1) {
-        errors.conflictError('Error al editar el archivo', 'FILE_EDIT_ERROR');
+    console.log("NADA ACA?", previousAvatar.length);
+    if (previousAvatar.length != 1) {
+        console.log("ADENTRO DEL IF");
+        await insertFile(user_id, 'users', src)
     }
+    console.log("DESPUES DEL IF");
+
 
     const [response] = await pool.query(
         `UPDATE files SET src =? WHERE user_id =?`,
         [src, user_id]
     );
-
-    if (response.affectedRows !== 1) {
-        errors.conflictError('Error al editar el archivo', 'FILE_EDIT_ERROR');
-    }
 
     await fs.unlink(path.join(__dirname, previousAvatar[0].src));
 
@@ -113,4 +119,12 @@ export default {
     replaceUserAvatar,
     deleteFile
 }
+
+// "error": {
+//     "message": "ENOENT: no such file or directory, unlink 'D:\\hack a boss\\Proyectos\\Proyecto2\\Portal-de-necesidades-HAB\\services\\public\\uploads\\users\\3YjsP4xHqh.png'",
+//         "stack": "Error: ENOENT: no such file or directory, unlink 'D:\\hack a boss\\Proyectos\\Proyecto2\\Portal-de-necesidades-HAB\\services\\public\\uploads\\users\\3YjsP4xHqh.png'"
+// }
+// }
+
+
 

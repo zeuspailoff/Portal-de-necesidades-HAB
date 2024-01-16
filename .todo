@@ -1,9 +1,5 @@
 // PONER COMUNICACION EN INGLES
 
-
-revisar el orden de eliminación de las tablas en initDB, probar init BD con datos en el db
-si el file asociado al usuario es el avatar, pondría el campo avatar directamente en la tabla usuarios
-
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 //hacer testing porque por ejemplo la api permite obtener proposal de una demands borrada
 

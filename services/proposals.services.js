@@ -70,7 +70,7 @@ const getProposalById = async (id) => {
             FROM 
                 proposals p
         LEFT JOIN 
-            users u ON p.users_id = u.id
+            users u ON p.user_id = u.id
         WHERE 
             p.id = ? 
             AND p.deleted_at IS NULL;`, [id]
@@ -102,7 +102,7 @@ const getProposalByDemandId = async (demand_id) => {
         FROM 
             proposals p
         LEFT JOIN 
-            users u ON p.users_id = u.id
+            users u ON p.user_id = u.id
         LEFT JOIN 
             demands d ON p.demand_id = d.id
         LEFT JOIN 

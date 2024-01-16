@@ -2,11 +2,11 @@ import { findOrFailUserById } from '../../controllers/users.controller.js';
 
 const main = async (req, res, next) => {
 
-    const id  = req.user?.id || req.params.userId;
+    const { user_id } = req.user?.id || req.params;
 
     try {
 
-        const user = await findOrFailUserById(id)
+        const user = await findOrFailUserById(user_id)
 
         req.user = user;
 
@@ -18,5 +18,5 @@ const main = async (req, res, next) => {
     }
 }
 
-    
+
 export default main;

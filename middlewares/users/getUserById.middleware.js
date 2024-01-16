@@ -2,23 +2,25 @@ import { findOrFailUserById, getOwnUserById } from '../../controllers/users.cont
 import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.helper.js';
 
 const main = async (req, res, next) => {
-    const { id } = req.params;
+
+    const { user_id } = req.params;
 
     const loggedUserId = extractUserIdFromToken(req.headers.auth_token)
 
 
 
     try {
+        let response = {};
 
-        if (id !== loggedUserId) {
-            const response = await findOrFailUserById(id);
+        if (user_id != loggedUserId) {
+            response = await findOrFailUserById(user_id);
         } else {
-            const response = await getOwnUserById(id);
+            response = await getOwnUserById(user_id);
         }
 
         res.send({
             status: 200,
-            message: `User ${id} fetched successfully`,
+            message: `User ${user_id} fetched successfully`,
             data: response
         })
     } catch (error) {
