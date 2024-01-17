@@ -191,5 +191,28 @@ export const demandExists = async (demand_id) => {
 
     return response;
 }
+export const isClosed = async (demand_id, proposal_id) => {
+    const pool = await getPool();
+
+    const [response] = await pool.query(
+        `UPDATE proposals SET is_correct = true WHERE demand_id = ?;`,
+        [proposal_id]
+    )
+
+    if (response.affectedRows !== 1) {
+        errors.conflictError('Proposal not found', 'PROPOSAL_NOT_FOUND');
+    }
+
+    await pool.query(
+        `UPDATE demands SET is_closed = true WHERE id = ?;`,
+        [demand_id]
+    )
+    if (response.affectedRows !== 1) {
+        errors.conflictError('Demand not found', 'DEMAND_NOT_FOUND');
+    }
+
+
+    return response;
+}
 
 

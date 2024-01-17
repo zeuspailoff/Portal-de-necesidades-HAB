@@ -7,7 +7,8 @@ import {
     selectAllDemands,
     deleteFile,
     selectAllDemandsByUserId,
-    demandExists
+    demandExists,
+    isClosed
 } from '../services/demands.services.js'
 import insertManyFiles from '../helpers/insertFilesInEntity.helper.js'
 
@@ -74,3 +75,7 @@ export const demandAlreadyExists = async (demandId) => {
     const response = await demandExists(demandId);
     return response;
 }
+export const demandClosed = async (demand_id, proposal_id) => {
+    const response = await isClosed(demand_id, proposal_id);
+    return response;
+};

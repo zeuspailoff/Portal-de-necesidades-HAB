@@ -22,7 +22,7 @@ const upload = multer({ storage: storage });
 const router = express.Router();
 
 
-router.post('/proposals/', upload.array('files', 5), demandExists, isNotOwner, authUser, newProposal);
+router.post('/proposals/:demand_id', upload.array('files', 5), demandExists, isNotOwner, authUser, newProposal);
 router.get('/proposals/:proposal_id', proposalExists, getProposalById);
 router.put('/proposals/:proposal_id/edit', upload.array('files', 5), authUser, proposalExists, isOwner, editProposalById);
 router.put('/proposals/:proposal_id/updateStatus', authUser, proposalExists, isOwner, updateProposalStatus);
