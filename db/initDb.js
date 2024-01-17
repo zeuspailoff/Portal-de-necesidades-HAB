@@ -5,8 +5,9 @@ import fs from 'fs';
 import path from 'path';
 
 const createDirectories = () => {
+  const { UPLOADS_DIR } = process.env
   const currentDirectory = process.cwd();
-  const publicPath = path.join(currentDirectory, 'public');
+  const publicPath = path.join(currentDirectory, UPLOADS_DIR);
   const uploadsPath = path.join(publicPath, 'uploads');
   const usersPath = path.join(uploadsPath, 'users');
   const demandsPath = path.join(uploadsPath, 'demands');
