@@ -1,12 +1,12 @@
 import getPool from '../db/getPool.js';
 import errors from '../helpers/errors.helper.js';
 
-export const insertNewDemand = async (user_id, title, description,category_id) => {
+export const insertNewDemand = async (user_id, title, description, category_id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
         'INSERT INTO demands (user_id, title, description,category_id) VALUES (?,?,?,?)',
-        [user_id, title, description,category_id]
+        [user_id, title, description, category_id]
     );
 
     if (response.affectedRows !== 1) {
@@ -157,11 +157,11 @@ WHERE
     return response;
 }
 
-export const updateDemandStatus = async (demand_id, status) => {
+export const updateDemandStatus = async (demand_id) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'UPDATE demands SET is_closed = ? WHERE id = ?',
-        [status, demand_id]
+        'UPDATE demands SET is_closed = 1 WHERE id = ?',
+        [demand_id]
     );
 
     if (response.affectedRows !== 1) {
@@ -232,24 +232,15 @@ export const demandExists = async (demand_id) => {
 
     return response;
 }
-export const isClosed = async (demand_id, proposal_id) => {
+export const isClosed = async (proposal_id) => {
     const pool = await getPool();
-
     const [response] = await pool.query(
-        `UPDATE proposals SET is_correct = true WHERE demand_id = ?;`,
+        'UPDATE proposals SET is_correct =1 WHERE id =?',
         [proposal_id]
-    )
+    );
 
     if (response.affectedRows !== 1) {
         errors.conflictError('Proposal not found', 'PROPOSAL_NOT_FOUND');
-    }
-
-    await pool.query(
-        `UPDATE demands SET is_closed = true WHERE id = ?;`,
-        [demand_id]
-    )
-    if (response.affectedRows !== 1) {
-        errors.conflictError('Demand not found', 'DEMAND_NOT_FOUND');
     }
 
 

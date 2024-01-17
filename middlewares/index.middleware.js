@@ -31,7 +31,6 @@ import votesProposal from "../middlewares/proposals/votesProposal.middleware.js"
 import isNotOwner from "../middlewares/security/isNotOwner.middleware.js";
 import recoveryCodeValidate from "./security/recoveryPassword.middleware.js"
 import passwordRecover from "../middlewares/security/passwordRecover.middleware.js";
-import isClosedDemand from "../middlewares/demands/isClosedDemand.midleware.js"
 
 export {
     insertNewDemand,
@@ -66,7 +65,7 @@ export {
     votesProposal,
     isNotOwner,
     recoveryCodeValidate,
-    passwordRecover,
-    isClosedDemand
+    passwordRecover
+
 
 }

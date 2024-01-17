@@ -14,7 +14,7 @@ import insertManyFiles from '../helpers/insertFilesInEntity.helper.js'
 
 const entity_type = 'demands'
 
-export const createDemand = async (user_id, title, description,category_id, files = null) => {
+export const createDemand = async (user_id, title, description, category_id, files = null) => {
     const response = await insertNewDemand(
         user_id,
         title,
@@ -52,8 +52,8 @@ export const deleteDemandById = async (demandId) => {
     return response;
 }
 
-export const updateDemandStatusById = async (demandId, status) => {
-    const response = await updateDemandStatus(demandId, status);
+export const updateDemandStatusById = async (demandId) => {
+    const response = await updateDemandStatus(demandId);
     return response;
 }
 
@@ -76,7 +76,7 @@ export const demandAlreadyExists = async (demandId) => {
     const response = await demandExists(demandId);
     return response;
 }
-export const demandClosed = async (demand_id, proposal_id) => {
-    const response = await isClosed(demand_id, proposal_id);
+export const demandClosed = async (proposal_id) => {
+    const response = await isClosed(proposal_id);
     return response;
 };

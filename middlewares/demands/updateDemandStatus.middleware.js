@@ -1,20 +1,23 @@
-import validateSchema from '../../helpers/validationSchema.helper.js';
-import updateDemandStatusSchema from '../../schemas/demands/updateDemandStatus.schema.js';
-import { updateDemandStatusById } from '../../controllers/demands.controller.js';
+import { demandClosed, updateDemandStatusById } from '../../controllers/demands.controller.js';
 
 const main = async (req, res, next) => {
 
-    const {demand_id} = req.params;
-    const  {status}  = req.body;
+    const { proposal_id } = req.params;
+    const { demand_id } = req.params;
+
 
 
     try {
-        await validateSchema(updateDemandStatusSchema, req.body);
+        if (proposal_id) {
+            await demandClosed(proposal_id)
+        }
+        await updateDemandStatusById(demand_id);
 
-        await updateDemandStatusById(demand_id, status);
+
+
         res.send({
             status: 200,
-            message: `Demand with ID: ${demand_id} status modified successfully. New status: ${status}`
+            message: `Demand with ID: ${demand_id} status modified successfully`
         })
     } catch (error) {
         next(error);
