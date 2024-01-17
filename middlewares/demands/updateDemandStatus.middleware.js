@@ -2,18 +2,14 @@ import { demandClosed, updateDemandStatusById } from '../../controllers/demands.
 
 const main = async (req, res, next) => {
 
-    const { proposal_id } = req.params;
+    const { proposal_id } = req.body;
     const { demand_id } = req.params;
-
-
 
     try {
         if (proposal_id) {
             await demandClosed(proposal_id)
         }
         await updateDemandStatusById(demand_id);
-
-
 
         res.send({
             status: 200,
