@@ -2,9 +2,9 @@ import { insertNewUser, getUserById, updateUserPassword, deleteUser, updateUser,
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import errorsHelpers from '../helpers/errors.helper.js';
-import insertManyFiles from '../helpers/insertFilesInEntity.helper.js'
 import { mailToRecoverPassword, mailToRegistration } from '../helpers/mailer.helper.js';
-import { saveFile, replaceUserAvatar } from '../services/files.services.js';
+import { storeFile, deleteFile, insertFileSrc } from '../services/files.services.js';
+import  insertManyFiles  from '../helpers/insertFilesInEntity.helper.js';
 
 const entity_type = 'users';
 
@@ -54,25 +54,21 @@ export const deleteUserById = async (id) => {
     return response;
 }
 
-export const updateUserById = async (id, username, password, biography, birthdate, phone, name, lastname, files) => {
+export const updateUserById = async (id, username, password, biography, birthdate, phone, name, lastname, files, user) => {
 
     const response = await updateUser(id, username, password, biography, birthdate, phone, name, lastname);
 
-
-    const profile_picture = '';
-
+    const actualAvatarId = user?.avatar_id;
+    const newAvatar = {}
+    let deleteOldAvatar = null;
     if (files) {
+        newAvatar.src = await storeFile(files[0], entity_type);
+         if (newAvatar.src){
+            if(actualAvatarId != null)  deleteOldAvatar = await deleteFile(actualAvatarId);
+            await insertFileSrc(user.id, entity_type, newAvatar.src);
+         }
 
-        const profile_picture = await saveFile(files[0], entity_type);
-
-        const editedfile = await replaceUserAvatar(id, profile_picture)
-        console.log("SI ESTO SE VE ES PORQUE AVANZAMOS");
-
-        if (editedfile.length < 1) {
-            const newFile = insertFile(id, entity_type, profile_picture)
-        }
-
-        response.avatar = profile_picture;
+        response.avatar = newAvatar.src;
     }
     return response
 }

@@ -119,19 +119,22 @@ export const updatePasswordRecover = async (user) => {
 }
 
 export const getUserById = async (id) => {
+  
   const pool = await getPool();
+
 
   const [response] = await pool.query(
     ` SELECT 
       u.username,
       u.biography,
       u.created_at,
+      fu.id as avatar_id,
       fu.src as avatarSrc,
       d.*,
       COUNT(p.id) as entries
       FROM 
           users u
-      LEFT JOIN 
+      INNER JOIN 
           files fu ON u.id = fu.user_id
       LEFT JOIN 
           demands d ON u.id = d.user_id AND d.deleted_at IS NULL
@@ -152,6 +155,7 @@ export const getUserById = async (id) => {
 
 export const getOwnUser = async (id) => {
   const pool = await getPool();
+
   const [response] = await pool.query(
     `SELECT 
       u.username,
@@ -160,7 +164,8 @@ export const getOwnUser = async (id) => {
       u.phone,
       u.birthdate,
       u.biography,
-      fu.src as avatarSrc
+      fu.src as avatarSrc,
+      fu.id as avatar_id
     FROM 
         users u
     LEFT JOIN 
@@ -207,7 +212,7 @@ export const deleteUser = async (id) => {
   const pool = await getPool();
 
   const [response] = await pool.query(
-    'UPDATE users SET deleted_at = NOW() WHERE id =?',
+    `UPDATE users SET deleted_at = NOW() WHERE id =?`,
     [id]
   );
 
@@ -236,6 +241,7 @@ export const updateUser = async (id, username, password, biography, birthdate, p
   return response;
 
 }
+
 export const setPasswordRecover = async (user_id, recoverPassCode) => {
   const pool = await getPool();
 

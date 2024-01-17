@@ -5,7 +5,7 @@ import { deleteProposalById } from "../../controllers/proposal.controller.js";
 const main = async (req, res, next) => {
 
 
-    const { proposal_id } = req.proposal.id;
+    const { proposal_id } = req.params;
 
     try {
         await deleteProposalById(proposal_id);

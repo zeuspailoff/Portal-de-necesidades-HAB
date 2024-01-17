@@ -10,6 +10,7 @@ const main = async (req, res, next) => {
     const { description } = req.body;
     const files = req.files;
 
+
     try {
         await validateSchema(insertNewProposalSchema, req.body);
 

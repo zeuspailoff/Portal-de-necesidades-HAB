@@ -102,10 +102,18 @@ CREATE TABLE IF NOT EXISTS proposals (
 );
 `;
 
+const seedCategoriesTableQuery = `
+INSERT INTO categories (value) VALUES 
+('Web Design'),
+('Translations'),
+('Developing'),
+('MovieMakers'),
+('Digital Marketing');
+`;
+
 const createFilesTableQuery = `
 CREATE TABLE IF NOT EXISTS files (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    entity_type VARCHAR(255),
     src VARCHAR(255),
     proposal_id INT,
     demand_id INT,
@@ -118,6 +126,7 @@ CREATE TABLE IF NOT EXISTS files (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 `;
+
 const createProposalsVotesTableQuery = `
 CREATE TABLE IF NOT EXISTS proposals_votes (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -147,6 +156,7 @@ const initDb = async () => {
 
     await pool.query(createUsersTableQuery);
     await pool.query(createCategoriesTableQuery);
+    await pool.query(seedCategoriesTableQuery);
     await pool.query(createDemandsTableQuery);
     await pool.query(createProposalsTableQuery);
     await pool.query(createFilesTableQuery);

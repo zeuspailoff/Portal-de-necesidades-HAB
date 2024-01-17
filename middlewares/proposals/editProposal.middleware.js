@@ -4,9 +4,9 @@ import { editProposalById } from "../../controllers/proposal.controller.js";
 
 const main = async (req, res, next) => {
 
-    const { proposal_id } = req.proposal.id;
+    const { proposal_id } = req.params;
     const { description } = req.body;
-    const { files } = req.files;
+    const files  = req.files;
 
     try {
         await validateSchema(editProposalSchema, req.body);
