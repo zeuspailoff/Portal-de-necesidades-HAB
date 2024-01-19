@@ -10,13 +10,13 @@ const main = async (req, res, next) => {
     try {
         await validateSchema(loginUserSchema, req.body)
 
-        const token = await loginUser(email, password)
+        const data = await loginUser(email, password)
 
         res.send({
             status: 'OK',
             message: 'Autenticación del usuario correcta',
             data: {
-                token
+                data
 
             }
         })
