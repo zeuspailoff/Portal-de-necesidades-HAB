@@ -77,7 +77,7 @@ export const getUserByEmailOrUsername = async (email) => {
   const pool = await getPool()
 
   const [users] = await pool.query(
-    'SELECT name, lastname, biography, created_at, password, is_active FROM users WHERE email = ? OR username = ? and deleted_at IS NULL ',
+    'SELECT name, lastname, biography, created_at, password, is_active, username FROM users WHERE email = ? OR username = ? and deleted_at IS NULL ',
     [email, email]
   )
 
