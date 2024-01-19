@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import errorsHelpers from '../helpers/errors.helper.js';
 import { mailToRecoverPassword, mailToRegistration } from '../helpers/mailer.helper.js';
 import { storeFile, deleteFile, insertFileSrc } from '../services/files.services.js';
-import  insertManyFiles  from '../helpers/insertFilesInEntity.helper.js';
+import insertManyFiles from '../helpers/insertFilesInEntity.helper.js';
 
 const entity_type = 'users';
 
@@ -63,10 +63,10 @@ export const updateUserById = async (id, username, password, biography, birthdat
     let deleteOldAvatar = null;
     if (files) {
         newAvatar.src = await storeFile(files[0], entity_type);
-         if (newAvatar.src){
-            if(actualAvatarId != null)  deleteOldAvatar = await deleteFile(actualAvatarId);
+        if (newAvatar.src) {
+            if (actualAvatarId != null) deleteOldAvatar = await deleteFile(actualAvatarId);
             await insertFileSrc(user.id, entity_type, newAvatar.src);
-         }
+        }
 
         response.avatar = newAvatar.src;
     }
@@ -113,7 +113,7 @@ export const loginUser = async (email, password) => {
 
     const token = jwt.sign(tokenI, process.env.SECRET, { expiresIn: process.env.EXPIRE })
 
-    return token;
+    return token, user;
 
 };
 
