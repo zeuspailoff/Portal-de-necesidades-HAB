@@ -15,7 +15,7 @@ export const createNewUser = async (body, registrationCode, files) => {
     const filesSrc = { insertId: response.insertId, files: [] }
 
 
-    await mailToRegistration(username, email, registrationCode)
+    await mailToRegistration(username, email, registrationCode, body.url)
 
 
     if (files) {

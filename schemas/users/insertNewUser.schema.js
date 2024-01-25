@@ -18,6 +18,7 @@ const insertNewUserSchema = joi.object({
     biography: joi.string().min(5).max(1000).allow('').messages(joiMsg),
     birthdate: joi.date().iso().required().messages(joiMsg),
     phone: joi.string().min(5).max(20).required().messages(joiMsg),
+    url: joi.string().uri().required().messages(joiMsg)
 });
 
 export default insertNewUserSchema;

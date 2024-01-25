@@ -4,14 +4,14 @@ import dotenv from 'dotenv';
 const BASE_URL = process.env.BASE_URL;
 const PORT = process.env.PORT;
 
-export const mailToRegistration = async (username, email, registrationCode) => {
+export const mailToRegistration = async (username, email, registrationCode, url) => {
     const emailBody =
         `Bienvenido ${username}
     Gracias por registrarte en Portal de necesidades. Para activar tu cuenta, haz clic en el siguiente enlace:
     
     Click aqui para activar tu cuenta de PORTAL DE NECESIDADES: 
             
-                    "${BASE_URL}:${PORT}/users/validate/${registrationCode}" 
+                    "${url}/users/validate/${registrationCode}" 
     `
     await sendMail(email, `Activa tu cuenta`, emailBody);
 }
