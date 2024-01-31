@@ -4,6 +4,7 @@ const main = async (req, res, next) => {
 
 
     const { demand_id } = req.params;
+    const demandIdAsNumber = parseInt(demand_id, 10) || demand_id;
 
     try {
 

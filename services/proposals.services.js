@@ -88,30 +88,31 @@ const getProposalByDemandId = async (demand_id) => {
     const [response] = await pool.query(
         `
         SELECT 
-    p.*,
-    u.username as creator_username,
-    d.title,
-    d.description,
-    df.src as demandFileSrc,
-    pf.src as proposalFileSrc,
-    uf.src as userFileSrc,
-    (SELECT AVG(value) FROM proposals_votes pv WHERE pv.proposal_id = p.id) as voteAvg,
-    (SELECT COUNT(*) FROM proposals_votes pv WHERE pv.proposal_id = p.id) as voteCount
-FROM 
-    proposals p
-LEFT JOIN 
-    users u ON p.user_id = u.id
-LEFT JOIN 
-    demands d ON p.demand_id = d.id
-LEFT JOIN 
-    files df ON d.id = df.demand_id AND df.proposal_id IS NULL
-LEFT JOIN 
-    files pf ON p.id = pf.proposal_id
-LEFT JOIN 
-    files uf ON u.id = uf.user_id
-WHERE 
-    p.demand_id = ? 
-    AND p.deleted_at IS NULL;
+        p.*,
+        u.username as creator_username,
+        d.title,
+        d.description,
+        df.src as demandFileSrc,
+        pf.src as proposalFileSrc,
+        uf.src as userFileSrc,
+        (SELECT AVG(value) FROM proposals_votes pv WHERE pv.proposal_id = p.id) as voteAvg,
+        (SELECT COUNT(*) FROM proposals_votes pv WHERE pv.proposal_id = p.id) as voteCount
+    FROM 
+        proposals p
+    LEFT JOIN 
+        users u ON p.user_id = u.id
+    LEFT JOIN 
+        demands d ON p.demand_id = d.id
+    LEFT JOIN 
+        files df ON d.id = df.demand_id AND df.proposal_id IS NULL
+    LEFT JOIN 
+        files pf ON p.id = pf.proposal_id
+    LEFT JOIN 
+        files uf ON u.id = uf.user_id
+    WHERE 
+        p.demand_id = ? 
+        AND p.deleted_at IS NULL;
+    
     `, [demand_id]
     );
     if (response.length < 1) {
