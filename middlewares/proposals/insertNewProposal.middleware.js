@@ -6,11 +6,11 @@ import extractUserIdFromToken from "../../helpers/extractUserIdFromToken.helper.
 const main = async (req, res, next) => {
 
     const user_id = extractUserIdFromToken(req.headers.auth_token);
-    const demand_id = req.params;
+    const { demand_id } = req.params;
     const { description } = req.body;
     const files = req.files;
 
-
+    console.log(demand_id,description,files);
     try {
         await validateSchema(insertNewProposalSchema, req.body);
 

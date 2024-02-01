@@ -120,10 +120,9 @@ export const loginUser = async (email, password) => {
             lastname: user.lastname,
             biography: user.biography,
             created_at: user.created_at,
-            username: user.username
-
+            username: user.username,
+            token: token
         },
-        token,
     };
 
 };
