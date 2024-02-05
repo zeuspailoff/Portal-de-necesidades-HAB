@@ -29,13 +29,13 @@ export const createNewUser = async (body, registrationCode, files) => {
 
 }
 
-export const recoverPassword = async (email) => {
+export const recoverPassword = async (email,url) => {
     const user = await getUserByEmailOrUsername(email)
     const { username } = user
 
     const recoverPassCode = await passwordRecoverUpdate(user)
 
-    await mailToRecoverPassword(username, email, recoverPassCode)
+    await mailToRecoverPassword(username, email, recoverPassCode, url)
 }
 
 export const findOrFailUserById = async (id) => {

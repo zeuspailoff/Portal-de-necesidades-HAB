@@ -6,9 +6,9 @@ const main = async (req, res, next) =>{
     try {
         await validateSchema(passwordRecoverSchema, req.body);
 
-        const { email } = req.body;
+        const { email,url } = req.body;
 
-        await recoverPassword(email);
+        await recoverPassword(email,url);
 
         res.send({
             status: "OK",

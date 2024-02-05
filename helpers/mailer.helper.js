@@ -16,13 +16,13 @@ export const mailToRegistration = async (username, email, registrationCode, url)
     await sendMail(email, `Activa tu cuenta`, emailBody);
 }
 
-export const mailToRecoverPassword = async (username, email, passwordRecovery) => {
+export const mailToRecoverPassword = async (username, email, passwordRecovery, url) => {
     const emailBody =
         `Hola ${username}
     Si usted no ha solicitado este correo, ignorelo.
     
     Para recuperar tu contraseña, envia un request PUT con el campo "password" a la siguiente URL:
-    "${BASE_URL}:${PORT}/users/SetPassByrecover/${passwordRecovery}"
+    "${url}/users/newPassword/${passwordRecovery}"
     
     `
 
