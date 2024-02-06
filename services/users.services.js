@@ -155,6 +155,7 @@ export const getUserById = async (id) => {
 
 export const getOwnUser = async (id) => {
   const pool = await getPool();
+  console.log(id);
 
   const [response] = await pool.query(
     `SELECT 

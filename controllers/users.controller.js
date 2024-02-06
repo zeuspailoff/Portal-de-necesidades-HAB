@@ -29,7 +29,7 @@ export const createNewUser = async (body, registrationCode, files) => {
 
 }
 
-export const recoverPassword = async (email,url) => {
+export const recoverPassword = async (email, url) => {
     const user = await getUserByEmailOrUsername(email)
     const { username } = user
 
@@ -75,6 +75,7 @@ export const updateUserById = async (id, username, password, biography, birthdat
 
 export const getOwnUserById = async (id) => {
     const response = await getOwnUser(id);
+    console.log('control ', id);
     return response;
 }
 
@@ -112,6 +113,7 @@ export const loginUser = async (email, password) => {
     }
 
     const token = jwt.sign(tokenI, process.env.SECRET, { expiresIn: process.env.EXPIRE })
+    console.log(user)
 
     return {
         user: {
@@ -121,7 +123,9 @@ export const loginUser = async (email, password) => {
             biography: user.biography,
             created_at: user.created_at,
             username: user.username,
-            token: token
+            token: token,
+            avatar: user.avatar
+
         },
     };
 

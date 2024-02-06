@@ -7,6 +7,7 @@ const main = async (req, res, next) => {
     try {
 
         const user = await findOrFailUserById(user_id)
+        console.log('estimate', user);
 
         req.user = user;
 

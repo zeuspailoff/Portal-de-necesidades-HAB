@@ -5,6 +5,7 @@ const main = async (req, res, next) => {
 
     const { user_id } = req.params;
 
+
     const loggedUserId = extractUserIdFromToken(req.headers.auth_token)
 
     try {
@@ -12,8 +13,10 @@ const main = async (req, res, next) => {
 
         if (user_id != loggedUserId) {
             response = await findOrFailUserById(user_id);
+            console.log('estoy aki?');
         } else {
             response = await getOwnUserById(user_id);
+            console.log('estoy aki?');
         }
 
         res.send({
