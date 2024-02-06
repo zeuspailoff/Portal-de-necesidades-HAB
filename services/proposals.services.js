@@ -91,8 +91,9 @@ const getProposalByDemandId = async (demand_id) => {
         SELECT 
         p.*,
         u.username as creator_username,
-        d.title,
-        d.description,
+        p.description as proposal_description,
+        d.title as demand_title,
+        d.description as demand_description,
         df.src as demandFileSrc,
         pf.src as proposalFileSrc,
         uf.src as userFileSrc,
@@ -112,7 +113,8 @@ const getProposalByDemandId = async (demand_id) => {
         files uf ON u.id = uf.user_id
     WHERE 
         p.demand_id = ? 
-        AND p.deleted_at IS NULL;
+        AND p.deleted_at IS NULL; 
+    
     
     `, [demand_id]
     );
