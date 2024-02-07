@@ -8,7 +8,8 @@ import {
     deleteFile,
     selectAllDemandsByUserId,
     demandExists,
-    isClosed
+    isClosed,
+    selectAllCategories
 } from '../services/demands.services.js'
 import insertManyFiles from '../helpers/insertFilesInEntity.helper.js'
 
@@ -80,3 +81,8 @@ export const demandClosed = async (proposal_id) => {
     const response = await isClosed(proposal_id);
     return response;
 };
+
+export const getAllCategories = async () => {
+    const response = await selectAllCategories();
+    return response;
+}

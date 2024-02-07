@@ -20,12 +20,13 @@ export const selectDemandById = async (id) => {
     const pool = await getPool();
     const [response] = await pool.query(
         `SELECT 
-        d.id AS demandId,
-        d.title AS demandTitle,
-        d.description AS demandDescription,
-        d.created_at AS demandCreatedAt,
-        u.id AS userId,
-        u.username AS username,
+        d.id AS id,
+        d.title AS title,
+        d.description AS description,
+        d.created_at AS created_at,
+        d.category_id as category_id,
+        u.id AS user_id,
+        u.username AS userName,
         u.created_at AS userCreatedAt,
         fu.id AS userAvatarId,
         fu.src AS userAvatarSrc,
@@ -244,6 +245,18 @@ export const isClosed = async (proposal_id) => {
     }
 
 
+    return response;
+}
+
+export const selectAllCategories = async () => {
+    const pool = await getPool();
+    const [response] = await pool.query(
+        'SELECT id, value FROM categories'
+    );
+
+    if (response.length == 0) {
+        errors.entityNotFound('Category');
+    }
     return response;
 }
 

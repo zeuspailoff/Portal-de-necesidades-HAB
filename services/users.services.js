@@ -92,7 +92,24 @@ export const getUsers = async () => {
   const pool = await getPool()
 
   const [users] = await pool.query(`
-    SELECT username, email,name,lastname FROM users WHERE deleted_at IS NULL
+    SELECT
+    u.id, 
+    u.username,
+    u.lastname,
+    u.name,
+    u.phone,
+    u.birthdate,
+    u.biography,
+    u.created_at,
+    fu.src as avatarSrc,
+    fu.id as avatar_id
+  FROM 
+      users u
+  LEFT JOIN 
+      files fu ON u.id = fu.user_id
+  WHERE 
+      u.deleted_at IS NULL
+  ORDER BY created_at DESC;
   `);
 
   return users
@@ -122,43 +139,9 @@ export const getUserById = async (id) => {
 
   const pool = await getPool();
 
-
   const [response] = await pool.query(
-    ` SELECT 
-      u.username,
-      u.biography,
-      u.created_at,
-      fu.id as avatar_id,
-      fu.src as avatarSrc,
-      d.*,
-      COUNT(p.id) as entries
-      FROM 
-          users u
-      INNER JOIN 
-          files fu ON u.id = fu.user_id
-      LEFT JOIN 
-          demands d ON u.id = d.user_id AND d.deleted_at IS NULL
-      LEFT JOIN 
-          proposals p ON u.id = p.user_id
-      WHERE 
-          u.id = ? AND u.deleted_at IS NULL
-      GROUP BY 
-          u.id, fu.id, d.id;
-    `, [id]
-  );
-
-  if (response.length === 0) {
-    errors.notFoundError('User not found', 'USER_NOT_FOUND');
-  }
-  return response[0];
-}
-
-export const getOwnUser = async (id) => {
-  const pool = await getPool();
-  console.log(id);
-
-  const [response] = await pool.query(
-    `SELECT 
+    `
+    SELECT 
       u.username,
       u.lastname,
       u.name,
@@ -173,6 +156,43 @@ export const getOwnUser = async (id) => {
         files fu ON u.id = fu.user_id
     WHERE 
         u.id = ? AND u.deleted_at IS NULL;
+    `, [id]
+  );
+
+  console.log(response);
+
+  if (response.length === 0) {
+    errors.notFoundError('User not found', 'USER_NOT_FOUND');
+  }
+  return response[0];
+}
+
+export const getOwnUser = async (id) => {
+  const pool = await getPool();
+  console.log(id);
+
+  const [response] = await pool.query(
+    `SELECT 
+    u.id as user_id,
+    u.username,
+    u.biography,
+    u.name,
+    u.lastname,
+    u.phone,
+    u.birthdate,
+    u.created_at as user_created_at,
+    fu.id as avatar_id,
+    fu.src as avatarSrc
+FROM 
+    users u
+LEFT JOIN 
+    files fu ON u.id = fu.user_id
+WHERE 
+    u.id = ? AND u.deleted_at IS NULL
+GROUP BY 
+    u.id, fu.id
+ORDER BY 
+    u.id;
     `, [id]
   );
 
@@ -225,14 +245,12 @@ export const deleteUser = async (id) => {
 
 }
 
-export const updateUser = async (id, username, password, biography, birthdate, phone, name, lastname) => {
+export const updateUser = async (id, username, biography, name, lastname) => {
   const pool = await getPool();
 
-  const passwordHashed = await bcrypt.hash(password, 5)
-
   const [response] = await pool.query(
-    'UPDATE users SET username=?, password=?, biography=?, birthdate=?, phone=?, name=?, lastname=? WHERE id=?',
-    [username, passwordHashed, biography, birthdate, phone, name, lastname, id]
+    'UPDATE users SET username=?, biography=?,name=?, lastname=? WHERE id=?',
+    [username, biography, name, lastname, id]
   );
 
   if (response.affectedRows !== 1) {

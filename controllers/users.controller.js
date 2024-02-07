@@ -54,9 +54,9 @@ export const deleteUserById = async (id) => {
     return response;
 }
 
-export const updateUserById = async (id, username, password, biography, birthdate, phone, name, lastname, files, user) => {
+export const updateUserById = async (id, username, biography, name, lastname, files, user) => {
 
-    const response = await updateUser(id, username, password, biography, birthdate, phone, name, lastname);
+    const response = await updateUser(id, username, biography, name, lastname);
 
     const actualAvatarId = user?.avatar_id;
     const newAvatar = {}

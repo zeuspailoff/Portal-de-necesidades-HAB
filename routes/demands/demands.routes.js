@@ -14,13 +14,15 @@ import {
     authUser,
     getProposalByDemandId,
     demandExists,
-    isOwner
+    isOwner,
+    getAllCategories
 
 } from "../../middlewares/index.middleware.js";
 
 const router = express.Router();
 
 router.get('/demands', getAllDemands);
+router.get('/categories', authUser, getAllCategories);
 router.post('/demands', upload.array('files', 5), authUser, insertNewDemand);
 router.get('/demands/:demand_id/proposals', getProposalByDemandId);
 router.get('/demands/:demand_id', demandExists, getDemandById);
