@@ -9,10 +9,12 @@ const main = async (req, res, next) => {
     const { username, biography, name, lastname } = req.body;
     const files = req.files;
     const user = res.user;
+    console.log(files);
 
     try {
         await validateSchema(updateUserSchema, req.body);
         const response = await updateUserById(user_id, username, biography, name, lastname, files, user);
+        console.log(response);
         res.send({
             status: 200,
             message: `User with ID: ${user_id} modified successfully.`,
@@ -22,7 +24,7 @@ const main = async (req, res, next) => {
                 biography: biography,
                 name: name,
                 lastname: lastname,
-                profile_picture: response.filesSrc
+                profile_picture: response.avatar
             }
         })
     } catch (error) {

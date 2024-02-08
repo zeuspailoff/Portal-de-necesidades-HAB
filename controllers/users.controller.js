@@ -63,13 +63,11 @@ export const updateUserById = async (id, username, biography, name, lastname, fi
     const newAvatar = {}
     let deleteOldAvatar = null;
 
-    if (files) {
+    if (files.length > 0) {
         newAvatar.src = await storeFile(files[0], entity_type);
-        console.log(id);
         if (newAvatar.src) {
             if (actualAvatarId != null) deleteOldAvatar = await deleteFile(actualAvatarId);
             await insertFileSrc(user.id, entity_type, newAvatar.src);
-            console.log(id);
         }
 
         response.avatar = newAvatar.src;
@@ -98,8 +96,10 @@ export const getAllUsers = async () => {
 }
 
 export const loginUser = async (email, password) => {
+    
     const user = await getUserByEmailOrUsername(email)
-
+    
+    console.log(user);
 
     const validPassword = await bcrypt.compare(password, user.password);
 
@@ -126,7 +126,8 @@ export const loginUser = async (email, password) => {
             created_at: user.created_at,
             username: user.username,
             token: token,
-            avatar: user.avatar
+            profile_picture: user.profile_picture,
+            profile_picture_id: user.profile_picture_id,
 
         },
     };

@@ -77,7 +77,24 @@ export const getUserByEmailOrUsername = async (email) => {
   const pool = await getPool()
 
   const [users] = await pool.query(
-    'SELECT name, id,lastname, biography, created_at, password, is_active, username FROM users WHERE email = ? OR username = ? and deleted_at IS NULL ',
+    `
+    SELECT 
+    u.username,
+    u.lastname,
+    u.name,
+    u.phone,
+    u.birthdate,
+    u.biography,
+    u.password,
+    u.is_active,
+    fu.src as profile_picture,
+    fu.id as profile_picture_id
+  FROM 
+      users u
+  LEFT JOIN 
+      files fu ON u.id = fu.user_id
+  WHERE (u.email = ? OR u.username = ?) AND u.deleted_at IS NULL
+    `,
     [email, email]
   )
 
@@ -148,8 +165,8 @@ export const getUserById = async (id) => {
       u.phone,
       u.birthdate,
       u.biography,
-      fu.src as avatarSrc,
-      fu.id as avatar_id
+      fu.src as profile_picture,
+      fu.id as profile_picture_id
     FROM 
         users u
     LEFT JOIN 

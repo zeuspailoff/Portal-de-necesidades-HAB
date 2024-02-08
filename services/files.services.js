@@ -96,7 +96,7 @@ export const deleteFile = async (file_id) => {
     try {
         await fs.unlink(path.join(__dirname,"..", previousFile[0].src));
     } catch (error) {
-        console.error(error.getMessage());
+        console.error(error);
     }
 
     return response;

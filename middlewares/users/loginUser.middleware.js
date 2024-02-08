@@ -8,9 +8,12 @@ const main = async (req, res, next) => {
     const { email, password } = req.body;
 
     try {
+
         await validateSchema(loginUserSchema, req.body)
 
         const data = await loginUser(email, password)
+
+        console.log(data);
 
         res.send({
             status: 'OK',
