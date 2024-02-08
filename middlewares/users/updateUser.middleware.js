@@ -6,13 +6,13 @@ import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.helper.
 const main = async (req, res, next) => {
 
     const user_id = extractUserIdFromToken(req.headers.auth_token);
-    const { username,password, biography, birthdate, phone, name, lastname } = req.body;
+    const { username, biography, name, lastname } = req.body;
     const files = req.files;
     const user = res.user;
 
     try {
         await validateSchema(updateUserSchema, req.body);
-        const response = await updateUserById(user_id, username, password, biography, birthdate, phone, name, lastname, files, user);
+        const response = await updateUserById(user_id, username, biography, name, lastname, files, user);
         res.send({
             status: 200,
             message: `User with ID: ${user_id} modified successfully.`,
@@ -20,8 +20,6 @@ const main = async (req, res, next) => {
                 id: user_id,
                 username: username,
                 biography: biography,
-                birthdate: birthdate,
-                phone: phone,
                 name: name,
                 lastname: lastname,
                 profile_picture: response.filesSrc

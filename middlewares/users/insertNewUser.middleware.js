@@ -13,7 +13,6 @@ const main = async (req, res, next) => {
         const registrationCode = randomstring.generate(30);
 
         const response = await createNewUser(req.body, registrationCode, files);
-        console.log(req.body);
         res.send({
             status: 200,
             message: 'User inserted successfully😁',

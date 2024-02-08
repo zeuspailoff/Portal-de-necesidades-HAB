@@ -10,7 +10,6 @@ const newProposal = async (user_id, demand_id, description) => {
         'INSERT INTO proposals (user_id, demand_id, description) VALUES (?,?,?)',
         [user_id, demand_id, description]
     );
-    console.log(demand_id);
     if (response.affectedRows !== 1) {
         errors.conflictError('Error al insertar la proposal', 'PROPOSAL_INSERT_ERROR');
     }

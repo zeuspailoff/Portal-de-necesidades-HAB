@@ -22,6 +22,7 @@ export const createNewUser = async (body, registrationCode, files) => {
 
         const entity_id = response.insertId;
         filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
+        console.log(entity_id)
     }
 
     return filesSrc
@@ -61,11 +62,14 @@ export const updateUserById = async (id, username, biography, name, lastname, fi
     const actualAvatarId = user?.avatar_id;
     const newAvatar = {}
     let deleteOldAvatar = null;
+
     if (files) {
         newAvatar.src = await storeFile(files[0], entity_type);
+        console.log(id);
         if (newAvatar.src) {
             if (actualAvatarId != null) deleteOldAvatar = await deleteFile(actualAvatarId);
             await insertFileSrc(user.id, entity_type, newAvatar.src);
+            console.log(id);
         }
 
         response.avatar = newAvatar.src;
@@ -75,7 +79,6 @@ export const updateUserById = async (id, username, biography, name, lastname, fi
 
 export const getOwnUserById = async (id) => {
     const response = await getOwnUser(id);
-    console.log('control ', id);
     return response;
 }
 
@@ -113,7 +116,6 @@ export const loginUser = async (email, password) => {
     }
 
     const token = jwt.sign(tokenI, process.env.SECRET, { expiresIn: process.env.EXPIRE })
-    console.log(user)
 
     return {
         user: {

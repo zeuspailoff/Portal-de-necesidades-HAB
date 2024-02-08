@@ -23,7 +23,7 @@ import {
 
 const router = express.Router()
 
-router.get('/users', authUser, getAllUsers)
+router.get('/users', getAllUsers)
 router.get('/users/:user_id', authUser, userExists, getUserById)
 router.get('/users/:user_id/demands', authUser, getAllDemandsByUserId);
 router.get('/users/validate/:registrationCode', validateUser)

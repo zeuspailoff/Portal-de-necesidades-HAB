@@ -159,7 +159,6 @@ export const getUserById = async (id) => {
     `, [id]
   );
 
-  console.log(response);
 
   if (response.length === 0) {
     errors.notFoundError('User not found', 'USER_NOT_FOUND');
@@ -169,7 +168,6 @@ export const getUserById = async (id) => {
 
 export const getOwnUser = async (id) => {
   const pool = await getPool();
-  console.log(id);
 
   const [response] = await pool.query(
     `SELECT 

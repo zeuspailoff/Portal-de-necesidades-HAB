@@ -11,10 +11,8 @@ const main = async (req, res, next) => {
 
         if (user_id != loggedUserId) {
             response = await findOrFailUserById(user_id);
-            console.log(response, "no logged user");
         } else {
             response = await getOwnUserById(user_id);
-            console.log(response, 'estoy aki?, si logged user');
         }
 
         res.send({
