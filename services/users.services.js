@@ -79,6 +79,7 @@ export const getUserByEmailOrUsername = async (email) => {
   const [users] = await pool.query(
     `
     SELECT 
+    u.id,
     u.username,
     u.lastname,
     u.name,
