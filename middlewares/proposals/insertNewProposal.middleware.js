@@ -14,10 +14,9 @@ const main = async (req, res, next) => {
         await validateSchema(insertNewProposalSchema, req.body);
 
         const response = await createProposal(user_id, demand_id, description, files);
-
+            console.log(response);
         res.status(200).json({
-            status: 200,
-            message: 'Proposal was created successfully😁',
+            status: 200,message: 'Proposal was created successfully😁',
             id: response.insertId,
             user: user_id,
             demand: demand_id,

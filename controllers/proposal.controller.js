@@ -15,7 +15,11 @@ export const createProposal = async (user_id, demand_id, description, files = nu
         filesSrc.documents = await (insertManyFiles(entity_id, files, entity_type));
     }
 
-    return filesSrc;
+    response.files = {
+       ...filesSrc.documents
+    };
+
+    return response;
 };
 
 export const deleteProposalById = async (id) => {
