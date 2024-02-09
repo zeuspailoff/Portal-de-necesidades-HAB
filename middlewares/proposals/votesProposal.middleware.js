@@ -11,7 +11,10 @@ const main = async (req, res, next) => {
         const {proposal_id} = req.params;
         const user_id = extractUserIdFromToken(req.headers.auth_token);
         const { value, demand_id } = req.body;
-
+        
+        console.log(req.body,"body");
+        console.log(user_id, "user_id");
+        console.log(proposal_id, "proposal_id");
         const votes = await voteProposal(value, proposal_id, user_id, demand_id);
 
         res.send({
