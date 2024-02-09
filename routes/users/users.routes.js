@@ -18,7 +18,7 @@ import {
   passwordUpdate,
   recoveryCodeValidate,
   passwordRecover,
-  getAllDemandsByUserId
+  getAllDemandsByUserId,
 } from '../../middlewares/index.middleware.js'
 
 const router = express.Router()
@@ -26,7 +26,7 @@ const router = express.Router()
 router.get('/users', getAllUsers)
 router.get('/users/:user_id', authUser, userExists, getUserById)
 router.get('/users/:user_id/demands', authUser, getAllDemandsByUserId);
-router.get('/users/validate/:registrationCode', validateUser)
+router.get('/users/validate/:registrationCode', validateUser);
 router.post('/users/login', loginUser)
 router.post('/users', upload.array('files', 2), newUser)
 router.post('/users/recover', passwordRecover)
