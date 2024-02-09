@@ -7,7 +7,6 @@ const main = async (req, res, next) => {
 
 
     const {user_id} = req.params
-    console.log(user_id);
 
     try {
         await validateSchema(getAllDemandsByUserIdSchema, req.params);

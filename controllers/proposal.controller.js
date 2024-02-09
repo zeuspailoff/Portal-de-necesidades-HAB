@@ -1,4 +1,4 @@
-import { newProposal, deleteProposal, editProposal, getProposalById, getProposalByDemandId, proposalExists, updateProposalStatus, insertVote } from '../services/proposals.services.js';
+import { newProposal, deleteProposal, editProposal, getProposalById, getProposalByDemandId, proposalExists, updateProposalStatus, insertVote,getMostVotedProposalByUserId } from '../services/proposals.services.js';
 import insertManyFiles from '../helpers/insertFilesInEntity.helper.js';
 
 const entity_type = 'proposals'
@@ -66,4 +66,10 @@ export const updateProposalStatusById = async (id) => {
 export const voteProposal = async (value, proposal_id, user_id, demand_id) => {
     const voteAvg = await insertVote(value, proposal_id, user_id, demand_id);
     return voteAvg;
+}
+
+export const popularProposalsByUserId = async (user_id) => {
+    const response = await getMostVotedProposalByUserId(user_id);
+
+    return response;
 }

@@ -183,6 +183,31 @@ const updateProposalStatus = async (id) => {
     return response;
 };
 
+const getMostVotedProposalByUserId = async (user_id) => {
+    
+    const pool = await getPool();
+    const [response] = await pool.query(
+        `
+        SELECT proposals.*, AVG(proposals_votes.value) AS average_votes
+        FROM proposals
+        LEFT JOIN proposals_votes ON proposals.id = proposals_votes.proposal_id
+        WHERE proposals.user_id = ?
+        GROUP BY proposals.id
+        ORDER BY average_votes DESC
+        LIMIT 5
+        `,
+        [user_id]
+        );
+        
+        console.log("response",response);
+    
+    if (response.affectedRows == 0) {
+        errors.conflictError('Proposals not found', 'PROPOSAL_FIND_ERROR');
+    }
+    return response;
+};
+  
+
 export {
     newProposal,
     deleteProposal,
@@ -191,5 +216,6 @@ export {
     getProposalByDemandId,
     proposalExists,
     updateProposalStatus,
-    insertVote
+    insertVote,
+    getMostVotedProposalByUserId
 };

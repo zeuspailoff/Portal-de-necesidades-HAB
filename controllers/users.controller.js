@@ -22,7 +22,6 @@ export const createNewUser = async (body, registrationCode, files) => {
 
         const entity_id = response.insertId;
         filesSrc.files = await (insertManyFiles(entity_id, files, entity_type));
-        console.log(entity_id)
     }
 
     return filesSrc
@@ -99,7 +98,6 @@ export const loginUser = async (email, password) => {
     
     const user = await getUserByEmailOrUsername(email)
     
-    console.log(user);
 
     const validPassword = await bcrypt.compare(password, user.password);
 

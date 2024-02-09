@@ -13,8 +13,6 @@ const main = async (req, res, next) => {
 
         const data = await loginUser(email, password)
 
-        console.log(data);
-
         res.send({
             status: 'OK',
             message: 'Autenticación del usuario correcta',

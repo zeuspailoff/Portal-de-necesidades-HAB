@@ -12,6 +12,7 @@ import editProposalById from "./proposals/editProposal.middleware.js";
 import getProposalById from "./proposals/getProposalById.middleware.js";
 import getProposalByDemandId from "./proposals/getProposalByDemand.middleware.js";
 import proposalExists from "./proposals/proposalExists.middleware.js";
+import getPopularProposalsByUserid from "./proposals/getPopularProposalsByUserId.middleware.js";
 import newUser from "./users/insertNewUser.middleware.js";
 import getUserById from "../middlewares/users/getUserById.middleware.js";
 import deleteUserById from "../middlewares/users/deleteUser.middleware.js";
@@ -67,7 +68,8 @@ export {
     isNotOwner,
     recoveryCodeValidate,
     passwordRecover,
-    getAllCategories
+    getAllCategories,
+    getPopularProposalsByUserid
 
 
 }
