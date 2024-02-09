@@ -6,10 +6,11 @@ import extractUserIdFromToken from "../../helpers/extractUserIdFromToken.helper.
 const main = async (req, res, next) => {
 
 
-    const user_id = extractUserIdFromToken(req.headers.auth_token);
+    const {user_id} = req.params
+    console.log(user_id);
 
     try {
-        await validateSchema(getAllDemandsByUserIdSchema, req.body);
+        await validateSchema(getAllDemandsByUserIdSchema, req.params);
 
         const [...response] = await getAllDemandsByUserId(user_id);
         res.send({

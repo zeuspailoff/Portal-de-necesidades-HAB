@@ -11,8 +11,11 @@ const main = async (req, res, next) => {
 
         if (user_id != loggedUserId) {
             response = await findOrFailUserById(user_id);
+            response.is_owner = false;
+            console.log(response);
         } else {
             response = await getOwnUserById(user_id);
+            response.is_owner = true;
         }
 
         res.send({

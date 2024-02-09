@@ -119,8 +119,8 @@ export const getUsers = async () => {
     u.birthdate,
     u.biography,
     u.created_at,
-    fu.src as avatarSrc,
-    fu.id as avatar_id
+    fu.src as profile_picture,
+    fu.id as profile_picture_id
   FROM 
       users u
   LEFT JOIN 
@@ -153,7 +153,7 @@ export const updatePasswordRecover = async (user) => {
   return recoverPassCode
 }
 
-export const getUserById = async (id) => {
+export const getUserById = async (id) => { //ACAAA
 
   const pool = await getPool();
 
@@ -187,6 +187,8 @@ export const getUserById = async (id) => {
 export const getOwnUser = async (id) => {
   const pool = await getPool();
 
+ 
+
   const [response] = await pool.query(
     `SELECT 
     u.id as user_id,
@@ -194,11 +196,9 @@ export const getOwnUser = async (id) => {
     u.biography,
     u.name,
     u.lastname,
-    u.phone,
-    u.birthdate,
     u.created_at as user_created_at,
-    fu.id as avatar_id,
-    fu.src as avatarSrc
+    fu.id as profile_picture_id,
+    fu.src as profile_picture
 FROM 
     users u
 LEFT JOIN 
@@ -216,7 +216,7 @@ ORDER BY
     errors.notFoundError('User not found', 'USER_NOT_FOUND');
   }
 
-  return response;
+  return response[0];
 
 }
 

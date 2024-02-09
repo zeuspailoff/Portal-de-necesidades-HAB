@@ -105,15 +105,15 @@ export const selectAllDemandsByUserId = async (userId) => {
     const [response] = await pool.query(
         `
         SELECT 
-    d.id AS demandId,
-    d.title AS demandTitle,
-    d.description AS demandDescription,
-    d.created_at AS demandCreatedAt,
-    u.id AS userId,
+    d.id AS id,
+    d.title AS title,
+    d.description AS description,
+    d.created_at AS created_at,
+    u.id AS user_id,
     u.username AS username,
-    u.created_at AS userCreatedAt,
-    fu.id AS userAvatarId,
-    fu.src AS userAvatarSrc,
+    u.created_at AS user_created_at,
+    fu.id AS profile_pifcutre_id,
+    fu.src AS profile_pifcutre,
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT('fileId', df.id, 'fileSrc', df.src)
