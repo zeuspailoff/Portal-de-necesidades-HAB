@@ -22,6 +22,7 @@ export const selectDemandById = async (id) => {
         `SELECT 
         d.id AS id,
         d.title AS title,
+        d.is_closed as status,
         d.description AS description,
         d.created_at AS created_at,
         d.category_id as category_id,
