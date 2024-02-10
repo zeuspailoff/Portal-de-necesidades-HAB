@@ -19,6 +19,7 @@ import {
   recoveryCodeValidate,
   passwordRecover,
   getAllDemandsByUserId,
+  deleteFile
 } from '../../middlewares/index.middleware.js'
 
 const router = express.Router()
@@ -34,5 +35,7 @@ router.put('/users/:user_id/passwordupdate', authUser, findOrFailUser, passwordU
 router.put('/users/:user_id', upload.array('files', 2), authUser, findOrFailUser, updateUser)
 router.put('/users/SetPassByrecover/:recoveryCode', recoveryCodeValidate, passwordUpdate)
 router.delete('/users/:user_id', authUser, userExists, deleteUserById)
+router.delete('/files/:file_id/delete', authUser, deleteFile)
+
 
 export default router;

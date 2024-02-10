@@ -8,7 +8,7 @@ import { dirname } from 'path';
 import dotenv from 'dotenv';
 
 dotenv.config();
-const UPLOADS_DIR  = process.env.UPLOADS_DIR
+const UPLOADS_DIR = process.env.UPLOADS_DIR
 
 
 
@@ -49,7 +49,7 @@ export const storeFile = async (file, entity_type) => {
         charset: 'alphanumeric'
     }) + fileExtension;
 
-    const filePath = path.join(__dirname, '..',UPLOADS_DIR ,'uploads', entity_type, fileName);
+    const filePath = path.join(__dirname, '..', UPLOADS_DIR, 'uploads', entity_type, fileName);
     const relativePath = path.join('uploads', entity_type, fileName);
 
     await fs.writeFile(filePath, file.buffer);
@@ -94,7 +94,7 @@ export const deleteFile = async (file_id) => {
     }
 
     try {
-        await fs.unlink(path.join(__dirname,"..", previousFile[0].src));
+        await fs.unlink(path.join(__dirname, "..", "public", previousFile[0].src));
     } catch (error) {
         console.error(error);
     }

@@ -33,6 +33,7 @@ import isNotOwner from "../middlewares/security/isNotOwner.middleware.js";
 import recoveryCodeValidate from "./security/recoveryPassword.middleware.js"
 import passwordRecover from "../middlewares/security/passwordRecover.middleware.js";
 import getAllCategories from "../middlewares/categories/getAllCategories.middleware.js";
+import deleteFile from "../middlewares/users/deleteFile.middleware.js";
 
 export {
     insertNewDemand,
@@ -69,7 +70,8 @@ export {
     recoveryCodeValidate,
     passwordRecover,
     getAllCategories,
-    getPopularProposalsByUserid
+    getPopularProposalsByUserid,
+    deleteFile
 
 
 }

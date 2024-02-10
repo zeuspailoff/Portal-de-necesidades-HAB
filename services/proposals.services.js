@@ -49,7 +49,8 @@ const getProposalById = async (id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
-        `SELECT 
+        `
+        SELECT 
         p.id,
         p.description,
         p.is_correct,
@@ -88,33 +89,34 @@ const getProposalByDemandId = async (demand_id) => {
     const [response] = await pool.query(
         `
         SELECT 
-        p.*,
-        u.username as creator_username,
-        p.description as proposal_description,
-        d.title as demand_title,
-        d.description as demand_description,
-        df.src as demandFileSrc,
-        pf.src as proposalFileSrc,
-        uf.src as userFileSrc,
-        (SELECT AVG(value) FROM proposals_votes pv WHERE pv.proposal_id = p.id) as voteAvg,
-        (SELECT COUNT(*) FROM proposals_votes pv WHERE pv.proposal_id = p.id) as voteCount
-    FROM 
-        proposals p
-    LEFT JOIN 
-        users u ON p.user_id = u.id
-    LEFT JOIN 
-        demands d ON p.demand_id = d.id
-    LEFT JOIN 
-        files df ON d.id = df.demand_id AND df.proposal_id IS NULL
-    LEFT JOIN 
-        files pf ON p.id = pf.proposal_id
-    LEFT JOIN 
-        files uf ON u.id = uf.user_id
-    WHERE 
-        p.demand_id = ? 
-        AND p.deleted_at IS NULL; 
-    
-    
+    p.*,
+    u.username as creator_username,
+    p.description as proposal_description,
+    d.title as demand_title,
+    d.description as demand_description,
+    JSON_ARRAYAGG(JSON_OBJECT('id', df.id, 'src', df.src)) as demandFiles,
+    JSON_ARRAYAGG(JSON_OBJECT('id', pf.id, 'src', pf.src)) as proposalFiles,
+    uf.src as profile_picture,
+    (SELECT AVG(value) FROM proposals_votes pv WHERE pv.proposal_id = p.id) as voteAvg,
+    (SELECT COUNT(*) FROM proposals_votes pv WHERE pv.proposal_id = p.id) as voteCount
+FROM 
+    proposals p
+LEFT JOIN 
+    users u ON p.user_id = u.id
+LEFT JOIN 
+    demands d ON p.demand_id = d.id
+LEFT JOIN 
+    files df ON d.id = df.demand_id AND df.proposal_id IS NULL
+LEFT JOIN 
+    files pf ON p.id = pf.proposal_id
+LEFT JOIN 
+    files uf ON u.id = uf.user_id
+WHERE 
+    p.demand_id = ? 
+    AND p.deleted_at IS NULL
+GROUP BY
+    p.id, u.id, d.id, uf.id; -- Asegurarse de incluir todas las columnas no agregadas en GROUP BY
+ 
     `, [demand_id]
     );
     if (response.length < 1) {
@@ -184,7 +186,7 @@ const updateProposalStatus = async (id) => {
 };
 
 const getMostVotedProposalByUserId = async (user_id) => {
-    
+
     const pool = await getPool();
     const [response] = await pool.query(
         `
@@ -197,16 +199,16 @@ const getMostVotedProposalByUserId = async (user_id) => {
         LIMIT 5
         `,
         [user_id]
-        );
-        
-        console.log("response",response);
-    
+    );
+
+    console.log("response", response);
+
     if (response.affectedRows == 0) {
         errors.conflictError('Proposals not found', 'PROPOSAL_FIND_ERROR');
     }
     return response;
 };
-  
+
 
 export {
     newProposal,

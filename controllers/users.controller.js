@@ -95,9 +95,9 @@ export const getAllUsers = async () => {
 }
 
 export const loginUser = async (email, password) => {
-    
+
     const user = await getUserByEmailOrUsername(email)
-    
+
 
     const validPassword = await bcrypt.compare(password, user.password);
 
@@ -131,4 +131,10 @@ export const loginUser = async (email, password) => {
     };
 
 };
+
+
+export const deleteFileByID = async (file_id) => {
+    const response = await deleteFile(file_id);
+    return response;
+}
 
