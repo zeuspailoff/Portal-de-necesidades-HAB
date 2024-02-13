@@ -11,7 +11,7 @@ const newProposal = async (user_id, demand_id, description) => {
         [user_id, demand_id, description]
     );
     if (response.affectedRows !== 1) {
-        errors.conflictError('Error al insertar la proposal', 'PROPOSAL_INSERT_ERROR');
+        errors.conflictError('Error inserting the proposal', 'PROPOSAL_INSERT_ERROR');
     }
     return response;
 };
@@ -134,7 +134,7 @@ const insertVote = async (value, proposal_id, user_id) => {
     )
     if (actualVotes.length > 0) {
         errors.unauthorizedUser(
-            'Solo un voto por persona😤'
+            'Only one vote per person😤'
         )
     }
 
@@ -153,7 +153,7 @@ const insertVote = async (value, proposal_id, user_id) => {
     )
 
     if (votes.length < 1) {
-        errors.entityNotFound('La demanda no existe🔍')
+        errors.entityNotFound('The lawsuit does not exist🔍')
     }
 
     return votes[0].voteAvg;
@@ -180,7 +180,7 @@ const updateProposalStatus = async (id) => {
     );
 
     if (response.affectedRows !== 1) {
-        errors.conflictError('Error al editar la proposal', 'PROPOSAL_EDIT_ERROR');
+        errors.conflictError('Error editing the proposal', 'PROPOSAL_EDIT_ERROR');
     }
     return response;
 };
@@ -201,7 +201,6 @@ const getMostVotedProposalByUserId = async (user_id) => {
         [user_id]
     );
 
-    console.log("response", response);
 
     if (response.affectedRows == 0) {
         errors.conflictError('Proposals not found', 'PROPOSAL_FIND_ERROR');

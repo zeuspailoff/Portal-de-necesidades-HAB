@@ -1,7 +1,7 @@
 const main = async (req, res, next) => {
     try {
         const userInfo = req.user;
-        
+
         const user = {
             id: userInfo.id,
             username: userInfo.username,
@@ -12,12 +12,12 @@ const main = async (req, res, next) => {
 
         res.send({
             status: "OK",
-            message: "Usuario encontrado",
-            data:{
+            message: "User found",
+            data: {
                 user
             }
         })
-    }catch (err) {
+    } catch (err) {
         next(err);
     }
 }

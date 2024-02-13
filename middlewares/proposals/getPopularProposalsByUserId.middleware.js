@@ -8,10 +8,9 @@ const main = async (req, res, next) => {
     const { user_id } = req.params;
 
     try {
-        await validateSchema(popularProposals,  req.params);
+        await validateSchema(popularProposals, req.params);
 
 
-        console.log(user_id);
         const proposals = await popularProposalsByUserId(user_id);
 
         res.send({

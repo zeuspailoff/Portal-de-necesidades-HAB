@@ -17,7 +17,7 @@ const main = async (req, res, next) => {
         }
 
         if (entity.user_id == user_id) {
-            errors.notAuthorizedError("No puedes hacer propuestas en tus necesidades", "NOT_AUTHORIZED");
+            errors.notAuthorizedError("You cannot make proposals in your needs", "NOT_AUTHORIZED");
         }
 
         next();

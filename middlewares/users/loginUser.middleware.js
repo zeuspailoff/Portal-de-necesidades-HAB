@@ -15,7 +15,7 @@ const main = async (req, res, next) => {
 
         res.send({
             status: 'OK',
-            message: 'Autenticación del usuario correcta',
+            message: 'User authentication successful',
             data: {
                 data
 

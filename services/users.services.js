@@ -145,7 +145,7 @@ export const updatePasswordRecover = async (user) => {
 
   if (response.affectedRows !== 1) {
     errors.conflictError(
-      'Error al generar recoverPassCode.',
+      'Error generating recoverPassCode',
       'RECOVER_PASS_ERROR'
     )
   }
@@ -187,7 +187,7 @@ export const getUserById = async (id) => { //ACAAA
 export const getOwnUser = async (id) => {
   const pool = await getPool();
 
- 
+
 
   const [response] = await pool.query(
     `SELECT 
@@ -235,7 +235,7 @@ export const updateUserPassword = async (id, password, recovery) => {
   const [response] = await pool.query(sqlQuery, values);
 
   if (response.affectedRows !== 1) {
-    errors.conflictError('Error al actualizar el usuario', 'PASSWORD_UPDATE_ERROR');
+    errors.conflictError('Error updating the user', 'PASSWORD_UPDATE_ERROR');
   }
 
   if (recovery) {
@@ -254,7 +254,7 @@ export const deleteUser = async (id) => {
   );
 
   if (response.affectedRows !== 1) {
-    errors.conflictError('Error al actualizar el usuario', 'DELETE_USER_ERROR');
+    errors.conflictError('Error updating the user', 'DELETE_USER_ERROR');
   }
 
   return response;
@@ -270,7 +270,7 @@ export const updateUser = async (id, username, biography, name, lastname) => {
   );
 
   if (response.affectedRows !== 1) {
-    errors.conflictError('Error al actualizar el usuario', 'USER_UPDATE_ERROR');
+    errors.conflictError('Error updating the user', 'USER_UPDATE_ERROR');
   }
 
   return response;
@@ -287,7 +287,7 @@ export const setPasswordRecover = async (user_id, recoverPassCode) => {
 
   if (response.affectedRows !== 1) {
     errors.conflictError(
-      'Error al generar el codigo de recuperacion de contrasena.',
+      'Error generating the password recovery code.',
       'RECOVER_PASS_ERROR'
     )
   }
@@ -306,7 +306,7 @@ export const validateUserByRecoveryCode = async (recoverPassCode) => {
 
     if (users.length !== 1) {
       errors.conflictError(
-        'Codigo de recuperacion invalido.',
+        'Invalid recovery code.',
         'RECOVER_PASS_ERROR'
       )
     }
@@ -314,7 +314,7 @@ export const validateUserByRecoveryCode = async (recoverPassCode) => {
 
   } catch (err) {
     errors.conflictError(
-      'Error al intentar recuperar contraseña.',
+      'Error attempting to recover password',
       'USER_ACTIVATED_ERROR'
     )
   }
@@ -333,7 +333,7 @@ export const passwordRecoverUpdate = async (user) => {
 
   if (response.affectedRows !== 1) {
     errors.conflictError(
-      'Error al generar password_recovered.',
+      'Error generating password_recovered.',
       'RECOVER_PASS_ERROR'
     )
   }

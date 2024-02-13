@@ -1,27 +1,27 @@
 const errorMsg = {
-    'any.required': 'El campo "{#key}" es requerido',
-    'string.base': 'El valor de "{#key}" debe ser una cadena',
-    'string.empty': 'El campo "{#key}" no debe estar vacío',
-    'date.base': 'El valor de "{#key}" debe ser un tipo date YYYY-MM-DD',
-    'number.base': 'El valor de "{#key}" debe ser un número',
-    'number.max': 'El archivo no debe exceder los 5 MB',
-    'object.base': 'El valor de "{#key}" debe ser un objeto',
-    'any.only': 'Solo se permiten fotos jpeg o png',
+    'any.required': 'The "{#key}" field is required',
+    'string.base': 'The value of "{#key}" must be a string',
+    'string.empty': 'The "{#key}" field must not be empty',
+    'date.base': 'The value of "{#key}" must be a date type YYYY-MM-DD',
+    'number.base': 'The value of "{#key}" must be a number',
+    'number.max': 'The file must not exceed 5 MB',
+    'object.base': 'The value of "{#key}" must be an object',
+    'any.only': 'Only jpeg or png photos are allowed',
     'string.email':
-        'Debe proporcionar un correo electrónico válido para "{#key}"',
-    'string.min': 'El campo "{#key}" debe tener al menos {#limit} caracteres',
-    'string.max': 'El campo "{#key}" no debe exceder los {#limit} caracteres',
-    'object.unknown': 'No se permiten campos adicionales en este objeto',
+        'You must provide a valid email for "{#key}"',
+    'string.min': 'The "{#key}" field must have at least {#limit} characters',
+    'string.max': 'The "{#key}" field must not exceed {#limit} characters',
+    'object.unknown': 'No additional fields are allowed in this object',
 };
 
 const errorMsgUsername = {
     'string.pattern.base':
-        'El campo "{#key}" no debe contener espacios en blanco.',
+        'The "{#key}" field must not contain whitespace.',
 };
 
 const errorMsgPassword = {
     'string.pattern.base':
-        'La contraseña debe contener al menos una mayúscula, una minúscula, un número y un símbolo de puntuación para "{#key}"',
+        'The password must contain at least one uppercase letter, one lowercase letter, one number, and one punctuation symbol for "{#key}"',
 };
 
 export default {

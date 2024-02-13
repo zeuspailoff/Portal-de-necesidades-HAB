@@ -167,7 +167,7 @@ export const updateDemandStatus = async (demand_id) => {
     );
 
     if (response.affectedRows !== 1) {
-        errors.conflictError('Error al actualizar la demanda', 'DEMAND_UPDATE_ERROR');
+        errors.conflictError('Error updating the lawsuit', 'DEMAND_UPDATE_ERROR');
     }
 
     return response;
@@ -181,7 +181,7 @@ export const editDemand = async (demandId, title, description, category_id) => {
     );
 
     if (response.affectedRows !== 1) {
-        errors.conflictError('Error al actualizar la demanda', 'DEMAND_UPDATE_ERROR');
+        errors.conflictError('Error updating the lawsuit', 'DEMAND_UPDATE_ERROR');
     }
 
     return response;
@@ -195,7 +195,7 @@ export const deleteDemand = async (id) => {
     );
 
     if (response.affectedRows !== 1) {
-        errors.conflictError('Error al borrar la demanda', 'DEMAND_DELETE_ERROR');
+        errors.conflictError('Error delete the lawsuit', 'DEMAND_DELETE_ERROR');
     }
 
     await pool.query(
