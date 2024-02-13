@@ -8,13 +8,8 @@ const main = async (req, res, next) => {
 
         const user_id = extractUserIdFromToken(req.headers.auth_token);
 
-        if (req.proposal) {
-            entity = req.proposal;
-        } else {
-            entity = req.demand;
-        }
 
-        if (entity.user_id != user_id) {
+        if (req.demand.user_id != user_id) {
             errors.notAuthorizedError("You are not authorized to edit this entry", "NOT_AUTHORIZED");
         }
 

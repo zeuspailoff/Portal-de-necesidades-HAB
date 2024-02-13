@@ -141,6 +141,27 @@ CREATE TABLE IF NOT EXISTS proposals_votes (
   );
   `;
 
+  const poblateDB = `INSERT INTO users (name, lastname, phone, username, email, password)
+VALUES
+  ('John', 'Doe', '1234567890', 'johndoe', 'johndoe@example.com', 'password1'),
+  ('Jane', 'Doe', '0987654321', 'janedoe', 'janedoe@example.com', 'password2');
+
+INSERT INTO demands (user_id, title, description, category_id)
+VALUES
+  (1, 'Web Design for my company website', 'I need a website designed for my company. It should be modern and responsive.', 1),
+  (2, 'Develop a mobile app', 'I need a mobile app developed for my business. It should be user-friendly and have the following features:', 2);
+
+INSERT INTO proposals (user_id, demand_id, description)
+VALUES
+  (2, 1, 'I can design a modern and responsive website for your company. I have experience in web design and development, and I can create a website that meets your needs.'),
+  (2, 2, 'I can develop a mobile app for your business. I have experience in mobile app development, and I can create an app that has the features you need.');
+
+INSERT INTO proposals (user_id, demand_id, description)
+VALUES
+  (1, 2, 'I can develop a mobile app for your business. I have experience in mobile app development, and I can create an app that has the features you need.'),
+  (1, 1, 'I can design a modern and responsive website for your company. I have experience in web design and development, and I can create a website that meets your needs.');`
+
+
 const initDb = async () => {
   try {
     const pool = await getPool();
@@ -162,6 +183,8 @@ const initDb = async () => {
     await pool.query(createProposalsTableQuery);
     await pool.query(createFilesTableQuery);
     await pool.query(createProposalsVotesTableQuery);
+    // await pool.query(poblateDB);
+
 
     pool.end();
     console.log('Base de datos inicializada 😎');

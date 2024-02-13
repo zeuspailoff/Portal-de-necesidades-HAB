@@ -29,6 +29,6 @@ router.get('/proposals/user/:user_id', authUser, getPopularProposalsByUserid);
 router.put('/proposals/:proposal_id', upload.array('files', 5), authUser, proposalExists, isOwner, editProposalById);
 router.put('/proposals/:proposal_id/updateStatus', authUser, proposalExists, isOwner, updateProposalStatus);
 router.post('/proposals/:proposal_id/votes', authUser, proposalExists, isNotOwner, votesProposal);
-router.delete('/proposals/:proposal_id', authUser, proposalExists, isOwner, deleteProposal);
+router.delete('/proposals/:proposal_id/demands/:demand_id', authUser, proposalExists,demandExists, isOwner, deleteProposal);
 
 export default router;
