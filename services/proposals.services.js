@@ -91,6 +91,7 @@ const getProposalByDemandId = async (demand_id) => {
         SELECT 
     p.*,
     u.username as creator_username,
+    u.id AS creator_id,
     p.description as proposal_description,
     d.title as demand_title,
     d.description as demand_description,
