@@ -91,8 +91,8 @@ const getProposalByDemandId = async (demand_id) => {
         SELECT 
     p.*,
     u.username as creator_username,
-    u.id AS creator_id,
     p.description as proposal_description,
+    d.user_id AS creator_id,
     d.title as demand_title,
     d.description as demand_description,
     JSON_ARRAYAGG(JSON_OBJECT('id', df.id, 'src', df.src)) as demandFiles,
