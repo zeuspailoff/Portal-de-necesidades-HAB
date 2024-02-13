@@ -1,26 +1,71 @@
 import getPool from '../db/getPool.js';
-import errors from '../helpers/errors.helpers.js';
+import errors from '../helpers/errors.helper.js';
 
-const insertNewDemand = async (user_id, title, description) => {
+export const insertNewDemand = async (user_id, title, description, category_id) => {
     const pool = await getPool();
 
     const [response] = await pool.query(
-        'INSERT INTO demands (user_id, title, description) VALUES (?,?,?)',
-        [user_id, title, description]
+        'INSERT INTO demands (user_id, title, description,category_id) VALUES (?,?,?,?)',
+        [user_id, title, description, category_id]
     );
 
-    if (response.affectedRows!== 1) {
+    if (response.affectedRows !== 1) {
         errors.conflictError('Error al insertar la demanda', 'DEMAND_INSERT_ERROR');
     }
 
     return response;
 }
 
-const getDemandById = async (demandId) => {
+export const selectDemandById = async (id) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'SELECT * FROM demands WHERE id = ? AND deleted_at IS NULL',
-        [demandId]
+        `SELECT 
+        d.id AS id,
+        d.title AS title,
+        d.is_closed as status,
+        d.description AS description,
+        d.created_at AS created_at,
+        d.category_id as category_id,
+        u.id AS user_id,
+        u.username AS userName,
+        u.created_at AS userCreatedAt,
+        fu.id AS userAvatarId,
+        fu.src AS userAvatarSrc,
+        (
+            SELECT JSON_ARRAYAGG(
+                JSON_OBJECT('fileId', df.id, 'fileSrc', df.src)
+            )
+            FROM files df
+            WHERE df.demand_id = d.id
+        ) AS demandFiles,
+        (
+            SELECT JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'proposalId', p.id,
+                    'proposalDescription', p.description,
+                    'proposalCreatedAt', p.created_at,
+                    'proposalFiles', (
+                        SELECT JSON_ARRAYAGG(
+                            JSON_OBJECT('fileId', pf.id, 'fileSrc', pf.src)
+                        )
+                        FROM files pf
+                        WHERE pf.proposal_id = p.id
+                    )
+                )
+            )
+            FROM proposals p
+            WHERE p.demand_id = d.id AND p.deleted_at IS NULL
+        ) AS proposals
+    FROM 
+        demands d
+    LEFT JOIN 
+        users u ON d.user_id = u.id
+    LEFT JOIN 
+        files fu ON u.id = fu.user_id
+    WHERE 
+        d.id = ? AND d.deleted_at IS NULL;
+    `,
+        [id]
     );
 
     if (response.length < 1) {
@@ -30,10 +75,25 @@ const getDemandById = async (demandId) => {
     return response[0];
 }
 
-const getAllDemands = async () => {
+export const selectAllDemands = async () => {
     const pool = await getPool();
-    const [response] = await pool.query(
-        'SELECT * FROM demands WHERE deleted_at IS NULL'
+    const [response] = await pool.query(`
+        SELECT 
+            d.id,
+            d.title,
+            d.description,
+            d.is_closed,
+            c.value as category,
+            u.username as creator_username
+        FROM 
+            demands d
+        LEFT JOIN 
+            users u ON d.user_id = u.id
+        LEFT JOIN
+            categories c ON d.category_id = c.id
+        WHERE 
+            d.deleted_at IS NULL;
+    `
     );
     if (response.length == 0) {
         errors.entityNotFound('Demand');
@@ -41,11 +101,55 @@ const getAllDemands = async () => {
     return response;
 }
 
-const getAllDemandsByUserId = async (userId) => {
+export const selectAllDemandsByUserId = async (userId) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'SELECT * FROM demands WHERE user_id = ? AND deleted_at IS NULL',
-        [userId]
+        `
+        SELECT 
+    d.id AS id,
+    d.title AS title,
+    d.description AS description,
+    d.created_at AS created_at,
+    u.id AS user_id,
+    u.username AS username,
+    u.created_at AS user_created_at,
+    fu.id AS profile_pifcutre_id,
+    fu.src AS profile_pifcutre,
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT('fileId', df.id, 'fileSrc', df.src)
+        )
+        FROM files df
+        WHERE df.demand_id = d.id
+    ) AS demandFiles,
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'proposalId', p.id,
+                'proposalDescription', p.description,
+                'proposalCreatedAt', p.created_at,
+                'proposalFiles', (
+                    SELECT JSON_ARRAYAGG(
+                        JSON_OBJECT('fileId', pf.id, 'fileSrc', pf.src)
+                    )
+                    FROM files pf
+                    WHERE pf.proposal_id = p.id
+                )
+            )
+        )
+        FROM proposals p
+        WHERE p.demand_id = d.id AND p.deleted_at IS NULL
+    ) AS proposals
+FROM 
+    demands d
+LEFT JOIN 
+    users u ON d.user_id = u.id
+LEFT JOIN 
+    files fu ON u.id = fu.user_id
+WHERE 
+    u.id = ? AND d.deleted_at IS NULL;
+
+        `, [userId, userId]
     );
 
     if (response.length == 0) {
@@ -55,64 +159,55 @@ const getAllDemandsByUserId = async (userId) => {
     return response;
 }
 
-const updateDemandStatus = async (demandId, status) => {
+export const updateDemandStatus = async (demand_id) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'UPDATE demands SET status = ? WHERE id = ?',
-        [status, demandId]
-    );
-
-    if (response.affectedRows!== 1) {
-        errors.conflictError('Error al actualizar la demanda', 'DEMAND_UPDATE_ERROR');
-    }
-
-    return response;
-}
-
-const editDemand = async (demandId, title, description) => {
-    const pool = await getPool();
-    const [response] = await pool.query(
-        'UPDATE demands SET title = ?, description = ? WHERE id = ?',
-        [title, description, demandId]
-    );
-
-    if (response.affectedRows!== 1) {
-        errors.conflictError('Error al actualizar la demanda', 'DEMAND_UPDATE_ERROR');
-    }
-
-    return response;
-}
-
-const deleteDemand = async (demandId) => {
-    const pool = await getPool();
-    const [response] = await pool.query(
-        'UPDATE demands SET deleted_at = NOW() WHERE id = ?',
-        [demandId]
+        'UPDATE demands SET is_closed = 1 WHERE id = ?',
+        [demand_id]
     );
 
     if (response.affectedRows !== 1) {
-        errors.conflictError('Error al borrar la demanda', 'DEMAND_DELETE_ERROR');
+        errors.conflictError('Error updating the lawsuit', 'DEMAND_UPDATE_ERROR');
     }
 
     return response;
 }
 
-
-const insertFile = async (entity_id, entity_type, src) => {
+export const editDemand = async (demandId, title, description, category_id) => {
     const pool = await getPool();
     const [response] = await pool.query(
-        'INSERT INTO files (entity_type, src, entity_id) VALUES (?,?,?)',
-        [entity_type, src, entity_id]
+        `UPDATE demands SET title = ?, description = ? , category_id = ? WHERE id = ?`,
+        [title, description, category_id, demandId]
     );
 
-    if (response.affectedRows!== 1) {
-        errors.conflictError('Error al insertar el archivo', 'FILE_INSERT_ERROR');
+    if (response.affectedRows !== 1) {
+        errors.conflictError('Error updating the lawsuit', 'DEMAND_UPDATE_ERROR');
     }
 
     return response;
 }
 
-const deleteFile = async (entity_id, entity_type) => {
+export const deleteDemand = async (id) => {
+    const pool = await getPool();
+    const [response] = await pool.query(
+        'UPDATE demands SET deleted_at = NOW() WHERE id = ?',
+        [id]
+    );
+
+    if (response.affectedRows !== 1) {
+        errors.conflictError('Error delete the lawsuit', 'DEMAND_DELETE_ERROR');
+    }
+
+    await pool.query(
+        'UPDATE proposals SET deleted_at = NOW() WHERE demand_id =?',
+        [id]
+    );
+
+
+    return response;
+}
+
+export const deleteFile = async (entity_id, entity_type) => {
     const pool = await getPool();
     const [response] = await pool.query(
         'UPDATE files SET deleted_at = NOW() WHERE entity_id = ? AND entity_type = ?',
@@ -126,14 +221,44 @@ const deleteFile = async (entity_id, entity_type) => {
     return response;
 }
 
-export default {
-    insertNewDemand,
-    getDemandById,
-    updateDemandStatus,
-    editDemand,
-    deleteDemand,
-    insertFile,
-    getAllDemands,
-    deleteFile,
-    getAllDemandsByUserId
+export const demandExists = async (demand_id) => {
+    const pool = await getPool();
+    const [response] = await pool.query(
+        'SELECT * FROM demands WHERE id = ? AND deleted_at IS NULL',
+        [demand_id]
+    );
+
+    if (response.length !== 1) {
+        errors.entityNotFound('Demand');
+    }
+
+    return response;
 }
+export const isClosed = async (proposal_id) => {
+    const pool = await getPool();
+    const [response] = await pool.query(
+        'UPDATE proposals SET is_correct =1 WHERE id =?',
+        [proposal_id]
+    );
+
+    if (response.affectedRows !== 1) {
+        errors.conflictError('Proposal not found', 'PROPOSAL_NOT_FOUND');
+    }
+
+
+    return response;
+}
+
+export const selectAllCategories = async () => {
+    const pool = await getPool();
+    const [response] = await pool.query(
+        'SELECT id, value FROM categories'
+    );
+
+    if (response.length == 0) {
+        errors.entityNotFound('Category');
+    }
+    return response;
+}
+
+

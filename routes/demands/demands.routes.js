@@ -1,25 +1,33 @@
 import express from 'express';
+import multer from 'multer';
 
-import { 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+import {
     insertNewDemand,
-     getAllDemands,
-     getDemandById,
-     getAllDemandsByUserId,
-     deleteDemand,
-     updateDemandStatus,
-     editDemand 
-} from "../../middleware/index.middleware.js";
+    getAllDemands,
+    getDemandById,
+    deleteDemand,
+    updateDemandStatus,
+    editDemand,
+    authUser,
+    getProposalByDemandId,
+    demandExists,
+    isOwner,
+    getAllCategories
+
+} from "../../middlewares/index.middleware.js";
 
 const router = express.Router();
 
-router.post('/demands/new', insertNewDemand);
-router.get('/demands/getAll', getAllDemands);
-router.get('/demands/getDemand', getDemandById);
-router.get('/demands/getAllDemandsByUser', getAllDemandsByUserId);
-router.delete('/demands/delete', deleteDemand);
-router.put('/demands/updateStatus', updateDemandStatus);
-router.put('/demands/edit', editDemand);
+router.get('/demands', getAllDemands);
+router.get('/categories', authUser, getAllCategories);
+router.post('/demands', upload.array('files', 5), authUser, insertNewDemand);
+router.get('/demands/:demand_id/proposals', getProposalByDemandId);
+router.get('/demands/:demand_id', demandExists, getDemandById);
+router.put('/demands/:demand_id', upload.array('files', 5), authUser, demandExists, isOwner, editDemand);
+router.put('/demands/:demand_id/close', authUser, demandExists, isOwner, updateDemandStatus);
+router.delete('/demands/:demand_id/', authUser, demandExists, isOwner, deleteDemand);
 
 export default router;
-
-

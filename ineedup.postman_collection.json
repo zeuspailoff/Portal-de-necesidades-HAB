@@ -1,0 +1,997 @@
+{
+	"info": {
+		"_postman_id": "84344707-97f3-4e42-9d0d-c655065d3aa1",
+		"name": "ineedup",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25405641",
+		"_collection_link": "https://crimson-shadow-95175.postman.co/workspace/hab~a7b5c4b0-e1e3-41f7-8419-f99a41500eda/collection/1229843-84344707-97f3-4e42-9d0d-c655065d3aa1?action=share&source=collection_link&creator=25405641"
+	},
+	"item": [
+		{
+			"name": "proposals",
+			"item": [
+				{
+					"name": "proposals/create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "Hola buenas tardes desde postman",
+									"type": "text"
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": "/C:/Users/zeusp/OneDrive/Imágenes/android-chrome-192x192.png"
+								},
+								{
+									"key": "user_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "demand_id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/proposals/public",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"proposals",
+								"public"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "proposals/getById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTcwMjY1NDY3NSwiZXhwIjoxNzAyNjYxODc1fQ.dEbjvHDXxFRhsZmoeCt8pYEafTUjkxDij83NCnegNtE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"proposal_id\": \"1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/proposals/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"proposals",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "proposals/edit",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "proposal_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "estamos probando todo ",
+									"type": "text"
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": "/C:/Users/zeusp/Downloads/ASD (1).txt"
+								},
+								{
+									"key": "user_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "demand_id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/proposals/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"proposals",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "proposals/getByDemandId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTcwMjY1NDY3NSwiZXhwIjoxNzAyNjYxODc1fQ.dEbjvHDXxFRhsZmoeCt8pYEafTUjkxDij83NCnegNtE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"demand_id\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/proposals/bydemand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"proposals",
+								"bydemand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "votar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value\": \"4\",\r\n    \"proposal_id\": \"1\",\r\n    \"user_id\": \"2\",\r\n    \"demand_id\":\"1\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/proposals/votes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"proposals",
+								"votes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AvgVotesProposalById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"proposal_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/proposals/AvgVotesById",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"proposals",
+								"AvgVotesById"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "proposals/delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"proposal_id\": 1,\n    \"demand_id\": 1,\n    \"user_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/proposals/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"proposals",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "demands",
+			"item": [
+				{
+					"name": "demands/insertNew",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": "/C:/Users/zeusp/OneDrive/Imágenes/android-chrome-192x192.png"
+								},
+								{
+									"key": "user_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "titulo",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "esto es una description",
+									"type": "text"
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": "/C:/Users/zeusp/OneDrive/Imágenes/abraham.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/demands/new",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"demands",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "demands/updateStatus",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": 1,\n    \"demand_id\": 2,\n    \"status\": \"1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/demands/updateStatus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"demands",
+								"updateStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "demands/getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"user_id\": \"1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/demands/getAll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"demands",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "demands/delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": 14,\n    \"demand_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/demands/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"demands",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "demands/editDemand",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"demand_id\": 2,\n   \"user_id\": 1,\n   \"title\": \"tutoria de node.js\",\n   \"description\": \"se precisa ayuda\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/demands/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"demands",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "demands/getAllDemandsByUserId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"user_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/demands/getAllDemandsByUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"demands",
+								"getAllDemandsByUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "demands/getDemandById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"id\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/demands/getDemand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"demands",
+								"getDemand"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "insertUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": "/C:/Users/zeusp/OneDrive/Imágenes/android-chrome-192x192.png"
+								},
+								{
+									"key": "email",
+									"value": "228.abraham.diaz@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "hackaboss",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234Asd.",
+									"type": "text"
+								},
+								{
+									"key": "biography",
+									"value": "funcionaaaaaaaaa por favoooooooor",
+									"type": "text"
+								},
+								{
+									"key": "birthdate",
+									"value": "1986-05-20",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "987456321",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "nombredecincocaracteres",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "trolo",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validate/:registrationCode",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/validate/i13qcfWPlpIffDZkQIfmTTk3RXxCkX",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"validate",
+								"i13qcfWPlpIffDZkQIfmTTk3RXxCkX"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"228.abraham.diaz@gmail.com\",\n    \"password\": \"1234Asd.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUser",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\":\"1\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/getById/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"getById",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "user_id",
+								"value": "2",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": "/Users/kevinghio/Desktop/abraham.png"
+								},
+								{
+									"key": "email",
+									"value": "ghiokevin@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "juanramon",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234Asd.",
+									"type": "text"
+								},
+								{
+									"key": "biography",
+									"value": "caaccacaac",
+									"type": "text"
+								},
+								{
+									"key": "birthdate",
+									"value": "1986-05-20",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "987456321",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "nombredecincocaracteres",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "trolo",
+									"type": "text"
+								},
+								{
+									"key": "user_id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "password/recovery",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"ASDFG123ddfd.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/SetPassByrecover/ODYazixpZZ",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"SetPassByrecover",
+								"ODYazixpZZ"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "passwordUpdateUser",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "auth_token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": 1,\n    \"password\": \"HolaProfesores1254..\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/passwordupdate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"passwordupdate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/delete/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"delete",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "email password recover",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ghiokevin@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/recover",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"recover"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "auth_token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzAyOTM0ODAwLCJleHAiOjE3MDI5NDIwMDB9.JHjdAHnwGJGdlw1oC9WT89ZPHM_omajLfZcs-T_8LcU"
+		},
+		{
+			"key": "abraham",
+			"value": "eyJpZCI6MywiaWF0IjoxNzAyNzI3NTM3LCJleHAiOjE3MDI3MzQ3Mzd9",
+			"disabled": true
+		}
+	]
+}

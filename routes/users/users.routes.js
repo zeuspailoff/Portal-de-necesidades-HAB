@@ -1,28 +1,41 @@
 import express from 'express';
+import multer from 'multer';
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 import {
-    newUser,
-    // validateUser,
-    // loginUser,
-    // authUser,
-    // userExists,
-    // getOwnUser,
-    // getUserAccount,
-    // editUserPhoto,
-    // passwordRecovery,
-    // editPassword
-  } from '../middleware/index.middleware.js'
-  
-  const router = express.Router()
-  
-  router.post('/users/register', newUser)
-  // router.get('/users/validate/:registrationCode', validateUser)
-  // router.post('/users/login', loginUser)
-  // router.get('/users', authUser, userExists, getOwnUser)
-  // router.get('/users/:userId', userExists, getUserAccount)
-  // router.put('/users/photo', authUser, userExists, editUserPhoto)
-  // router.post('/users/password/recover', passwordRecovery)
-  // router.put('/users/password', editPassword)
-  
-  export default router
-  
+  newUser,
+  validateUser,
+  getAllUsers,
+  getUserById,
+  deleteUserById,
+  updateUser,
+  findOrFailUser,
+  loginUser,
+  authUser,
+  userExists,
+  passwordUpdate,
+  recoveryCodeValidate,
+  passwordRecover,
+  getAllDemandsByUserId,
+  deleteFile
+} from '../../middlewares/index.middleware.js'
+
+const router = express.Router()
+
+router.get('/users', getAllUsers)
+router.get('/users/:user_id', authUser, userExists, getUserById)
+router.get('/users/:user_id/demands', authUser, getAllDemandsByUserId);
+router.get('/users/validate/:registrationCode', validateUser);
+router.post('/users/login', loginUser)
+router.post('/users', upload.array('files', 2), newUser)
+router.post('/users/recover', passwordRecover)
+router.put('/users/:user_id/passwordupdate', authUser, findOrFailUser, passwordUpdate)
+router.put('/users/:user_id', upload.array('files', 2), authUser, findOrFailUser, updateUser)
+router.put('/users/SetPassByrecover/:recoveryCode', recoveryCodeValidate, passwordUpdate)
+router.delete('/users/:user_id', authUser, userExists, deleteUserById)
+router.delete('/files/:file_id/delete', authUser, deleteFile)
+
+
+export default router;
