@@ -3,9 +3,9 @@ import errors from '../../helpers/errors.helper.js';
 
 const main = async (req, res, next) => {
     try {
-        const { auth_token } = req.headers;
-        console.log("auth_token", auth_token);
-        if (!auth_token) {
+        const { Authorization } = req.headers;
+        console.log("auth_token", Authorization);
+        if (!Authorization) {
             errors.notAthenticatedError();
         }
 
@@ -14,7 +14,7 @@ const main = async (req, res, next) => {
         try {
 
             console.log("process.env.SECRET", process.env.SECRET);
-            tokenInfo = jwt.verify(auth_token, process.env.SECRET);
+            tokenInfo = jwt.verify(Authorization, process.env.SECRET);
             console.log("tokenInfo", tokenInfo);
         } catch (err) {
             errors.unauthorizedUser();
