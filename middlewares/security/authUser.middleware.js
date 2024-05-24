@@ -16,7 +16,7 @@ const main = async (req, res, next) => {
             errors.unauthorizedUser();
         }
 
-        res.user = tokenInfo;
+        req.user = tokenInfo;
 
         next();
     } catch (err) {
