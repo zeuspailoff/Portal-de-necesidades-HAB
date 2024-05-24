@@ -4,9 +4,7 @@ import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.helper.
 const main = async (req, res, next) => {
 
     const { user_id } = req.params;
-    console.log("user_id", user_id);
     const loggedUserId = req.user.id
-    console.log("loggedUserId", loggedUserId);
 
     try {
         let response = {};

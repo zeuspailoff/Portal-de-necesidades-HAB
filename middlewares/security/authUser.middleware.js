@@ -13,15 +13,12 @@ const main = async (req, res, next) => {
 
         try {
 
-            console.log("process.env.SECRET", process.env.SECRET);
             tokenInfo = jwt.verify(authorization, process.env.SECRET);
-            console.log("tokenInfo", tokenInfo);
         } catch (err) {
             errors.unauthorizedUser();
         }
 
         req.user = tokenInfo;
-        console.log("user", req.user);
 
         next();
     } catch (err) {
