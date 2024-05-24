@@ -4,6 +4,7 @@ import errors from '../../helpers/errors.helper.js';
 const main = async (req, res, next) => {
     try {
         const { Authorization } = req.headers;
+        console.log("req.headers", req.headers)
         console.log("auth_token", Authorization);
         if (!Authorization) {
             errors.notAthenticatedError();
