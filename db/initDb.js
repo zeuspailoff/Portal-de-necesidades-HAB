@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS users (
     biography TEXT,
     birthdate DATE,
     password VARCHAR(255),
-    is_active TINYINT(1) default 0,
+    is_active TINYINT(1) default 1,
     registration_code VARCHAR(30),
     password_recovered VARCHAR(255) default NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
