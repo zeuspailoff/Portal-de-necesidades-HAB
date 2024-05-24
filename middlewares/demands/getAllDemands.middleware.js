@@ -3,7 +3,7 @@ import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.helper.
 
 const main = async (req, res, next) => {
 
-    const user_id = extractUserIdFromToken(req.headers.auth_token);
+    const user_id = extractUserIdFromToken(req.headers.authorization);
 
     try {
         const [...response] = await getAllDemands(user_id);

@@ -5,7 +5,7 @@ import extractUserIdFromToken from "../../helpers/extractUserIdFromToken.helper.
 
 const main = async (req, res, next) => {
 
-    const user_id = extractUserIdFromToken(req.headers.auth_token);
+    const user_id = extractUserIdFromToken(req.headers.authorization);
     const { demand_id } = req.params;
     const { description } = req.body;
     const files = req.files;
@@ -15,7 +15,7 @@ const main = async (req, res, next) => {
 
         const response = await createProposal(user_id, demand_id, description, files);
         res.status(200).json({
-            status: 200,message: 'Proposal was created successfully😁',
+            status: 200, message: 'Proposal was created successfully😁',
             id: response.insertId,
             user: user_id,
             demand: demand_id,

@@ -16,8 +16,8 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							}
 						],
@@ -70,7 +70,7 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "auth_token",
+								"key": "authorization",
 								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTcwMjY1NDY3NSwiZXhwIjoxNzAyNjYxODc1fQ.dEbjvHDXxFRhsZmoeCt8pYEafTUjkxDij83NCnegNtE",
 								"type": "text"
 							}
@@ -105,8 +105,8 @@
 						"method": "PUT",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							}
 						],
@@ -164,7 +164,7 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "auth_token",
+								"key": "authorization",
 								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTcwMjY1NDY3NSwiZXhwIjoxNzAyNjYxODc1fQ.dEbjvHDXxFRhsZmoeCt8pYEafTUjkxDij83NCnegNtE",
 								"type": "text"
 							}
@@ -199,8 +199,8 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							}
 						],
@@ -237,8 +237,8 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							}
 						],
@@ -272,8 +272,8 @@
 						"method": "DELETE",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							}
 						],
@@ -312,8 +312,8 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							}
 						],
@@ -368,8 +368,8 @@
 						"method": "PUT",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							}
 						],
@@ -435,8 +435,8 @@
 						"method": "DELETE",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							}
 						],
@@ -470,8 +470,8 @@
 						"method": "PUT",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							}
 						],
@@ -508,8 +508,8 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							}
 						],
@@ -580,8 +580,8 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							}
 						],
@@ -728,8 +728,8 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							}
 						],
@@ -764,8 +764,8 @@
 						"method": "PUT",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							},
 							{
@@ -881,8 +881,8 @@
 						"method": "PUT",
 						"header": [
 							{
-								"key": "auth_token",
-								"value": "{{auth_token}}",
+								"key": "authorization",
+								"value": "{{authorization}}",
 								"type": "text"
 							}
 						],
@@ -985,7 +985,7 @@
 	],
 	"variable": [
 		{
-			"key": "auth_token",
+			"key": "authorization",
 			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzAyOTM0ODAwLCJleHAiOjE3MDI5NDIwMDB9.JHjdAHnwGJGdlw1oC9WT89ZPHM_omajLfZcs-T_8LcU"
 		},
 		{

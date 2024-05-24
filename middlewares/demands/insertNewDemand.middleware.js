@@ -6,7 +6,7 @@ import extractUserIdFromToken from '../../helpers/extractUserIdFromToken.helper.
 const main = async (req, res, next) => {
 
 
-    const user_id = extractUserIdFromToken(req.headers.auth_token);
+    const user_id = extractUserIdFromToken(req.headers.authorization);
     const { title, description, category_id } = req.body;
     const files = req.files;
 

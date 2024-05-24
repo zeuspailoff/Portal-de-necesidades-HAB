@@ -9,7 +9,7 @@ const main = async (req, res, next) => {
 
         await validateSchema(voteProposalSchema, req.body);
         const { proposal_id } = req.params;
-        const user_id = extractUserIdFromToken(req.headers.auth_token);
+        const user_id = extractUserIdFromToken(req.headers.authorization);
         const { value, demand_id } = req.body;
 
         const votes = await voteProposal(value, proposal_id, user_id, demand_id);

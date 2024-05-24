@@ -6,7 +6,7 @@ const main = async (req, res, next) => {
 
         let entity = {};
 
-        const user_id = extractUserIdFromToken(req.headers.auth_token);
+        const user_id = extractUserIdFromToken(req.headers.authorization);
 
 
         if (req.demand.user_id != user_id) {

@@ -5,7 +5,7 @@ const main = async (req, res, next) => {
 
     const { user_id } = req.params;
     console.log("user_id", user_id);
-    const loggedUserId = req.user.id //extractUserIdFromToken(req.headers.auth_token)
+    const loggedUserId = req.user.id
     console.log("loggedUserId", loggedUserId);
 
     try {
