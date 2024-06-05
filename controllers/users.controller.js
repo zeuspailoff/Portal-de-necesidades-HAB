@@ -58,7 +58,8 @@ export const updateUserById = async (id, username, biography, name, lastname, fi
 
     const response = await updateUser(id, username, biography, name, lastname);
 
-    const actualAvatarId = user?.avatar_id;
+    const actualAvatarId = user && user.avatar_id;
+
     const newAvatar = {}
     let deleteOldAvatar = null;
     const entity_id = id;
