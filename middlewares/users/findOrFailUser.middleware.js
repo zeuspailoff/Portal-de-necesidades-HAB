@@ -16,7 +16,7 @@ const main = async (req, res, next) => {
             user = await getOwnUserById(user_id);
         }
 
-        res.user = { ...res.user, ...user[0] }
+        res.user = { ...user, ...user[0] }
 
         next();
     } catch (error) {

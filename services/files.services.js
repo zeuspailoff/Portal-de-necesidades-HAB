@@ -61,7 +61,7 @@ export const storeFile = async (file, entity_type) => {
 export const insertFileSrc = async (entity_id, entity_type, src) => {
     const column = entity_type.slice(0, -1) + '_id';
     const pool = await getPool();
-    console.log('id user n', entity_id,);
+
     const [response] = await pool.query(
         `INSERT INTO files (${column}, src) VALUES (?,?)`,
         [entity_id, src]

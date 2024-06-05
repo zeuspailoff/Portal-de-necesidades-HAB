@@ -129,7 +129,7 @@ export const getUsers = async () => {
       u.deleted_at IS NULL
   ORDER BY created_at DESC;
   `);
-  console.log(users);
+
   return users
 }
 
