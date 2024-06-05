@@ -61,12 +61,13 @@ export const updateUserById = async (id, username, biography, name, lastname, fi
     const actualAvatarId = user?.avatar_id;
     const newAvatar = {}
     let deleteOldAvatar = null;
-
+    const entity_id = id;
+    console.log(actualAvatarId);
     if (files.length > 0) {
         newAvatar.src = await storeFile(files[0], entity_type);
         if (newAvatar.src) {
             if (actualAvatarId != null) deleteOldAvatar = await deleteFile(actualAvatarId);
-            await insertFileSrc(user.id, entity_type, newAvatar.src);
+            await insertFileSrc(entity_id, entity_type, newAvatar.src);
         }
 
         response.avatar = newAvatar.src;

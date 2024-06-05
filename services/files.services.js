@@ -6,6 +6,7 @@ import errors from '../helpers/errors.helper.js'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import dotenv from 'dotenv';
+import { log } from 'console';
 
 dotenv.config();
 const UPLOADS_DIR = process.env.UPLOADS_DIR
@@ -60,7 +61,7 @@ export const storeFile = async (file, entity_type) => {
 export const insertFileSrc = async (entity_id, entity_type, src) => {
     const column = entity_type.slice(0, -1) + '_id';
     const pool = await getPool();
-
+    console.log('id user n', entity_id,);
     const [response] = await pool.query(
         `INSERT INTO files (${column}, src) VALUES (?,?)`,
         [entity_id, src]

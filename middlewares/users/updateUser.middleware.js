@@ -10,6 +10,7 @@ const main = async (req, res, next) => {
     const files = req.files;
     const user = res.user;
 
+
     try {
         await validateSchema(updateUserSchema, req.body);
         const response = await updateUserById(user_id, username, biography, name, lastname, files, user);
